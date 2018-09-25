@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace epicenterWin
 {
     public partial class Form1 : Form
@@ -62,6 +63,9 @@ namespace epicenterWin
 
         private void galleryButton_Click(object sender, EventArgs e)
         {
+            PlateRecognizer PR = new PlateRecognizer();
+            string path = @"C:\Users\ferN\plate_testing\bmw.jpg";
+            PR.processImageFile(path);
             MessageBox.Show("Not yet");
         }
 
