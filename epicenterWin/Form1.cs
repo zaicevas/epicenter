@@ -12,7 +12,7 @@ namespace epicenterWin
 {
     public partial class Form1 : Form
     {
-       
+        private String startText;  
         // TextBox searchTextBox;
         // Label historyLabel;
         public Form1()
@@ -20,23 +20,11 @@ namespace epicenterWin
             InitializeComponent();
             BackgroundImageLayout = ImageLayout.Stretch;
             this.ActiveControl = historyLabel;
-           
-            searchTextBox.ForeColor = SystemColors.GrayText;
-            searchTextBox.Text = "Search people/car plate";
+            startText = searchTextBox.Text;
+            mouseClick(null, null);
 
             fixScale();
             loadPhotos();
-        }
-
-        private void searchTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void searchTextBox_MouseClick(object sender, MouseEventArgs e)
-        {
-            searchTextBox.Text = "";
-            searchTextBox.ForeColor = SystemColors.WindowText;
         }
 
         private void fixScale()
@@ -49,18 +37,14 @@ namespace epicenterWin
 
         private void loadPhotos()
         {
-            pictureBox1.ImageLocation = "https://source.unsplash.com/random/100x89?sig=1";
+            pictureBox1.ImageLocation = "https://source.unsplash.com/random/134x134?sig=1";
             pictureBox1.Load();
-            pictureBox2.ImageLocation = "https://source.unsplash.com/random/100x89?sig=2";
+            pictureBox2.ImageLocation = "https://source.unsplash.com/random/134x134?sig=2";
             pictureBox2.Load();
-            pictureBox3.ImageLocation = "https://source.unsplash.com/random/100x89?sig=3";
-            pictureBox3.Load();
-            pictureBox4.ImageLocation = "https://source.unsplash.com/random/100x89?sig=4";
+            pictureBox4.ImageLocation = "https://source.unsplash.com/random/134x134?sig=4";
             pictureBox4.Load();
-            pictureBox5.ImageLocation = "https://source.unsplash.com/random/100x89?sig=5";
+            pictureBox5.ImageLocation = "https://source.unsplash.com/random/134x134?sig=5";
             pictureBox5.Load();
-            pictureBox6.ImageLocation = "https://source.unsplash.com/random/100x89?sig=6";
-            pictureBox6.Load();
         }
 
         private void galleryClick(object sender, EventArgs e)
@@ -80,5 +64,25 @@ namespace epicenterWin
         {
             MessageBox.Show("Not yet");
         }
+
+        private void searchTextBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            searchTextBox.Text = "";
+            searchTextBox.ForeColor = SystemColors.WindowText;
+        }
+
+        private void mouseClick(object sender, MouseEventArgs e)
+        {
+            searchTextBox.Text = startText;
+            searchTextBox.ForeColor = SystemColors.GrayText;
+        }
     }
 }
+
+/*
+            searchTextBox1.ForeColor = SystemColors.GrayText;
+ * 
+ *             searchTextBox1.Text = "";
+            searchTextBox1.ForeColor = SystemColors.WindowText;
+ * 
+ * */
