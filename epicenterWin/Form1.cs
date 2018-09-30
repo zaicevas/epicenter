@@ -19,27 +19,27 @@ namespace epicenterWin
         {
             InitializeComponent();
             BackgroundImageLayout = ImageLayout.Stretch;
-            this.ActiveControl = historyLabel;
+            //this.ActiveControl = historyLabel;
            
-            searchTextBox.ForeColor = SystemColors.GrayText;
-            searchTextBox.Text = "Search people/car plate";
+            //searchTextBox.ForeColor = SystemColors.GrayText;
+            //searchTextBox.Text = "Search people/car plate";
 
-            fixScale();
-            loadPhotos();
+            //FixScale();
+            //LoadPhotos();
         }
 
-        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        /*private void SearchTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void searchTextBox_MouseClick(object sender, MouseEventArgs e)
+        private void SearchTextBox_MouseClick(object sender, MouseEventArgs e)
         {
             searchTextBox.Text = "";
             searchTextBox.ForeColor = SystemColors.WindowText;
         }
 
-        private void fixScale()
+        private void FixScale()
         {
             searchImg.SizeMode = PictureBoxSizeMode.Zoom;
             searchImg.BackColor = Color.Transparent;
@@ -47,7 +47,7 @@ namespace epicenterWin
             galleryImg.BackColor = Color.Transparent;
         }
 
-        private void loadPhotos()
+        private void LoadPhotos()
         {
             pictureBox1.ImageLocation = "https://source.unsplash.com/random/100x89?sig=1";
             pictureBox1.Load();
@@ -63,22 +63,38 @@ namespace epicenterWin
             pictureBox6.Load();
         }
 
-        private void galleryClick(object sender, EventArgs e)
+        private void GalleryClick(object sender, EventArgs e)
         {
 
         }
 
-        private void galleryDragEnter(object sender, DragEventArgs e)
+        private void GalleryDragEnter(object sender, DragEventArgs e)
         {
         }
-
+        */
         private void Form1_Load(object sender, EventArgs e)
         {
         }
 
-        private void galleryButton_Click(object sender, EventArgs e)
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("Not yet");
+
         }
+
+        private void _reportPersonInfoLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /*
+        private void GalleryButton_Click(object sender, EventArgs e)
+        {
+           MessageBox.Show("Not yet");
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }*/
     }
 }

@@ -1,17 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+using Npgsql;
+
 public class PlateDatabase : IEnumerable<string>
 {
+    //TODO: Sync missing plates with some sql database
     private readonly string[] _plates =
     {
         "ABC123",
         "DEF456",
     };
-
-    public PlateDatabase()
-    {
-    }
 
     public string this[int index]
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace epicenterWin
 {
@@ -7,14 +8,14 @@ namespace epicenterWin
         [STAThread]
         static void Main()
         {
-            var db = new PlateDatabase();
+            /*var db = new PlateDatabase();
             foreach (var plate in db)
             {
                 Console.WriteLine(plate);
-            }
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            }*/
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
     }
 }
