@@ -260,7 +260,6 @@
             this._reportPersonInfoLabel.Size = new System.Drawing.Size(141, 25);
             this._reportPersonInfoLabel.TabIndex = 6;
             this._reportPersonInfoLabel.Text = "Additional Info:";
-            this._reportPersonInfoLabel.Click += new System.EventHandler(this._reportPersonInfoLabel_Click);
             // 
             // _reportPersonInfoBox
             // 
@@ -421,4 +420,3 @@
         private System.Windows.Forms.TextBox _reportPersonInfoBox;
     }
 }
-
