@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // openalpr
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 
@@ -47,13 +43,13 @@ namespace epicenterWin
         {
             //resetControls();
             //var region = rbUSA.Checked ? "us" : "eu";
-            String region = "eu";
-            String config_file = Path.Combine(AssemblyDirectory, "openalpr.conf");
-            String runtime_data_dir = Path.Combine(AssemblyDirectory, "runtime_data");
-            //Form1.popMessage(runtime_data_dir);
-            using (var alpr = new AlprNet(region, config_file, runtime_data_dir))
+            string region = "eu";
+            string configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
+            string runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
+
+            using (var alpr = new AlprNet(region, configFile, runtimeDataDirectory))
             {
-                var platesList = new List<String>();
+                var platesList = new List<string>();
 
                 if (!alpr.IsLoaded())
                 {
@@ -105,7 +101,7 @@ namespace epicenterWin
                 string path = @"C:\Users\ferN\plate_testing\output.txt";
                 using (var tw = new StreamWriter(path, true))
                 {
-                    foreach (String s in platesList)
+                    foreach (string s in platesList)
                     {
                         tw.WriteLine(s);
                     }
