@@ -20,5 +20,18 @@ namespace epicenterWin
             PlateRecognizer PR = new PlateRecognizer();
             PR.processImageFile(@"C:\Users\ferN\plate_testing\bmw.jpg");
         }
+
+        private void BrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Multiselect = true;
+            ofd.Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff";
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var v in ofd.FileNames) {
+                    MessageBox.Show(v);
+                }
+            }
+        }
     }
 }
