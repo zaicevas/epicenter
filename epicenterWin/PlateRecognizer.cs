@@ -22,11 +22,13 @@ namespace epicenterWin
             }
         }
 
-        public static void processImageFile(string fileName)
+        public static List<string> processImageFile(string fileName)                            // empty
         {
-            var region = "eu";                                                       // could be us
+            var region = "eu";                                                              // could be us
             var configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
             var runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
+
+            List<string> resultas = new List<string>();
 
             using (var alpr = new AlprNet(region, configFile, runtimeDataDirectory))
             {
@@ -35,33 +37,49 @@ namespace epicenterWin
                 if (!alpr.IsLoaded())
                 {
                     platesList.Add("Error starting OpenALPR");
-                    return;
+                    return resultas;
                 }
-                alpr.DefaultRegion = "lt";                                              // match @@@### pattern
+                alpr.DefaultRegion = "lt";                                                  // match @@@### pattern
                 var results = alpr.Recognize(fileName);
 
                 var i = 1;
-                foreach (var result in results.Plates)
+                foreach (var result in results.Plates)                                      // for every plate
                 {
-                    platesList.Add("\t\t-- Plate #" + i++ + " --");
-                    foreach (var plate in result.TopNPlates)
-                    {
-                        platesList.Add(string.Format(@"{0} {1}% {2}",
-                                                          plate.Characters.PadRight(12),
-                                                          plate.OverallConfidence.ToString("N1").PadLeft(8),
-                                                          plate.MatchesTemplate.ToString().PadLeft(8)));
-                    }
+                    //platesList.Add("\t\t-- Plate #" + i++ + " --");
+                    //foreach (var plate in result.TopNPlates)
+                    //{
+                    //    platesList.Add(string.Format(@"{0} {1}% {2}",
+                    //                                      plate.Characters.PadRight(12),
+                    //                                      plate.OverallConfidence.ToString("N1").PadLeft(8),
+                    //                                      plate.MatchesTemplate.ToString().PadLeft(8)));
+                    //}
+                    resultas.Add(result.TopNPlates[GetBestPlateIndex(result.TopNPlates)].Characters);
                 }
 
-                var path = @"C:\Users\ferN\plate_testing\output.txt";
-                using (var tw = new StreamWriter(path, true))
+                //var path = @"C:\Users\ferN\plate_testing\output.txt";
+                //using (var tw = new StreamWriter(path, true))
+                //{
+                //    foreach (var s in platesList)
+                //    {
+                //        tw.WriteLine(s);
+                //    }
+                //}
+            }
+            return resultas;
+        }
+
+        private static int GetBestPlateIndex(List<AlprPlateNet> plates)
+        {
+            for (var i=0; i<plates.Count; i++)
+            {
+                if (plates[i].MatchesTemplate)
                 {
-                    foreach (var s in platesList)
-                    {
-                        tw.WriteLine(s);
-                    }
+                    return i;
                 }
             }
+            return 0;
         }
+
+
     }
 }

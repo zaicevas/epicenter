@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace epicenterWin
@@ -35,8 +36,11 @@ namespace epicenterWin
             {
                 if (BrowseListBox.GetItemChecked(i))
                 {
-                    PlateRecognizer.processImageFile(BrowseListBox.Items[i].ToString());
-                    MessageBox.Show(BrowseListBox.Items[i].ToString());
+                    List<string> matched = PlateRecognizer.processImageFile(BrowseListBox.Items[i].ToString());
+                    foreach(string s in matched)
+                    {
+                        MessageBox.Show(s);
+                    }
                 }
             }
         }
