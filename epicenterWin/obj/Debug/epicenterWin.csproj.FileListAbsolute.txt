@@ -42,3 +42,15 @@ C:\Users\deadrat22\Source\Repos\epicenter\epicenterWin\bin\Debug\epicenterWin.ex
 C:\Users\deadrat22\Source\Repos\epicenter\epicenterWin\bin\Debug\epicenterWin.pdb
 C:\Users\deadrat22\Source\Repos\epicenter\epicenterWin\bin\Debug\openalpr-net.dll
 C:\Users\deadrat22\Source\Repos\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CopyComplete
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\bin\Debug\epicenterWin.exe.config
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\bin\Debug\epicenterWin.exe
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\bin\Debug\epicenterWin.pdb
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\bin\Debug\openalpr-net.dll
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.csprojAssemblyReference.cache
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.Form1.resources
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.Properties.Resources.resources
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.GenerateResource.cache
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CoreCompileInputs.cache
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CopyComplete
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.exe
+C:\Users\stong\Desktop\Git\epicenter\epicenterWin\obj\Debug\epicenterWin.pdb
