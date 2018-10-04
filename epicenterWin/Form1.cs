@@ -14,5 +14,11 @@ namespace epicenterWin
         private void Form1_Load(object sender, EventArgs e)
         {
         }
+
+        private void _searchUploadButton_Click(object sender, EventArgs e)
+        {
+            PlateRecognizer PR = new PlateRecognizer();
+            PR.processImageFile(@"C:\Users\ferN\plate_testing\bmw.jpg");
+        }
     }
 }
