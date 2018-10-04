@@ -42,7 +42,6 @@ namespace epicenterWin
                 alpr.DefaultRegion = "lt";                                                  // match @@@### pattern
                 var results = alpr.Recognize(fileName);
 
-                var i = 1;
                 foreach (var result in results.Plates)                                      // for every plate
                 {
                     //platesList.Add("\t\t-- Plate #" + i++ + " --");
@@ -53,7 +52,13 @@ namespace epicenterWin
                     //                                      plate.OverallConfidence.ToString("N1").PadLeft(8),
                     //                                      plate.MatchesTemplate.ToString().PadLeft(8)));
                     //}
-                    resultas.Add(result.TopNPlates[GetBestPlateIndex(result.TopNPlates)].Characters);
+                    var index = GetBestPlateIndex(result.TopNPlates);
+                    Console.WriteLine("OPA1");
+                    if (index != -1)
+                    {
+                        resultas.Add(result.TopNPlates[index].Characters);
+                        Console.WriteLine("OPA");
+                    }
                 }
 
                 //var path = @"C:\Users\ferN\plate_testing\output.txt";
@@ -68,7 +73,7 @@ namespace epicenterWin
             return resultas;
         }
 
-        private static int GetBestPlateIndex(List<AlprPlateNet> plates)
+        private static int GetBestPlateIndex(List<AlprPlateNet> plates)         // returns -1 if there's no match for region pattern
         {
             for (var i=0; i<plates.Count; i++)
             {
@@ -77,7 +82,7 @@ namespace epicenterWin
                     return i;
                 }
             }
-            return 0;
+            return -1;
         }
 
 

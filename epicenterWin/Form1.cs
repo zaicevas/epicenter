@@ -32,16 +32,28 @@ namespace epicenterWin
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
+            bool b_matched = false;
+            bool b_checked = false;
             for (var i=0; i<BrowseListBox.Items.Count; i++)
             {
                 if (BrowseListBox.GetItemChecked(i))
                 {
+                    b_checked = true;
                     List<string> matched = PlateRecognizer.processImageFile(BrowseListBox.Items[i].ToString());
-                    foreach(string s in matched)
+                    b_matched = matched.Count != 0 ? true : false;
+                    foreach (string s in matched)
                     {
                         MessageBox.Show(s);
                     }
                 }
+            }
+            if (!b_checked)
+            {
+                MessageBox.Show("Please select at least one image!");
+            }
+            else if (!b_matched)
+            {
+                MessageBox.Show("Haven't found any plates!");
             }
         }
     }
