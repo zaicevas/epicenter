@@ -33,10 +33,10 @@
             this.Tabs = new System.Windows.Forms.TabControl();
             this._searchPage = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this._searchUploadButton = new System.Windows.Forms.Button();
+            this.CheckButton = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this._enteredUrlBox = new System.Windows.Forms.TextBox();
-            this._searchSelectedFilesToUploadListview = new System.Windows.Forms.CheckedListBox();
+            this.BrowseListBox = new System.Windows.Forms.CheckedListBox();
             this._searchSelectionText = new System.Windows.Forms.Label();
             this._reportPage = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -93,10 +93,10 @@
             // _searchPage
             // 
             this._searchPage.Controls.Add(this.progressBar1);
-            this._searchPage.Controls.Add(this._searchUploadButton);
+            this._searchPage.Controls.Add(this.CheckButton);
             this._searchPage.Controls.Add(this.BrowseButton);
             this._searchPage.Controls.Add(this._enteredUrlBox);
-            this._searchPage.Controls.Add(this._searchSelectedFilesToUploadListview);
+            this._searchPage.Controls.Add(this.BrowseListBox);
             this._searchPage.Controls.Add(this._searchSelectionText);
             this._searchPage.Location = new System.Drawing.Point(4, 22);
             this._searchPage.Margin = new System.Windows.Forms.Padding(2);
@@ -115,16 +115,16 @@
             this.progressBar1.Size = new System.Drawing.Size(271, 22);
             this.progressBar1.TabIndex = 5;
             // 
-            // _searchUploadButton
+            // CheckButton
             // 
-            this._searchUploadButton.Location = new System.Drawing.Point(280, 277);
-            this._searchUploadButton.Margin = new System.Windows.Forms.Padding(2);
-            this._searchUploadButton.Name = "_searchUploadButton";
-            this._searchUploadButton.Size = new System.Drawing.Size(52, 22);
-            this._searchUploadButton.TabIndex = 4;
-            this._searchUploadButton.Text = "Upload";
-            this._searchUploadButton.UseVisualStyleBackColor = true;
-            this._searchUploadButton.Click += new System.EventHandler(this._searchUploadButton_Click);
+            this.CheckButton.Location = new System.Drawing.Point(280, 277);
+            this.CheckButton.Margin = new System.Windows.Forms.Padding(2);
+            this.CheckButton.Name = "CheckButton";
+            this.CheckButton.Size = new System.Drawing.Size(52, 22);
+            this.CheckButton.TabIndex = 4;
+            this.CheckButton.Text = "Check";
+            this.CheckButton.UseVisualStyleBackColor = true;
+            this.CheckButton.Click += new System.EventHandler(this.CheckButton_Click);
             // 
             // BrowseButton
             // 
@@ -145,14 +145,14 @@
             this._enteredUrlBox.Size = new System.Drawing.Size(273, 20);
             this._enteredUrlBox.TabIndex = 2;
             // 
-            // _searchSelectedFilesToUploadListview
+            // BrowseListBox
             // 
-            this._searchSelectedFilesToUploadListview.FormattingEnabled = true;
-            this._searchSelectedFilesToUploadListview.Location = new System.Drawing.Point(6, 47);
-            this._searchSelectedFilesToUploadListview.Margin = new System.Windows.Forms.Padding(2);
-            this._searchSelectedFilesToUploadListview.Name = "_searchSelectedFilesToUploadListview";
-            this._searchSelectedFilesToUploadListview.Size = new System.Drawing.Size(273, 214);
-            this._searchSelectedFilesToUploadListview.TabIndex = 1;
+            this.BrowseListBox.FormattingEnabled = true;
+            this.BrowseListBox.Location = new System.Drawing.Point(6, 47);
+            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2);
+            this.BrowseListBox.Name = "BrowseListBox";
+            this.BrowseListBox.Size = new System.Drawing.Size(273, 214);
+            this.BrowseListBox.TabIndex = 1;
             // 
             // _searchSelectionText
             // 
@@ -512,8 +512,8 @@
         private System.Windows.Forms.TabPage _reportPage;
         private System.Windows.Forms.TabPage _historyPage;
         private System.Windows.Forms.Label _searchSelectionText;
-        private System.Windows.Forms.CheckedListBox _searchSelectedFilesToUploadListview;
-        private System.Windows.Forms.Button _searchUploadButton;
+        private System.Windows.Forms.CheckedListBox BrowseListBox;
+        private System.Windows.Forms.Button CheckButton;
         private System.Windows.Forms.Button BrowseButton;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TabControl tabControl1;

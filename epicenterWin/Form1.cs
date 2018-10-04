@@ -15,21 +15,28 @@ namespace epicenterWin
         {
         }
 
-        private void _searchUploadButton_Click(object sender, EventArgs e)
-        {
-            PlateRecognizer PR = new PlateRecognizer();
-            PR.processImageFile(@"C:\Users\ferN\plate_testing\bmw.jpg");
-        }
-
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             ofd.Multiselect = true;
             ofd.Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff";
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                foreach (var v in ofd.FileNames) {
-                    MessageBox.Show(v);
+                foreach (var v in ofd.FileNames)
+                {
+                    BrowseListBox.Items.Add(v, false);
+                }
+            }
+        }
+
+        private void CheckButton_Click(object sender, EventArgs e)
+        {
+            for (var i=0; i<BrowseListBox.Items.Count; i++)
+            {
+                if (BrowseListBox.GetItemChecked(i))
+                {
+                    PlateRecognizer.processImageFile(BrowseListBox.Items[i].ToString());
+                    MessageBox.Show(BrowseListBox.Items[i].ToString());
                 }
             }
         }

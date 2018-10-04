@@ -9,25 +9,8 @@ using openalprnet;
 
 namespace epicenterWin
 {
-    class PlateRecognizer
+    struct PlateRecognizer
     {
-        interface INumeric
-        {
-            int GetValue();
-        }
-
-        class ImNumeric : INumeric
-        {
-            public ImNumeric(int a)
-            {
-
-            }
-            public int GetValue()
-            {
-                return 5;
-            }
-        }
-
         public static string AssemblyDirectory
         {
             get
@@ -39,7 +22,7 @@ namespace epicenterWin
             }
         }
 
-        public void processImageFile(string fileName)
+        public static void processImageFile(string fileName)
         {
             var region = "eu";                                                       // could be us
             var configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
