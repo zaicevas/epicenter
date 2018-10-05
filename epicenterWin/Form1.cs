@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace epicenterWin
@@ -31,7 +32,7 @@ namespace epicenterWin
                 foreach (var v in fileDialog.FileNames)
                 {
                     if (!BrowseListBox.Items.Contains(v))
-                        BrowseListBox.Items.Add(v, false);
+                        BrowseListBox.Items.Add(v, true);
                 }
             }
         }
@@ -46,20 +47,20 @@ namespace epicenterWin
                 {
                     bChecked = true;
                     List<string> matched = PlateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
-                    bMatched = matched.Count != 0;
+                    if (matched.Count == 0)
+                    {
+                        MessageBox.Show(BrowseListBox.Items[i].ToString() + '\n' + "Haven't found any plates!");
+                        continue;
+                    }
                     foreach (string s in matched)
                     {
-                        MessageBox.Show(s);
+                        MessageBox.Show(BrowseListBox.Items[i].ToString() + '\n' + s);
                     }
                 }
             }
             if (!bChecked)
             {
                 MessageBox.Show("Please select at least one image!");
-            }
-            else if (!bMatched)
-            {
-                MessageBox.Show("Haven't found any plates!");
             }
         }
 
@@ -92,6 +93,23 @@ namespace epicenterWin
         {
             var index = BrowseListBox.IndexFromPoint(_removeMe.Location);
             BrowseListBox.Items.RemoveAt(index);
+        }
+
+        private void FilePathBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData.ToString() == "Return")
+            {
+                var path = FilePathBox.Text;
+                if (File.Exists(path) && !BrowseListBox.Items.Contains(path))
+                {
+                    BrowseListBox.Items.Add(path, true);
+                    FilePathBox.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Wrong image path or it already in the list.");
+                }
+            }
         }
     }
 }
