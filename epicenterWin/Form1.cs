@@ -30,7 +30,8 @@ namespace epicenterWin
             {
                 foreach (var v in fileDialog.FileNames)
                 {
-                    BrowseListBox.Items.Add(v, false);
+                    if (!BrowseListBox.Items.Contains(v))
+                        BrowseListBox.Items.Add(v, false);
                 }
             }
         }
