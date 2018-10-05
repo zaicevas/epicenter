@@ -69,6 +69,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.removeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this._reportPage.SuspendLayout();
@@ -76,6 +78,7 @@
             this._reportCarTab.SuspendLayout();
             this._reportPersonTab.SuspendLayout();
             this._historyPage.SuspendLayout();
+            this.removeContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -147,12 +150,14 @@
             // 
             // BrowseListBox
             // 
+            this.BrowseListBox.ContextMenuStrip = this.removeContextMenu;
             this.BrowseListBox.FormattingEnabled = true;
             this.BrowseListBox.Location = new System.Drawing.Point(6, 47);
             this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseListBox.Name = "BrowseListBox";
             this.BrowseListBox.Size = new System.Drawing.Size(273, 214);
             this.BrowseListBox.TabIndex = 1;
+            this.BrowseListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BrowseListBox_MouseDown);
             // 
             // _searchSelectionText
             // 
@@ -479,6 +484,20 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // removeContextMenu
+            // 
+            this.removeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem});
+            this.removeContextMenu.Name = "removeContextMenu";
+            this.removeContextMenu.Size = new System.Drawing.Size(181, 48);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,6 +520,7 @@
             this._reportPersonTab.PerformLayout();
             this._historyPage.ResumeLayout(false);
             this._historyPage.PerformLayout();
+            this.removeContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -546,5 +566,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ContextMenuStrip removeContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }

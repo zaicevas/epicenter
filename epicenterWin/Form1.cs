@@ -6,6 +6,9 @@ namespace epicenterWin
 {
     public partial class Form1 : Form
     {
+
+        private MouseEventArgs _removeMe;
+
         public Form1()
         {
             InitializeComponent();
@@ -57,6 +60,37 @@ namespace epicenterWin
             {
                 MessageBox.Show("Haven't found any plates!");
             }
+        }
+
+        private void removeImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+        }
+
+        private void BrowseListBox_MouseDown(object sender, MouseEventArgs e)                               // catching right button (remove) click
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+            var index = BrowseListBox.IndexFromPoint(e.Location);
+            removeContextMenu.Opening += (o, c) =>
+            {
+                if (index == CheckedListBox.NoMatches)
+                    c.Cancel = true;
+                else
+                {
+                    _removeMe = e;
+                    c.Cancel = false;
+                }
+            };
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)                              // clicking remove
+        {
+            var index = BrowseListBox.IndexFromPoint(_removeMe.Location);
+            BrowseListBox.Items.RemoveAt(index);
         }
     }
 }
