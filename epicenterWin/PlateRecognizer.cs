@@ -11,7 +11,7 @@ namespace epicenterWin
 {
     struct PlateRecognizer
     {
-        public static string AssemblyDirectory
+        private static string AssemblyDirectory
         {
             get
             {
@@ -22,13 +22,13 @@ namespace epicenterWin
             }
         }
 
-        public static List<string> processImageFile(string fileName)                            // empty
+        public static List<string> ProcessImageFile(string fileName)                            // empty
         {
             var region = "eu";                                                              // could be us
             var configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
             var runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
 
-            List<string> resultas = new List<string>();
+            var resultas = new List<string>();
 
             using (var alpr = new AlprNet(region, configFile, runtimeDataDirectory))
             {
@@ -53,11 +53,9 @@ namespace epicenterWin
                     //                                      plate.MatchesTemplate.ToString().PadLeft(8)));
                     //}
                     var index = GetBestPlateIndex(result.TopNPlates);
-                    Console.WriteLine("OPA1");
                     if (index != -1)
                     {
                         resultas.Add(result.TopNPlates[index].Characters);
-                        Console.WriteLine("OPA");
                     }
                 }
 

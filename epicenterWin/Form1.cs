@@ -18,12 +18,14 @@ namespace epicenterWin
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
-            ofd.Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff";
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var fileDialog = new OpenFileDialog
             {
-                foreach (var v in ofd.FileNames)
+                Multiselect = true,
+                Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff"
+            };
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var v in fileDialog.FileNames)
                 {
                     BrowseListBox.Items.Add(v, false);
                 }
@@ -32,26 +34,26 @@ namespace epicenterWin
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            bool b_matched = false;
-            bool b_checked = false;
+            var bMatched = false;
+            var bChecked = false;
             for (var i=0; i<BrowseListBox.Items.Count; i++)
             {
                 if (BrowseListBox.GetItemChecked(i))
                 {
-                    b_checked = true;
-                    List<string> matched = PlateRecognizer.processImageFile(BrowseListBox.Items[i].ToString());
-                    b_matched = matched.Count != 0 ? true : false;
+                    bChecked = true;
+                    List<string> matched = PlateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
+                    bMatched = matched.Count != 0;
                     foreach (string s in matched)
                     {
                         MessageBox.Show(s);
                     }
                 }
             }
-            if (!b_checked)
+            if (!bChecked)
             {
                 MessageBox.Show("Please select at least one image!");
             }
-            else if (!b_matched)
+            else if (!bMatched)
             {
                 MessageBox.Show("Haven't found any plates!");
             }
