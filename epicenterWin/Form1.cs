@@ -39,7 +39,6 @@ namespace epicenterWin
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            var bMatched = false;
             var bChecked = false;
             for (var i=0; i<BrowseListBox.Items.Count; i++)
             {
