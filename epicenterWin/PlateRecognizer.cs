@@ -9,26 +9,9 @@ using openalprnet;
 
 namespace epicenterWin
 {
-    class PlateRecognizer
+    struct PlateRecognizer
     {
-        interface INumeric
-        {
-            int GetValue();
-        }
-
-        class ImNumeric : INumeric
-        {
-            public ImNumeric(int a)
-            {
-
-            }
-            public int GetValue()
-            {
-                return 5;
-            }
-        }
-
-        public static string AssemblyDirectory
+        private static string AssemblyDirectory
         {
             get
             {
@@ -39,11 +22,13 @@ namespace epicenterWin
             }
         }
 
-        public void processImageFile(string fileName)
+        public static List<string> ProcessImageFile(string fileName)                            // empty
         {
-            var region = "eu";                                                       // could be us
+            var region = "eu";                                                              // could be us
             var configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
             var runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
+
+            var resultas = new List<string>();
 
             using (var alpr = new AlprNet(region, configFile, runtimeDataDirectory))
             {
@@ -52,33 +37,52 @@ namespace epicenterWin
                 if (!alpr.IsLoaded())
                 {
                     platesList.Add("Error starting OpenALPR");
-                    return;
+                    return resultas;
                 }
-                alpr.DefaultRegion = "lt";                                              // match @@@### pattern
+                alpr.DefaultRegion = "lt";                                                  // match @@@### pattern
                 var results = alpr.Recognize(fileName);
 
-                var i = 1;
-                foreach (var result in results.Plates)
+                foreach (var result in results.Plates)                                      // for every plate
                 {
-                    platesList.Add("\t\t-- Plate #" + i++ + " --");
-                    foreach (var plate in result.TopNPlates)
+                    //platesList.Add("\t\t-- Plate #" + i++ + " --");
+                    //foreach (var plate in result.TopNPlates)
+                    //{
+                    //    platesList.Add(string.Format(@"{0} {1}% {2}",
+                    //                                      plate.Characters.PadRight(12),
+                    //                                      plate.OverallConfidence.ToString("N1").PadLeft(8),
+                    //                                      plate.MatchesTemplate.ToString().PadLeft(8)));
+                    //}
+                    var index = GetBestPlateIndex(result.TopNPlates);
+                    if (index != -1)
                     {
-                        platesList.Add(string.Format(@"{0} {1}% {2}",
-                                                          plate.Characters.PadRight(12),
-                                                          plate.OverallConfidence.ToString("N1").PadLeft(8),
-                                                          plate.MatchesTemplate.ToString().PadLeft(8)));
+                        resultas.Add(result.TopNPlates[index].Characters);
                     }
                 }
 
-                var path = @"C:\Users\ferN\plate_testing\output.txt";
-                using (var tw = new StreamWriter(path, true))
+                //var path = @"C:\Users\ferN\plate_testing\output.txt";
+                //using (var tw = new StreamWriter(path, true))
+                //{
+                //    foreach (var s in platesList)
+                //    {
+                //        tw.WriteLine(s);
+                //    }
+                //}
+            }
+            return resultas;
+        }
+
+        private static int GetBestPlateIndex(List<AlprPlateNet> plates)         // returns -1 if there's no match for region pattern
+        {
+            for (var i=0; i<plates.Count; i++)
+            {
+                if (plates[i].MatchesTemplate)
                 {
-                    foreach (var s in platesList)
-                    {
-                        tw.WriteLine(s);
-                    }
+                    return i;
                 }
             }
+            return -1;
         }
+
+
     }
 }

@@ -33,10 +33,10 @@
             this.Tabs = new System.Windows.Forms.TabControl();
             this._searchPage = new System.Windows.Forms.TabPage();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this._searchUploadButton = new System.Windows.Forms.Button();
-            this._searchBrowseUrlToListButton = new System.Windows.Forms.Button();
-            this._enteredUrlBox = new System.Windows.Forms.TextBox();
-            this._searchSelectedFilesToUploadListview = new System.Windows.Forms.CheckedListBox();
+            this.CheckButton = new System.Windows.Forms.Button();
+            this.BrowseButton = new System.Windows.Forms.Button();
+            this.FilePathBox = new System.Windows.Forms.TextBox();
+            this.BrowseListBox = new System.Windows.Forms.CheckedListBox();
             this._searchSelectionText = new System.Windows.Forms.Label();
             this._reportPage = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -69,6 +69,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.removeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this._reportPage.SuspendLayout();
@@ -76,6 +78,7 @@
             this._reportCarTab.SuspendLayout();
             this._reportPersonTab.SuspendLayout();
             this._historyPage.SuspendLayout();
+            this.removeContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -93,10 +96,10 @@
             // _searchPage
             // 
             this._searchPage.Controls.Add(this.progressBar1);
-            this._searchPage.Controls.Add(this._searchUploadButton);
-            this._searchPage.Controls.Add(this._searchBrowseUrlToListButton);
-            this._searchPage.Controls.Add(this._enteredUrlBox);
-            this._searchPage.Controls.Add(this._searchSelectedFilesToUploadListview);
+            this._searchPage.Controls.Add(this.CheckButton);
+            this._searchPage.Controls.Add(this.BrowseButton);
+            this._searchPage.Controls.Add(this.FilePathBox);
+            this._searchPage.Controls.Add(this.BrowseListBox);
             this._searchPage.Controls.Add(this._searchSelectionText);
             this._searchPage.Location = new System.Drawing.Point(4, 22);
             this._searchPage.Margin = new System.Windows.Forms.Padding(2);
@@ -115,43 +118,48 @@
             this.progressBar1.Size = new System.Drawing.Size(271, 22);
             this.progressBar1.TabIndex = 5;
             // 
-            // _searchUploadButton
+            // CheckButton
             // 
-            this._searchUploadButton.Location = new System.Drawing.Point(280, 277);
-            this._searchUploadButton.Margin = new System.Windows.Forms.Padding(2);
-            this._searchUploadButton.Name = "_searchUploadButton";
-            this._searchUploadButton.Size = new System.Drawing.Size(52, 22);
-            this._searchUploadButton.TabIndex = 4;
-            this._searchUploadButton.Text = "Upload";
-            this._searchUploadButton.UseVisualStyleBackColor = true;
-            this._searchUploadButton.Click += new System.EventHandler(this._searchUploadButton_Click);
+            this.CheckButton.Location = new System.Drawing.Point(280, 277);
+            this.CheckButton.Margin = new System.Windows.Forms.Padding(2);
+            this.CheckButton.Name = "CheckButton";
+            this.CheckButton.Size = new System.Drawing.Size(52, 22);
+            this.CheckButton.TabIndex = 4;
+            this.CheckButton.Text = "Check";
+            this.CheckButton.UseVisualStyleBackColor = true;
+            this.CheckButton.Click += new System.EventHandler(this.CheckButton_Click);
             // 
-            // _searchBrowseUrlToListButton
+            // BrowseButton
             // 
-            this._searchBrowseUrlToListButton.Location = new System.Drawing.Point(281, 22);
-            this._searchBrowseUrlToListButton.Margin = new System.Windows.Forms.Padding(2);
-            this._searchBrowseUrlToListButton.Name = "_searchBrowseUrlToListButton";
-            this._searchBrowseUrlToListButton.Size = new System.Drawing.Size(55, 22);
-            this._searchBrowseUrlToListButton.TabIndex = 3;
-            this._searchBrowseUrlToListButton.Text = "Browse";
-            this._searchBrowseUrlToListButton.UseVisualStyleBackColor = true;
+            this.BrowseButton.Location = new System.Drawing.Point(281, 22);
+            this.BrowseButton.Margin = new System.Windows.Forms.Padding(2);
+            this.BrowseButton.Name = "BrowseButton";
+            this.BrowseButton.Size = new System.Drawing.Size(55, 22);
+            this.BrowseButton.TabIndex = 3;
+            this.BrowseButton.Text = "Browse";
+            this.BrowseButton.UseVisualStyleBackColor = true;
+            this.BrowseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
-            // _enteredUrlBox
+            // FilePathBox
             // 
-            this._enteredUrlBox.Location = new System.Drawing.Point(6, 22);
-            this._enteredUrlBox.Margin = new System.Windows.Forms.Padding(2);
-            this._enteredUrlBox.Name = "_enteredUrlBox";
-            this._enteredUrlBox.Size = new System.Drawing.Size(273, 20);
-            this._enteredUrlBox.TabIndex = 2;
+            this.FilePathBox.Location = new System.Drawing.Point(6, 22);
+            this.FilePathBox.Margin = new System.Windows.Forms.Padding(2);
+            this.FilePathBox.Name = "FilePathBox";
+            this.FilePathBox.Size = new System.Drawing.Size(273, 20);
+            this.FilePathBox.TabIndex = 2;
+            this.FilePathBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FilePathBox_KeyDown);
             // 
-            // _searchSelectedFilesToUploadListview
+            // BrowseListBox
             // 
-            this._searchSelectedFilesToUploadListview.FormattingEnabled = true;
-            this._searchSelectedFilesToUploadListview.Location = new System.Drawing.Point(6, 47);
-            this._searchSelectedFilesToUploadListview.Margin = new System.Windows.Forms.Padding(2);
-            this._searchSelectedFilesToUploadListview.Name = "_searchSelectedFilesToUploadListview";
-            this._searchSelectedFilesToUploadListview.Size = new System.Drawing.Size(273, 214);
-            this._searchSelectedFilesToUploadListview.TabIndex = 1;
+            this.BrowseListBox.CheckOnClick = true;
+            this.BrowseListBox.ContextMenuStrip = this.removeContextMenu;
+            this.BrowseListBox.FormattingEnabled = true;
+            this.BrowseListBox.Location = new System.Drawing.Point(6, 47);
+            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2);
+            this.BrowseListBox.Name = "BrowseListBox";
+            this.BrowseListBox.Size = new System.Drawing.Size(273, 214);
+            this.BrowseListBox.TabIndex = 1;
+            this.BrowseListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BrowseListBox_MouseDown);
             // 
             // _searchSelectionText
             // 
@@ -478,6 +486,20 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // removeContextMenu
+            // 
+            this.removeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem});
+            this.removeContextMenu.Name = "removeContextMenu";
+            this.removeContextMenu.Size = new System.Drawing.Size(118, 26);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,6 +522,7 @@
             this._reportPersonTab.PerformLayout();
             this._historyPage.ResumeLayout(false);
             this._historyPage.PerformLayout();
+            this.removeContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -511,16 +534,16 @@
         private System.Windows.Forms.TabPage _reportPage;
         private System.Windows.Forms.TabPage _historyPage;
         private System.Windows.Forms.Label _searchSelectionText;
-        private System.Windows.Forms.CheckedListBox _searchSelectedFilesToUploadListview;
-        private System.Windows.Forms.Button _searchUploadButton;
-        private System.Windows.Forms.Button _searchBrowseUrlToListButton;
+        private System.Windows.Forms.CheckedListBox BrowseListBox;
+        private System.Windows.Forms.Button CheckButton;
+        private System.Windows.Forms.Button BrowseButton;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage _reportCarTab;
         private System.Windows.Forms.TabPage _reportPersonTab;
         private System.Windows.Forms.Label _reportPersonNameLabel;
         private System.Windows.Forms.TextBox _reportPersonNameTextBox;
-        private System.Windows.Forms.TextBox _enteredUrlBox;
+        private System.Windows.Forms.TextBox FilePathBox;
         private System.Windows.Forms.Label _reportPersonInfoLabel;
         private System.Windows.Forms.DateTimePicker _reportPersonLastDatePicker;
         private System.Windows.Forms.TextBox _reportPersonLastSeenTextBox;
@@ -545,5 +568,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ContextMenuStrip removeContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }
