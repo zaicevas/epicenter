@@ -41,6 +41,7 @@
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._searchSelectionText = new System.Windows.Forms.Label();
             this._facePage = new System.Windows.Forms.TabPage();
+            this.recognizeButton = new System.Windows.Forms.Button();
             this.consoleLabel = new System.Windows.Forms.Label();
             this.OutputBox = new System.Windows.Forms.RichTextBox();
             this.idTextBox = new System.Windows.Forms.TextBox();
@@ -79,7 +80,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.recognizeButton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this.removeContextMenu.SuspendLayout();
@@ -98,11 +98,11 @@
             this.Tabs.Controls.Add(this._facePage);
             this.Tabs.Controls.Add(this._reportPage);
             this.Tabs.Controls.Add(this._historyPage);
-            this.Tabs.Location = new System.Drawing.Point(9, 16);
+            this.Tabs.Location = new System.Drawing.Point(9, 0);
             this.Tabs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(459, 401);
+            this.Tabs.Size = new System.Drawing.Size(830, 505);
             this.Tabs.TabIndex = 0;
             // 
             // _searchPage
@@ -208,18 +208,28 @@
             this._facePage.Controls.Add(this.webcamLabel);
             this._facePage.Controls.Add(this.webcamPictureBox);
             this._facePage.Location = new System.Drawing.Point(4, 25);
-            this._facePage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._facePage.Margin = new System.Windows.Forms.Padding(4);
             this._facePage.Name = "_facePage";
-            this._facePage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this._facePage.Size = new System.Drawing.Size(451, 372);
+            this._facePage.Padding = new System.Windows.Forms.Padding(4);
+            this._facePage.Size = new System.Drawing.Size(822, 476);
             this._facePage.TabIndex = 3;
             this._facePage.Text = "Face";
             this._facePage.UseVisualStyleBackColor = true;
             // 
+            // recognizeButton
+            // 
+            this.recognizeButton.Location = new System.Drawing.Point(634, 340);
+            this.recognizeButton.Name = "recognizeButton";
+            this.recognizeButton.Size = new System.Drawing.Size(127, 23);
+            this.recognizeButton.TabIndex = 7;
+            this.recognizeButton.Text = "Recognize";
+            this.recognizeButton.UseVisualStyleBackColor = true;
+            this.recognizeButton.Click += new System.EventHandler(this.recognizeButton_Click);
+            // 
             // consoleLabel
             // 
             this.consoleLabel.AutoSize = true;
-            this.consoleLabel.Location = new System.Drawing.Point(301, 153);
+            this.consoleLabel.Location = new System.Drawing.Point(631, 138);
             this.consoleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.consoleLabel.Name = "consoleLabel";
             this.consoleLabel.Size = new System.Drawing.Size(59, 17);
@@ -228,8 +238,8 @@
             // 
             // OutputBox
             // 
-            this.OutputBox.Location = new System.Drawing.Point(305, 172);
-            this.OutputBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.OutputBox.Location = new System.Drawing.Point(634, 175);
+            this.OutputBox.Margin = new System.Windows.Forms.Padding(4);
             this.OutputBox.Name = "OutputBox";
             this.OutputBox.Size = new System.Drawing.Size(132, 117);
             this.OutputBox.TabIndex = 5;
@@ -237,16 +247,16 @@
             // 
             // idTextBox
             // 
-            this.idTextBox.Location = new System.Drawing.Point(305, 32);
-            this.idTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.idTextBox.Location = new System.Drawing.Point(634, 45);
+            this.idTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.idTextBox.Name = "idTextBox";
             this.idTextBox.Size = new System.Drawing.Size(132, 22);
             this.idTextBox.TabIndex = 4;
             // 
             // trainingButton
             // 
-            this.trainingButton.Location = new System.Drawing.Point(305, 79);
-            this.trainingButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trainingButton.Location = new System.Drawing.Point(634, 88);
+            this.trainingButton.Margin = new System.Windows.Forms.Padding(4);
             this.trainingButton.Name = "trainingButton";
             this.trainingButton.Size = new System.Drawing.Size(127, 37);
             this.trainingButton.TabIndex = 3;
@@ -257,7 +267,7 @@
             // idLabel
             // 
             this.idLabel.AutoSize = true;
-            this.idLabel.Location = new System.Drawing.Point(301, 9);
+            this.idLabel.Location = new System.Drawing.Point(631, 9);
             this.idLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.idLabel.Name = "idLabel";
             this.idLabel.Size = new System.Drawing.Size(91, 17);
@@ -277,9 +287,9 @@
             // webcamPictureBox
             // 
             this.webcamPictureBox.Location = new System.Drawing.Point(8, 32);
-            this.webcamPictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.webcamPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.webcamPictureBox.Name = "webcamPictureBox";
-            this.webcamPictureBox.Size = new System.Drawing.Size(268, 234);
+            this.webcamPictureBox.Size = new System.Drawing.Size(606, 436);
             this.webcamPictureBox.TabIndex = 0;
             this.webcamPictureBox.TabStop = false;
             // 
@@ -545,7 +555,7 @@
             // dateTimePicker2
             // 
             this.dateTimePicker2.Location = new System.Drawing.Point(55, 36);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(304, 22);
             this.dateTimePicker2.TabIndex = 3;
@@ -554,7 +564,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Location = new System.Drawing.Point(55, 7);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(304, 22);
             this.dateTimePicker1.TabIndex = 2;
@@ -562,7 +572,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(368, 36);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(73, 25);
             this.button2.TabIndex = 0;
@@ -572,7 +582,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(337, 336);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 27);
             this.button1.TabIndex = 1;
@@ -583,7 +593,7 @@
             // 
             this.listView1.LargeImageList = this.imageList1;
             this.listView1.Location = new System.Drawing.Point(3, 68);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(441, 260);
             this.listView1.SmallImageList = this.imageList1;
@@ -597,22 +607,12 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // recognizeButton
-            // 
-            this.recognizeButton.Location = new System.Drawing.Point(305, 323);
-            this.recognizeButton.Name = "recognizeButton";
-            this.recognizeButton.Size = new System.Drawing.Size(127, 23);
-            this.recognizeButton.TabIndex = 7;
-            this.recognizeButton.Text = "Recognize";
-            this.recognizeButton.UseVisualStyleBackColor = true;
-            this.recognizeButton.Click += new System.EventHandler(this.recognizeButton_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(479, 431);
+            this.ClientSize = new System.Drawing.Size(842, 516);
             this.Controls.Add(this.Tabs);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";

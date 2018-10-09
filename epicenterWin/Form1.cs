@@ -114,10 +114,11 @@ namespace epicenterWin
         {
             if (idTextBox.Text != string.Empty)
             {
+                OutputBox.AppendText($"Training has started. {Environment.NewLine}");
                 idTextBox.Enabled = !idTextBox.Enabled;
 
                 Timer = new Timer();
-                Timer.Interval = 500;
+                Timer.Interval = 100;
                 Timer.Tick += Timer_Tick;
                 Timer.Start();
                 trainingButton.Enabled = !trainingButton.Enabled;
@@ -126,9 +127,10 @@ namespace epicenterWin
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-
             Webcam.Retrieve(Frame);
             var imageFrame = Frame.ToImage<Gray, byte>();
+
+            System.Diagnostics.Debug.WriteLine(TimerCounter);
 
             if (TimerCounter < TimeLimit)
             {
@@ -137,7 +139,7 @@ namespace epicenterWin
                 if (imageFrame != null)
                 {
                     var faces = FaceDetection.DetectMultiScale(imageFrame, 1.3, 5);
-                    MessageBox.Show(faces.Count().ToString());
+                    //MessageBox.Show(faces.Count().ToString());
                     if (faces.Count() > 0)                      // linq
                     {
                         var processedImage = imageFrame.Copy(faces[0]).Resize(ProcessedImageWidth, ProcessedImageHeight, Emgu.CV.CvEnum.Inter.Cubic);
@@ -151,7 +153,14 @@ namespace epicenterWin
             }
             else
             {
-                FaceRecognition.Train(Faces.ToArray(), IDs.ToArray());
+                if (Faces.Count > 0)
+                    FaceRecognition.Train(Faces.ToArray(), IDs.ToArray());
+                else
+                {
+                    OutputBox.AppendText($"ERROR: No faces detected during training.{Environment.NewLine}");
+                    MessageBox.Show("No faces detected during training.");
+                }
+
                 FaceRecognition.Write(YMLPath);
                 Timer.Stop();
                 TimerCounter = 0;
@@ -254,11 +263,24 @@ namespace epicenterWin
             if (imageFrame != null)
             {
                 var faces = FaceDetection.DetectMultiScale(imageFrame, 1.3, 5);
+                MessageBox.Show($"Faces detected: {faces.Count()}");
                 if (faces.Count() != 0)
                 {
                     var processedImage = imageFrame.Copy(faces[0]).Resize(ProcessedImageWidth, ProcessedImageHeight, Emgu.CV.CvEnum.Inter.Cubic);
-                    var result = FaceRecognition.Predict(processedImage);
-                        
+                    try
+                    {
+                        var result = FaceRecognition.Predict(processedImage);
+                        MessageBox.Show($"ID recognized: {result.Label.ToString()}");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("No faces trained, can't recognize");
+                    }
+                 
+                }
+                else
+                {
+                    MessageBox.Show("No faces found");
                 }
 
             }
