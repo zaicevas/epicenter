@@ -153,22 +153,29 @@ namespace epicenterWin
             }
             else
             {
-                if (Faces.Count > 0)
-                    FaceRecognition.Train(Faces.ToArray(), IDs.ToArray());
-                else
+                if (Faces.Count > 0)                                                // should we use try catcth instead?
                 {
-                    OutputBox.AppendText($"ERROR: No faces detected during training.{Environment.NewLine}");
-                    MessageBox.Show("No faces detected during training.");
+                    FaceRecognition.Train(Faces.ToArray(), IDs.ToArray());
                 }
-
-                FaceRecognition.Write(YMLPath);
-                Timer.Stop();
-                TimerCounter = 0;
-                trainingButton.Enabled = !trainingButton.Enabled;
-                idTextBox.Enabled = !idTextBox.Enabled;
-                OutputBox.AppendText($"Training Complete! {Environment.NewLine}");
-                MessageBox.Show("Training complete");
+                EndTraining(Faces.Count > 0);
             }
+        }
+
+        private void EndTraining(bool facesDetected)
+        {
+            FaceRecognition.Write(YMLPath);
+            Timer.Stop();
+            TimerCounter = 0;
+            trainingButton.Enabled = !trainingButton.Enabled;
+            idTextBox.Enabled = !idTextBox.Enabled;
+            OutputBox.AppendText($"Training Complete! {Environment.NewLine}");
+            if (!facesDetected)
+            {
+                OutputBox.AppendText($"ERROR: No faces detected during training.{Environment.NewLine}");
+                MessageBox.Show("Error: No faces detected during training.");
+                return;
+            }
+            MessageBox.Show("Training complete!");
         }
 
 
