@@ -37,6 +37,8 @@
             this.BrowseButton = new System.Windows.Forms.Button();
             this.FilePathBox = new System.Windows.Forms.TextBox();
             this.BrowseListBox = new System.Windows.Forms.CheckedListBox();
+            this.removeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._searchSelectionText = new System.Windows.Forms.Label();
             this._reportPage = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -69,21 +71,30 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.removeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._facePage = new System.Windows.Forms.TabPage();
+            this.webcamPictureBox = new System.Windows.Forms.PictureBox();
+            this.webcamLabel = new System.Windows.Forms.Label();
+            this.idLabel = new System.Windows.Forms.Label();
+            this.trainingButton = new System.Windows.Forms.Button();
+            this.idTextBox = new System.Windows.Forms.TextBox();
+            this.OutputBox = new System.Windows.Forms.RichTextBox();
+            this.consoleLabel = new System.Windows.Forms.Label();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
+            this.removeContextMenu.SuspendLayout();
             this._reportPage.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._reportCarTab.SuspendLayout();
             this._reportPersonTab.SuspendLayout();
             this._historyPage.SuspendLayout();
-            this.removeContextMenu.SuspendLayout();
+            this._facePage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webcamPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // Tabs
             // 
             this.Tabs.Controls.Add(this._searchPage);
+            this.Tabs.Controls.Add(this._facePage);
             this.Tabs.Controls.Add(this._reportPage);
             this.Tabs.Controls.Add(this._historyPage);
             this.Tabs.Location = new System.Drawing.Point(7, 13);
@@ -160,6 +171,20 @@
             this.BrowseListBox.Size = new System.Drawing.Size(273, 214);
             this.BrowseListBox.TabIndex = 1;
             this.BrowseListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BrowseListBox_MouseDown);
+            // 
+            // removeContextMenu
+            // 
+            this.removeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem});
+            this.removeContextMenu.Name = "removeContextMenu";
+            this.removeContextMenu.Size = new System.Drawing.Size(118, 26);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // _searchSelectionText
             // 
@@ -486,19 +511,81 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // removeContextMenu
+            // _facePage
             // 
-            this.removeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeToolStripMenuItem});
-            this.removeContextMenu.Name = "removeContextMenu";
-            this.removeContextMenu.Size = new System.Drawing.Size(118, 26);
+            this._facePage.Controls.Add(this.consoleLabel);
+            this._facePage.Controls.Add(this.OutputBox);
+            this._facePage.Controls.Add(this.idTextBox);
+            this._facePage.Controls.Add(this.trainingButton);
+            this._facePage.Controls.Add(this.idLabel);
+            this._facePage.Controls.Add(this.webcamLabel);
+            this._facePage.Controls.Add(this.webcamPictureBox);
+            this._facePage.Location = new System.Drawing.Point(4, 22);
+            this._facePage.Name = "_facePage";
+            this._facePage.Padding = new System.Windows.Forms.Padding(3);
+            this._facePage.Size = new System.Drawing.Size(336, 300);
+            this._facePage.TabIndex = 3;
+            this._facePage.Text = "Face";
+            this._facePage.UseVisualStyleBackColor = true;
             // 
-            // removeToolStripMenuItem
+            // webcamPictureBox
             // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
-            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            this.webcamPictureBox.Location = new System.Drawing.Point(6, 26);
+            this.webcamPictureBox.Name = "webcamPictureBox";
+            this.webcamPictureBox.Size = new System.Drawing.Size(201, 190);
+            this.webcamPictureBox.TabIndex = 0;
+            this.webcamPictureBox.TabStop = false;
+            // 
+            // webcamLabel
+            // 
+            this.webcamLabel.AutoSize = true;
+            this.webcamLabel.Location = new System.Drawing.Point(7, 7);
+            this.webcamLabel.Name = "webcamLabel";
+            this.webcamLabel.Size = new System.Drawing.Size(50, 13);
+            this.webcamLabel.TabIndex = 1;
+            this.webcamLabel.Text = "Webcam";
+            // 
+            // idLabel
+            // 
+            this.idLabel.AutoSize = true;
+            this.idLabel.Location = new System.Drawing.Point(226, 7);
+            this.idLabel.Name = "idLabel";
+            this.idLabel.Size = new System.Drawing.Size(69, 13);
+            this.idLabel.TabIndex = 2;
+            this.idLabel.Text = "Enter your ID";
+            // 
+            // trainingButton
+            // 
+            this.trainingButton.Location = new System.Drawing.Point(229, 64);
+            this.trainingButton.Name = "trainingButton";
+            this.trainingButton.Size = new System.Drawing.Size(95, 30);
+            this.trainingButton.TabIndex = 3;
+            this.trainingButton.Text = "Start Training";
+            this.trainingButton.UseVisualStyleBackColor = true;
+            // 
+            // idTextBox
+            // 
+            this.idTextBox.Location = new System.Drawing.Point(229, 26);
+            this.idTextBox.Name = "idTextBox";
+            this.idTextBox.Size = new System.Drawing.Size(100, 20);
+            this.idTextBox.TabIndex = 4;
+            // 
+            // OutputBox
+            // 
+            this.OutputBox.Location = new System.Drawing.Point(229, 140);
+            this.OutputBox.Name = "OutputBox";
+            this.OutputBox.Size = new System.Drawing.Size(100, 96);
+            this.OutputBox.TabIndex = 5;
+            this.OutputBox.Text = "";
+            // 
+            // consoleLabel
+            // 
+            this.consoleLabel.AutoSize = true;
+            this.consoleLabel.Location = new System.Drawing.Point(226, 124);
+            this.consoleLabel.Name = "consoleLabel";
+            this.consoleLabel.Size = new System.Drawing.Size(45, 13);
+            this.consoleLabel.TabIndex = 6;
+            this.consoleLabel.Text = "Console";
             // 
             // Form1
             // 
@@ -514,6 +601,7 @@
             this.Tabs.ResumeLayout(false);
             this._searchPage.ResumeLayout(false);
             this._searchPage.PerformLayout();
+            this.removeContextMenu.ResumeLayout(false);
             this._reportPage.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this._reportCarTab.ResumeLayout(false);
@@ -522,7 +610,9 @@
             this._reportPersonTab.PerformLayout();
             this._historyPage.ResumeLayout(false);
             this._historyPage.PerformLayout();
-            this.removeContextMenu.ResumeLayout(false);
+            this._facePage.ResumeLayout(false);
+            this._facePage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webcamPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -570,5 +660,13 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.ContextMenuStrip removeContextMenu;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.TabPage _facePage;
+        private System.Windows.Forms.TextBox idTextBox;
+        private System.Windows.Forms.Button trainingButton;
+        private System.Windows.Forms.Label idLabel;
+        private System.Windows.Forms.Label webcamLabel;
+        private System.Windows.Forms.PictureBox webcamPictureBox;
+        private System.Windows.Forms.Label consoleLabel;
+        private System.Windows.Forms.RichTextBox OutputBox;
     }
 }

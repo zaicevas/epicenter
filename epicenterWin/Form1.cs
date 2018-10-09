@@ -3,10 +3,41 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
+using Emgu.CV;
+using Emgu.CV.Face;
+using Emgu.CV.Structure;
+
 namespace epicenterWin
 {
     public partial class Form1 : Form
     {
+
+        /* Face recognition */
+        public VideoCapture Webcam { get; set; }
+        public EigenFaceRecognizer FaceRecognition { get; set; }
+        public CascadeClassifier FaceDetection { get; set; }
+        public CascadeClassifier EyeDetection { get; set; }
+
+        public Mat Frame { get; set; }
+
+        public List<Image<Gray, byte>> Faces { get; set; }
+        public List<int> IDs { get; set; }
+
+        public int ProcessedImageWidth { get; set; } = 128;
+        public int ProcessedImageHeight { get; set; } = 150;
+
+        public int TimerCounter { get; set; } = 0;
+        public int TimeLimit { get; set; } = 30;
+        public int ScanCounter { get; set; } = 0;
+
+        public string YMLPath { get; set; } = @"../../Algo/trainingData.yml";
+
+        public Timer Timer { get; set; }
+
+        public bool FaceSquare { get; set; } = false;
+        public bool EyeSquare { get; set; } = false;
+
+        // non-face recognition
 
         private MouseEventArgs _removeMe;
 
@@ -14,6 +45,30 @@ namespace epicenterWin
         {
             InitializeComponent();
             BackgroundImageLayout = ImageLayout.Stretch;
+
+            // face recognition
+            FaceRecognition = new EigenFaceRecognizer(80, double.PositiveInfinity);
+            FaceDetection = new CascadeClassifier(System.IO.Path.GetFullPath(@"../../Algo/haarcascade_frontalface_default.xml"));
+            EyeDetection = new CascadeClassifier(System.IO.Path.GetFullPath(@"../../Algo/haarcascade_eye.xml"));
+            Frame = new Mat();
+            Faces = new List<Image<Gray, byte>>();
+            IDs = new List<int>();
+            BeginWebcam();
+        }
+
+        private void BeginWebcam()
+        {
+            if (Webcam == null)
+                Webcam = new VideoCapture();
+
+            Webcam.ImageGrabbed += Webcam_ImageGrabbed;
+            Webcam.Start();
+            OutputBox.AppendText($"Webcam Started...{Environment.NewLine}");
+        }
+
+        private void Webcam_ImageGrabbed(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void Form1_Load(object sender, EventArgs e)
