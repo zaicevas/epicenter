@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 using Emgu.CV;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
+using Emgu.Util;
 
 namespace epicenterWin
 {
@@ -68,26 +71,110 @@ namespace epicenterWin
 
         private void Webcam_ImageGrabbed(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Webcam.Retrieve(Frame);
+            var imageFrame = Frame.ToImage<Bgr, byte>();
+
+            if (imageFrame != null)
+            {
+                var grayFrame = imageFrame.Convert<Gray, byte>();
+                var faces = FaceDetection.DetectMultiScale(grayFrame, 1.3, 5);
+                var eyes = EyeDetection.DetectMultiScale(grayFrame, 1.3, 5);
+
+                if (FaceSquare)
+                {
+                    foreach(var face in faces)
+                    {
+                        imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3);
+                    }
+                }
+                if (EyeSquare)
+                {
+                    foreach(var eye in eyes)
+                    {
+                        imageFrame.Draw(eye, new Bgr(Color.Yellow), 3);
+                    }
+                }
+                webcamPictureBox.Image = imageFrame.ToBitmap();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
         }
 
-        private void BrowseButton_Click(object sender, EventArgs e)
+        private void removeImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var fileDialog = new OpenFileDialog
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+        }
+
+        private void trainingButton_Click(object sender, EventArgs e)
+        {
+            if (idTextBox.Text != string.Empty)
             {
-                Multiselect = true,
-                Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff"
-            };
-            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                idTextBox.Enabled = !idTextBox.Enabled;
+
+                Timer = new Timer();
+                Timer.Interval = 500;
+                Timer.Tick += Timer_Tick;
+                Timer.Start();
+                trainingButton.Enabled = !trainingButton.Enabled;
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+
+            Webcam.Retrieve(Frame);
+            var imageFrame = Frame.ToImage<Gray, byte>();
+
+            if (TimerCounter < TimeLimit)
             {
-                foreach (var v in fileDialog.FileNames)
+                TimerCounter++;
+
+                if (imageFrame != null)
                 {
-                    if (!BrowseListBox.Items.Contains(v))
-                        BrowseListBox.Items.Add(v, true);
+                    var faces = FaceDetection.DetectMultiScale(imageFrame, 1.3, 5);
+                    if (faces.Count() > 0)                      // linq
+                    {
+                        var processedImage = imageFrame.Copy(faces[0]).Resize(ProcessedImageWidth, ProcessedImageHeight, Emgu.CV.CvEnum.Inter.Cubic);
+                        Faces.Add(processedImage);
+                        IDs.Add(Convert.ToInt32(idTextBox.Text));
+                        ScanCounter++;
+                        OutputBox.AppendText($"{ScanCounter} Successful Scans Taken...{Environment.NewLine}");
+                        OutputBox.ScrollToCaret();
+                    }
+                }
+            }
+            else
+            {
+                FaceRecognition.Train(Faces.ToArray(), IDs.ToArray());
+                FaceRecognition.Write(YMLPath);
+                Timer.Stop();
+                TimerCounter = 0;
+                trainingButton.Enabled = !trainingButton.Enabled;
+                idTextBox.Enabled = !idTextBox.Enabled;
+                OutputBox.AppendText($"Training Complete! {Environment.NewLine}");
+                MessageBox.Show("Training complete");
+            }
+        }
+
+
+        private void FilePathBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData.ToString() == "Return")
+            {
+                var path = FilePathBox.Text;
+                if (File.Exists(path) && !BrowseListBox.Items.Contains(path))
+                {
+                    BrowseListBox.Items.Add(path, true);
+                    FilePathBox.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Wrong image path or it already in the list.");
                 }
             }
         }
@@ -95,7 +182,7 @@ namespace epicenterWin
         private void CheckButton_Click(object sender, EventArgs e)
         {
             var bChecked = false;
-            for (var i=0; i<BrowseListBox.Items.Count; i++)
+            for (var i = 0; i < BrowseListBox.Items.Count; i++)
             {
                 if (BrowseListBox.GetItemChecked(i))
                 {
@@ -118,12 +205,21 @@ namespace epicenterWin
             }
         }
 
-        private void removeImageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BrowseButton_Click(object sender, EventArgs e)
         {
-        }
-
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
+            var fileDialog = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff"
+            };
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var v in fileDialog.FileNames)
+                {
+                    if (!BrowseListBox.Items.Contains(v))
+                        BrowseListBox.Items.Add(v, true);
+                }
+            }
         }
 
         private void BrowseListBox_MouseDown(object sender, MouseEventArgs e)                               // catching right button (remove) click
@@ -149,21 +245,5 @@ namespace epicenterWin
             BrowseListBox.Items.RemoveAt(index);
         }
 
-        private void FilePathBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyData.ToString() == "Return")
-            {
-                var path = FilePathBox.Text;
-                if (File.Exists(path) && !BrowseListBox.Items.Contains(path))
-                {
-                    BrowseListBox.Items.Add(path, true);
-                    FilePathBox.Clear();
-                }
-                else
-                {
-                    MessageBox.Show("Wrong image path or it already in the list.");
-                }
-            }
-        }
     }
 }
