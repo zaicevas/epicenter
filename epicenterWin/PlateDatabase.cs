@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class PlateDatabase : IEnumerable<string>
 {
     //TODO: Sync missing plates with some sql database
-    private readonly string[] _plates =
+    private const string[] _plates =
     {
         "ABC123",
         "DEF456",

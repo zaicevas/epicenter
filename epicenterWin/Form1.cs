@@ -37,8 +37,8 @@ namespace epicenterWin
 
         public Timer Timer { get; set; }
 
-        public bool FaceSquare { get; set; } = false;
-        public bool EyeSquare { get; set; } = false;
+        public bool FaceSquare { get; set; } = true;
+        public bool EyeSquare { get; set; } = true;
 
         // non-face recognition
 
@@ -137,6 +137,7 @@ namespace epicenterWin
                 if (imageFrame != null)
                 {
                     var faces = FaceDetection.DetectMultiScale(imageFrame, 1.3, 5);
+                    MessageBox.Show(faces.Count().ToString());
                     if (faces.Count() > 0)                      // linq
                     {
                         var processedImage = imageFrame.Copy(faces[0]).Resize(ProcessedImageWidth, ProcessedImageHeight, Emgu.CV.CvEnum.Inter.Cubic);
@@ -245,5 +246,22 @@ namespace epicenterWin
             BrowseListBox.Items.RemoveAt(index);
         }
 
+        private void recognizeButton_Click(object sender, EventArgs e)
+        {
+            Webcam.Retrieve(Frame);
+            var imageFrame = Frame.ToImage<Gray, byte>();
+
+            if (imageFrame != null)
+            {
+                var faces = FaceDetection.DetectMultiScale(imageFrame, 1.3, 5);
+                if (faces.Count() != 0)
+                {
+                    var processedImage = imageFrame.Copy(faces[0]).Resize(ProcessedImageWidth, ProcessedImageHeight, Emgu.CV.CvEnum.Inter.Cubic);
+                    var result = FaceRecognition.Predict(processedImage);
+                        
+                }
+
+            }
+        }
     }
 }

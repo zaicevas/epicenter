@@ -79,6 +79,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.recognizeButton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this.removeContextMenu.SuspendLayout();
@@ -198,6 +199,7 @@
             // 
             // _facePage
             // 
+            this._facePage.Controls.Add(this.recognizeButton);
             this._facePage.Controls.Add(this.consoleLabel);
             this._facePage.Controls.Add(this.OutputBox);
             this._facePage.Controls.Add(this.idTextBox);
@@ -595,6 +597,16 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // recognizeButton
+            // 
+            this.recognizeButton.Location = new System.Drawing.Point(305, 323);
+            this.recognizeButton.Name = "recognizeButton";
+            this.recognizeButton.Size = new System.Drawing.Size(127, 23);
+            this.recognizeButton.TabIndex = 7;
+            this.recognizeButton.Text = "Recognize";
+            this.recognizeButton.UseVisualStyleBackColor = true;
+            this.recognizeButton.Click += new System.EventHandler(this.recognizeButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -676,5 +688,6 @@
         private System.Windows.Forms.PictureBox webcamPictureBox;
         private System.Windows.Forms.Label consoleLabel;
         private System.Windows.Forms.RichTextBox OutputBox;
+        private System.Windows.Forms.Button recognizeButton;
     }
 }
