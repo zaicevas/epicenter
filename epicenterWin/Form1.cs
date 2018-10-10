@@ -30,7 +30,7 @@ namespace epicenterWin
         public int ProcessedImageHeight { get; set; } = 150;
 
         public int TimerCounter { get; set; } = 0;
-        public int TimeLimit { get; set; } = 30;
+        public int TimeLimit { get; set; } = 40;
         public int ScanCounter { get; set; } = 0;
 
         public string YMLPath { get; set; } = @"../../Algo/trainingData.yml";
@@ -39,6 +39,8 @@ namespace epicenterWin
 
         public bool FaceSquare { get; set; } = true;
         public bool EyeSquare { get; set; } = true;
+
+        private const int _threshold = 3750;               // value of FaceRecognizer.PredictionResult.distance to positively identify
 
         // non-face recognition
 
@@ -82,14 +84,14 @@ namespace epicenterWin
 
                 if (FaceSquare)
                 {
-                    foreach(var face in faces)
+                    foreach (var face in faces)
                     {
                         imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3);
                     }
                 }
                 if (EyeSquare)
                 {
-                    foreach(var eye in eyes)
+                    foreach (var eye in eyes)
                     {
                         imageFrame.Draw(eye, new Bgr(Color.Yellow), 3);
                     }
@@ -118,7 +120,7 @@ namespace epicenterWin
                 idTextBox.Enabled = !idTextBox.Enabled;
 
                 Timer = new Timer();
-                Timer.Interval = 100;
+                Timer.Interval = 300;
                 Timer.Tick += Timer_Tick;
                 Timer.Start();
                 trainingButton.Enabled = !trainingButton.Enabled;
@@ -155,6 +157,7 @@ namespace epicenterWin
             {
                 if (Faces.Count > 0)                                                // should we use try catcth instead?
                 {
+                    System.Diagnostics.Debug.WriteLine("ADDED FACE IMAGES FOR TRAINING: " + Faces.ToArray().Length + '\n');
                     FaceRecognition.Train(Faces.ToArray(), IDs.ToArray());
                 }
                 EndTraining(Faces.Count > 0);
@@ -264,6 +267,13 @@ namespace epicenterWin
 
         private void recognizeButton_Click(object sender, EventArgs e)
         {
+            /*
+            Image hardcodedFb = Image.FromFile(@"C:\Users\ferN\Downloads\29694782_1889732117744398_5234807235305013248_o.jpg");
+
+            Bitmap bmpImage = (Bitmap)hardcodedFb;
+            var imageFrame = new Image<Gray, byte>(bmpImage); */
+
+
             Webcam.Retrieve(Frame);
             var imageFrame = Frame.ToImage<Gray, byte>();
 
@@ -277,13 +287,13 @@ namespace epicenterWin
                     try
                     {
                         var result = FaceRecognition.Predict(processedImage);
-                        MessageBox.Show($"ID recognized: {result.Label.ToString()}");
+                        MessageBox.Show(CheckRecognizeResults(result, _threshold));
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("No faces trained, can't recognize");
                     }
-                 
+
                 }
                 else
                 {
@@ -292,5 +302,27 @@ namespace epicenterWin
 
             }
         }
+
+        private string CheckRecognizeResults(FaceRecognizer.PredictionResult result, int threshold)          
+        {
+            // @param threshold should usually be in [0, 5000]
+            string EigenLabel;
+            float EigenDistance = -1;
+            if (result.Label == -1)
+            {
+                EigenLabel = "Unknown";
+                EigenDistance = 0;
+            }
+            else
+            {
+                EigenLabel = result.Label.ToString();
+                EigenDistance = (float) result.Distance;
+                EigenLabel = EigenDistance > threshold ? "Unknown" : result.Label.ToString();
+            }
+            return EigenLabel + '\n' + "Distance: " + EigenDistance.ToString();
+
+        }
+
+
     }
 }
