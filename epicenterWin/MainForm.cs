@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Face;
 using Emgu.CV.Structure;
+using static Emgu.CV.Face.FaceRecognizer;
 
 namespace epicenterWin
 {
@@ -45,58 +46,27 @@ namespace epicenterWin
 
         private MouseEventArgs _removeMe;
 
+        private FaceRecognizer _faceRecognizer;
+
         public MainForm()
         {
             InitializeComponent();
             BackgroundImageLayout = ImageLayout.Stretch;
 
             // face recognition
-            FaceRecognition = new EigenFaceRecognizer(80, double.PositiveInfinity);
+            /*FaceRecognition = new EigenFaceRecognizer(80, double.PositiveInfinity);
             FaceDetection = new CascadeClassifier(System.IO.Path.GetFullPath(@"../../Algo/haarcascade_frontalface_default.xml"));
             EyeDetection = new CascadeClassifier(System.IO.Path.GetFullPath(@"../../Algo/haarcascade_eye.xml"));
             Frame = new Mat();
             Faces = new List<Image<Gray, byte>>();
             IDs = new List<int>();
-            BeginWebcam();
-        }
-
-        private void BeginWebcam()
-        {
-            if (Webcam == null)
-                Webcam = new VideoCapture();
-
-            Webcam.ImageGrabbed += Webcam_ImageGrabbed;
-            Webcam.Start();
-            OutputBox.AppendText($"Webcam Started...{Environment.NewLine}");
-        }
-
-        private void Webcam_ImageGrabbed(object sender, EventArgs e)
-        {
-            Webcam.Retrieve(Frame);
-            Image<Bgr, byte> imageFrame = Frame.ToImage<Bgr, byte>();
-
-            if (imageFrame != null)
+            TestCapture(@"D:/_root/test_video.mp4");
+            */
+            _faceRecognizer = new FaceRecognizer
             {
-                Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
-                Rectangle[] faces = FaceDetection.DetectMultiScale(grayFrame, 1.3, 5);
-                Rectangle[] eyes = EyeDetection.DetectMultiScale(grayFrame, 1.3, 5);
-
-                if (FaceSquare)
-                {
-                    foreach (Rectangle face in faces)
-                    {
-                        imageFrame.Draw(face, new Bgr(Color.BurlyWood), 3);
-                    }
-                }
-                if (EyeSquare)
-                {
-                    foreach (Rectangle eye in eyes)
-                    {
-                        imageFrame.Draw(eye, new Bgr(Color.Yellow), 3);
-                    }
-                }
-                webcamPictureBox.Image = imageFrame.ToBitmap();
-            }
+                PictureBox = webcamPictureBox
+            };
+            _faceRecognizer.CreateVideoCapture(@"D:/_root/test_video.mp4");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -285,7 +255,7 @@ namespace epicenterWin
                     Image<Gray, byte> processedImage = imageFrame.Copy(faces[0]).Resize(ProcessedImageWidth, ProcessedImageHeight, Emgu.CV.CvEnum.Inter.Cubic);
                     try
                     {
-                        FaceRecognizer.PredictionResult result = FaceRecognition.Predict(processedImage);
+                        PredictionResult result = FaceRecognition.Predict(processedImage);
                         MessageBox.Show(CheckRecognizeResults(result, _threshold));
                     }
                     catch
@@ -302,7 +272,7 @@ namespace epicenterWin
             }
         }
 
-        private string CheckRecognizeResults(FaceRecognizer.PredictionResult result, int threshold)          
+        private string CheckRecognizeResults(PredictionResult result, int threshold)          
         {
             // @param threshold should usually be in [0, 5000]
             string EigenLabel;

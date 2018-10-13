@@ -98,11 +98,11 @@
             this.Tabs.Controls.Add(this._facePage);
             this.Tabs.Controls.Add(this._reportPage);
             this.Tabs.Controls.Add(this._historyPage);
-            this.Tabs.Location = new System.Drawing.Point(9, 0);
-            this.Tabs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Tabs.Location = new System.Drawing.Point(12, 0);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(830, 505);
+            this.Tabs.Size = new System.Drawing.Size(1141, 758);
             this.Tabs.TabIndex = 0;
             // 
             // _searchPage
@@ -113,29 +113,29 @@
             this._searchPage.Controls.Add(this.FilePathBox);
             this._searchPage.Controls.Add(this.BrowseListBox);
             this._searchPage.Controls.Add(this._searchSelectionText);
-            this._searchPage.Location = new System.Drawing.Point(4, 25);
-            this._searchPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._searchPage.Location = new System.Drawing.Point(4, 33);
+            this._searchPage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._searchPage.Name = "_searchPage";
-            this._searchPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._searchPage.Size = new System.Drawing.Size(451, 372);
+            this._searchPage.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._searchPage.Size = new System.Drawing.Size(1133, 721);
             this._searchPage.TabIndex = 0;
             this._searchPage.Text = "Search";
             this._searchPage.UseVisualStyleBackColor = true;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(8, 341);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar1.Location = new System.Drawing.Point(11, 512);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(361, 27);
+            this.progressBar1.Size = new System.Drawing.Size(496, 40);
             this.progressBar1.TabIndex = 5;
             // 
             // CheckButton
             // 
-            this.CheckButton.Location = new System.Drawing.Point(373, 341);
-            this.CheckButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CheckButton.Location = new System.Drawing.Point(513, 512);
+            this.CheckButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.CheckButton.Name = "CheckButton";
-            this.CheckButton.Size = new System.Drawing.Size(69, 27);
+            this.CheckButton.Size = new System.Drawing.Size(95, 40);
             this.CheckButton.TabIndex = 4;
             this.CheckButton.Text = "Check";
             this.CheckButton.UseVisualStyleBackColor = true;
@@ -143,10 +143,10 @@
             // 
             // BrowseButton
             // 
-            this.BrowseButton.Location = new System.Drawing.Point(375, 27);
-            this.BrowseButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BrowseButton.Location = new System.Drawing.Point(516, 40);
+            this.BrowseButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(73, 27);
+            this.BrowseButton.Size = new System.Drawing.Size(100, 40);
             this.BrowseButton.TabIndex = 3;
             this.BrowseButton.Text = "Browse";
             this.BrowseButton.UseVisualStyleBackColor = true;
@@ -154,10 +154,10 @@
             // 
             // FilePathBox
             // 
-            this.FilePathBox.Location = new System.Drawing.Point(8, 27);
-            this.FilePathBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FilePathBox.Location = new System.Drawing.Point(11, 40);
+            this.FilePathBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.FilePathBox.Name = "FilePathBox";
-            this.FilePathBox.Size = new System.Drawing.Size(363, 22);
+            this.FilePathBox.Size = new System.Drawing.Size(498, 29);
             this.FilePathBox.TabIndex = 2;
             this.FilePathBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FilePathBox_KeyDown);
             // 
@@ -166,10 +166,10 @@
             this.BrowseListBox.CheckOnClick = true;
             this.BrowseListBox.ContextMenuStrip = this.removeContextMenu;
             this.BrowseListBox.FormattingEnabled = true;
-            this.BrowseListBox.Location = new System.Drawing.Point(8, 58);
-            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BrowseListBox.Location = new System.Drawing.Point(11, 87);
+            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.BrowseListBox.Name = "BrowseListBox";
-            this.BrowseListBox.Size = new System.Drawing.Size(363, 259);
+            this.BrowseListBox.Size = new System.Drawing.Size(498, 364);
             this.BrowseListBox.TabIndex = 1;
             this.BrowseListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BrowseListBox_MouseDown);
             // 
@@ -179,21 +179,22 @@
             this.removeContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.removeToolStripMenuItem});
             this.removeContextMenu.Name = "removeContextMenu";
-            this.removeContextMenu.Size = new System.Drawing.Size(133, 28);
+            this.removeContextMenu.Size = new System.Drawing.Size(161, 38);
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(132, 24);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(160, 34);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // _searchSelectionText
             // 
             this._searchSelectionText.AutoSize = true;
-            this._searchSelectionText.Location = new System.Drawing.Point(4, 9);
+            this._searchSelectionText.Location = new System.Drawing.Point(6, 14);
+            this._searchSelectionText.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._searchSelectionText.Name = "_searchSelectionText";
-            this._searchSelectionText.Size = new System.Drawing.Size(302, 17);
+            this._searchSelectionText.Size = new System.Drawing.Size(414, 25);
             this._searchSelectionText.TabIndex = 0;
             this._searchSelectionText.Text = "Please select a video(s) or photo(s) to analyze";
             // 
@@ -207,20 +208,21 @@
             this._facePage.Controls.Add(this.idLabel);
             this._facePage.Controls.Add(this.webcamLabel);
             this._facePage.Controls.Add(this.webcamPictureBox);
-            this._facePage.Location = new System.Drawing.Point(4, 25);
-            this._facePage.Margin = new System.Windows.Forms.Padding(4);
+            this._facePage.Location = new System.Drawing.Point(4, 33);
+            this._facePage.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this._facePage.Name = "_facePage";
-            this._facePage.Padding = new System.Windows.Forms.Padding(4);
-            this._facePage.Size = new System.Drawing.Size(822, 476);
+            this._facePage.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this._facePage.Size = new System.Drawing.Size(1133, 721);
             this._facePage.TabIndex = 3;
             this._facePage.Text = "Face";
             this._facePage.UseVisualStyleBackColor = true;
             // 
             // recognizeButton
             // 
-            this.recognizeButton.Location = new System.Drawing.Point(634, 340);
+            this.recognizeButton.Location = new System.Drawing.Point(872, 510);
+            this.recognizeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.recognizeButton.Name = "recognizeButton";
-            this.recognizeButton.Size = new System.Drawing.Size(127, 23);
+            this.recognizeButton.Size = new System.Drawing.Size(175, 34);
             this.recognizeButton.TabIndex = 7;
             this.recognizeButton.Text = "Recognize";
             this.recognizeButton.UseVisualStyleBackColor = true;
@@ -229,36 +231,36 @@
             // consoleLabel
             // 
             this.consoleLabel.AutoSize = true;
-            this.consoleLabel.Location = new System.Drawing.Point(631, 138);
-            this.consoleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.consoleLabel.Location = new System.Drawing.Point(868, 207);
+            this.consoleLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.consoleLabel.Name = "consoleLabel";
-            this.consoleLabel.Size = new System.Drawing.Size(59, 17);
+            this.consoleLabel.Size = new System.Drawing.Size(85, 25);
             this.consoleLabel.TabIndex = 6;
             this.consoleLabel.Text = "Console";
             // 
             // OutputBox
             // 
-            this.OutputBox.Location = new System.Drawing.Point(634, 175);
-            this.OutputBox.Margin = new System.Windows.Forms.Padding(4);
+            this.OutputBox.Location = new System.Drawing.Point(872, 262);
+            this.OutputBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.OutputBox.Name = "OutputBox";
-            this.OutputBox.Size = new System.Drawing.Size(132, 117);
+            this.OutputBox.Size = new System.Drawing.Size(180, 174);
             this.OutputBox.TabIndex = 5;
             this.OutputBox.Text = "";
             // 
             // idTextBox
             // 
-            this.idTextBox.Location = new System.Drawing.Point(634, 45);
-            this.idTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.idTextBox.Location = new System.Drawing.Point(872, 68);
+            this.idTextBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.idTextBox.Name = "idTextBox";
-            this.idTextBox.Size = new System.Drawing.Size(132, 22);
+            this.idTextBox.Size = new System.Drawing.Size(180, 29);
             this.idTextBox.TabIndex = 4;
             // 
             // trainingButton
             // 
-            this.trainingButton.Location = new System.Drawing.Point(634, 88);
-            this.trainingButton.Margin = new System.Windows.Forms.Padding(4);
+            this.trainingButton.Location = new System.Drawing.Point(872, 132);
+            this.trainingButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.trainingButton.Name = "trainingButton";
-            this.trainingButton.Size = new System.Drawing.Size(127, 37);
+            this.trainingButton.Size = new System.Drawing.Size(175, 56);
             this.trainingButton.TabIndex = 3;
             this.trainingButton.Text = "Start Training";
             this.trainingButton.UseVisualStyleBackColor = true;
@@ -267,40 +269,40 @@
             // idLabel
             // 
             this.idLabel.AutoSize = true;
-            this.idLabel.Location = new System.Drawing.Point(631, 9);
-            this.idLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.idLabel.Location = new System.Drawing.Point(868, 14);
+            this.idLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.idLabel.Name = "idLabel";
-            this.idLabel.Size = new System.Drawing.Size(91, 17);
+            this.idLabel.Size = new System.Drawing.Size(125, 25);
             this.idLabel.TabIndex = 2;
             this.idLabel.Text = "Enter your ID";
             // 
             // webcamLabel
             // 
             this.webcamLabel.AutoSize = true;
-            this.webcamLabel.Location = new System.Drawing.Point(9, 9);
-            this.webcamLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.webcamLabel.Location = new System.Drawing.Point(12, 14);
+            this.webcamLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.webcamLabel.Name = "webcamLabel";
-            this.webcamLabel.Size = new System.Drawing.Size(63, 17);
+            this.webcamLabel.Size = new System.Drawing.Size(91, 25);
             this.webcamLabel.TabIndex = 1;
             this.webcamLabel.Text = "Webcam";
             // 
             // webcamPictureBox
             // 
-            this.webcamPictureBox.Location = new System.Drawing.Point(8, 32);
-            this.webcamPictureBox.Margin = new System.Windows.Forms.Padding(4);
+            this.webcamPictureBox.Location = new System.Drawing.Point(11, 48);
+            this.webcamPictureBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.webcamPictureBox.Name = "webcamPictureBox";
-            this.webcamPictureBox.Size = new System.Drawing.Size(606, 436);
+            this.webcamPictureBox.Size = new System.Drawing.Size(851, 631);
             this.webcamPictureBox.TabIndex = 0;
             this.webcamPictureBox.TabStop = false;
             // 
             // _reportPage
             // 
             this._reportPage.Controls.Add(this.tabControl1);
-            this._reportPage.Location = new System.Drawing.Point(4, 25);
-            this._reportPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPage.Location = new System.Drawing.Point(4, 33);
+            this._reportPage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPage.Name = "_reportPage";
-            this._reportPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._reportPage.Size = new System.Drawing.Size(451, 372);
+            this._reportPage.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._reportPage.Size = new System.Drawing.Size(1133, 721);
             this._reportPage.TabIndex = 1;
             this._reportPage.Text = "Report";
             this._reportPage.UseVisualStyleBackColor = true;
@@ -309,11 +311,11 @@
             // 
             this.tabControl1.Controls.Add(this._reportCarTab);
             this.tabControl1.Controls.Add(this._reportPersonTab);
-            this.tabControl1.Location = new System.Drawing.Point(5, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabControl1.Location = new System.Drawing.Point(7, 3);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(431, 372);
+            this.tabControl1.Size = new System.Drawing.Size(593, 558);
             this.tabControl1.TabIndex = 0;
             // 
             // _reportCarTab
@@ -327,21 +329,21 @@
             this._reportCarTab.Controls.Add(this._reportCarLastSeenLabel);
             this._reportCarTab.Controls.Add(this._reportCarPlateLabel);
             this._reportCarTab.Controls.Add(this._reportCarPlateTextBox);
-            this._reportCarTab.Location = new System.Drawing.Point(4, 25);
-            this._reportCarTab.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportCarTab.Location = new System.Drawing.Point(4, 33);
+            this._reportCarTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportCarTab.Name = "_reportCarTab";
-            this._reportCarTab.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._reportCarTab.Size = new System.Drawing.Size(423, 343);
+            this._reportCarTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._reportCarTab.Size = new System.Drawing.Size(585, 521);
             this._reportCarTab.TabIndex = 0;
             this._reportCarTab.Text = "Car";
             this._reportCarTab.UseVisualStyleBackColor = true;
             // 
             // _reportCarReportButton
             // 
-            this._reportCarReportButton.Location = new System.Drawing.Point(332, 220);
-            this._reportCarReportButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportCarReportButton.Location = new System.Drawing.Point(456, 330);
+            this._reportCarReportButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportCarReportButton.Name = "_reportCarReportButton";
-            this._reportCarReportButton.Size = new System.Drawing.Size(72, 31);
+            this._reportCarReportButton.Size = new System.Drawing.Size(99, 46);
             this._reportCarReportButton.TabIndex = 18;
             this._reportCarReportButton.Text = "Report";
             this._reportCarReportButton.UseVisualStyleBackColor = true;
@@ -349,70 +351,74 @@
             // _reportCarInfoBoxUsedLetters
             // 
             this._reportCarInfoBoxUsedLetters.AutoSize = true;
-            this._reportCarInfoBoxUsedLetters.Location = new System.Drawing.Point(281, 182);
+            this._reportCarInfoBoxUsedLetters.Location = new System.Drawing.Point(386, 273);
+            this._reportCarInfoBoxUsedLetters.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportCarInfoBoxUsedLetters.Name = "_reportCarInfoBoxUsedLetters";
-            this._reportCarInfoBoxUsedLetters.Size = new System.Drawing.Size(81, 17);
+            this._reportCarInfoBoxUsedLetters.Size = new System.Drawing.Size(113, 25);
             this._reportCarInfoBoxUsedLetters.TabIndex = 17;
             this._reportCarInfoBoxUsedLetters.Text = "(0/80) used";
             // 
             // _reportCarInfoTextBox
             // 
-            this._reportCarInfoTextBox.Location = new System.Drawing.Point(115, 153);
-            this._reportCarInfoTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportCarInfoTextBox.Location = new System.Drawing.Point(158, 230);
+            this._reportCarInfoTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportCarInfoTextBox.MaxLength = 80;
             this._reportCarInfoTextBox.Name = "_reportCarInfoTextBox";
-            this._reportCarInfoTextBox.Size = new System.Drawing.Size(249, 22);
+            this._reportCarInfoTextBox.Size = new System.Drawing.Size(341, 29);
             this._reportCarInfoTextBox.TabIndex = 16;
             // 
             // _reportCarAdditionalInfoLabel
             // 
             this._reportCarAdditionalInfoLabel.AutoSize = true;
-            this._reportCarAdditionalInfoLabel.Location = new System.Drawing.Point(11, 126);
+            this._reportCarAdditionalInfoLabel.Location = new System.Drawing.Point(15, 189);
+            this._reportCarAdditionalInfoLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportCarAdditionalInfoLabel.Name = "_reportCarAdditionalInfoLabel";
-            this._reportCarAdditionalInfoLabel.Size = new System.Drawing.Size(101, 17);
+            this._reportCarAdditionalInfoLabel.Size = new System.Drawing.Size(141, 25);
             this._reportCarAdditionalInfoLabel.TabIndex = 15;
             this._reportCarAdditionalInfoLabel.Text = "Additional Info:";
             // 
             // _reportCarLastSeenDatePicker
             // 
-            this._reportCarLastSeenDatePicker.Location = new System.Drawing.Point(115, 94);
-            this._reportCarLastSeenDatePicker.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportCarLastSeenDatePicker.Location = new System.Drawing.Point(158, 141);
+            this._reportCarLastSeenDatePicker.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportCarLastSeenDatePicker.Name = "_reportCarLastSeenDatePicker";
-            this._reportCarLastSeenDatePicker.Size = new System.Drawing.Size(249, 22);
+            this._reportCarLastSeenDatePicker.Size = new System.Drawing.Size(341, 29);
             this._reportCarLastSeenDatePicker.TabIndex = 14;
             // 
             // _reportCarLastSeenTextBox
             // 
-            this._reportCarLastSeenTextBox.Location = new System.Drawing.Point(115, 65);
-            this._reportCarLastSeenTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportCarLastSeenTextBox.Location = new System.Drawing.Point(158, 98);
+            this._reportCarLastSeenTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportCarLastSeenTextBox.Name = "_reportCarLastSeenTextBox";
-            this._reportCarLastSeenTextBox.Size = new System.Drawing.Size(249, 22);
+            this._reportCarLastSeenTextBox.Size = new System.Drawing.Size(341, 29);
             this._reportCarLastSeenTextBox.TabIndex = 13;
             // 
             // _reportCarLastSeenLabel
             // 
             this._reportCarLastSeenLabel.AutoSize = true;
-            this._reportCarLastSeenLabel.Location = new System.Drawing.Point(32, 65);
+            this._reportCarLastSeenLabel.Location = new System.Drawing.Point(44, 98);
+            this._reportCarLastSeenLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportCarLastSeenLabel.Name = "_reportCarLastSeenLabel";
-            this._reportCarLastSeenLabel.Size = new System.Drawing.Size(76, 17);
+            this._reportCarLastSeenLabel.Size = new System.Drawing.Size(107, 25);
             this._reportCarLastSeenLabel.TabIndex = 12;
             this._reportCarLastSeenLabel.Text = "Last Seen:";
             // 
             // _reportCarPlateLabel
             // 
             this._reportCarPlateLabel.AutoSize = true;
-            this._reportCarPlateLabel.Location = new System.Drawing.Point(11, 31);
+            this._reportCarPlateLabel.Location = new System.Drawing.Point(15, 46);
+            this._reportCarPlateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportCarPlateLabel.Name = "_reportCarPlateLabel";
-            this._reportCarPlateLabel.Size = new System.Drawing.Size(98, 17);
+            this._reportCarPlateLabel.Size = new System.Drawing.Size(136, 25);
             this._reportCarPlateLabel.TabIndex = 11;
             this._reportCarPlateLabel.Text = "Plate Number:";
             // 
             // _reportCarPlateTextBox
             // 
-            this._reportCarPlateTextBox.Location = new System.Drawing.Point(115, 31);
-            this._reportCarPlateTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportCarPlateTextBox.Location = new System.Drawing.Point(158, 46);
+            this._reportCarPlateTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportCarPlateTextBox.Name = "_reportCarPlateTextBox";
-            this._reportCarPlateTextBox.Size = new System.Drawing.Size(88, 22);
+            this._reportCarPlateTextBox.Size = new System.Drawing.Size(120, 29);
             this._reportCarPlateTextBox.TabIndex = 10;
             // 
             // _reportPersonTab
@@ -426,21 +432,21 @@
             this._reportPersonTab.Controls.Add(this._reportPersonLastSeenLabel);
             this._reportPersonTab.Controls.Add(this._reportPersonNameLabel);
             this._reportPersonTab.Controls.Add(this._reportPersonNameTextBox);
-            this._reportPersonTab.Location = new System.Drawing.Point(4, 25);
-            this._reportPersonTab.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPersonTab.Location = new System.Drawing.Point(4, 33);
+            this._reportPersonTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPersonTab.Name = "_reportPersonTab";
-            this._reportPersonTab.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._reportPersonTab.Size = new System.Drawing.Size(423, 343);
+            this._reportPersonTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._reportPersonTab.Size = new System.Drawing.Size(585, 521);
             this._reportPersonTab.TabIndex = 1;
             this._reportPersonTab.Text = "Person";
             this._reportPersonTab.UseVisualStyleBackColor = true;
             // 
             // _reportPersonReportButton
             // 
-            this._reportPersonReportButton.Location = new System.Drawing.Point(321, 224);
-            this._reportPersonReportButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPersonReportButton.Location = new System.Drawing.Point(441, 336);
+            this._reportPersonReportButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPersonReportButton.Name = "_reportPersonReportButton";
-            this._reportPersonReportButton.Size = new System.Drawing.Size(72, 31);
+            this._reportPersonReportButton.Size = new System.Drawing.Size(99, 46);
             this._reportPersonReportButton.TabIndex = 9;
             this._reportPersonReportButton.Text = "Report";
             this._reportPersonReportButton.UseVisualStyleBackColor = true;
@@ -448,70 +454,74 @@
             // _reportPersonUsedLetterLabel
             // 
             this._reportPersonUsedLetterLabel.AutoSize = true;
-            this._reportPersonUsedLetterLabel.Location = new System.Drawing.Point(272, 188);
+            this._reportPersonUsedLetterLabel.Location = new System.Drawing.Point(374, 282);
+            this._reportPersonUsedLetterLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportPersonUsedLetterLabel.Name = "_reportPersonUsedLetterLabel";
-            this._reportPersonUsedLetterLabel.Size = new System.Drawing.Size(81, 17);
+            this._reportPersonUsedLetterLabel.Size = new System.Drawing.Size(113, 25);
             this._reportPersonUsedLetterLabel.TabIndex = 8;
             this._reportPersonUsedLetterLabel.Text = "(0/80) used";
             // 
             // _reportPersonInfoBox
             // 
-            this._reportPersonInfoBox.Location = new System.Drawing.Point(103, 156);
-            this._reportPersonInfoBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPersonInfoBox.Location = new System.Drawing.Point(142, 234);
+            this._reportPersonInfoBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPersonInfoBox.MaxLength = 80;
             this._reportPersonInfoBox.Name = "_reportPersonInfoBox";
-            this._reportPersonInfoBox.Size = new System.Drawing.Size(253, 22);
+            this._reportPersonInfoBox.Size = new System.Drawing.Size(346, 29);
             this._reportPersonInfoBox.TabIndex = 7;
             // 
             // _reportPersonInfoLabel
             // 
             this._reportPersonInfoLabel.AutoSize = true;
-            this._reportPersonInfoLabel.Location = new System.Drawing.Point(20, 130);
+            this._reportPersonInfoLabel.Location = new System.Drawing.Point(28, 195);
+            this._reportPersonInfoLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportPersonInfoLabel.Name = "_reportPersonInfoLabel";
-            this._reportPersonInfoLabel.Size = new System.Drawing.Size(101, 17);
+            this._reportPersonInfoLabel.Size = new System.Drawing.Size(141, 25);
             this._reportPersonInfoLabel.TabIndex = 6;
             this._reportPersonInfoLabel.Text = "Additional Info:";
             // 
             // _reportPersonLastDatePicker
             // 
-            this._reportPersonLastDatePicker.Location = new System.Drawing.Point(103, 97);
-            this._reportPersonLastDatePicker.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPersonLastDatePicker.Location = new System.Drawing.Point(142, 146);
+            this._reportPersonLastDatePicker.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPersonLastDatePicker.Name = "_reportPersonLastDatePicker";
-            this._reportPersonLastDatePicker.Size = new System.Drawing.Size(253, 22);
+            this._reportPersonLastDatePicker.Size = new System.Drawing.Size(346, 29);
             this._reportPersonLastDatePicker.TabIndex = 4;
             // 
             // _reportPersonLastSeenTextBox
             // 
-            this._reportPersonLastSeenTextBox.Location = new System.Drawing.Point(103, 68);
-            this._reportPersonLastSeenTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPersonLastSeenTextBox.Location = new System.Drawing.Point(142, 102);
+            this._reportPersonLastSeenTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPersonLastSeenTextBox.Name = "_reportPersonLastSeenTextBox";
-            this._reportPersonLastSeenTextBox.Size = new System.Drawing.Size(253, 22);
+            this._reportPersonLastSeenTextBox.Size = new System.Drawing.Size(346, 29);
             this._reportPersonLastSeenTextBox.TabIndex = 3;
             // 
             // _reportPersonLastSeenLabel
             // 
             this._reportPersonLastSeenLabel.AutoSize = true;
-            this._reportPersonLastSeenLabel.Location = new System.Drawing.Point(20, 68);
+            this._reportPersonLastSeenLabel.Location = new System.Drawing.Point(28, 102);
+            this._reportPersonLastSeenLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportPersonLastSeenLabel.Name = "_reportPersonLastSeenLabel";
-            this._reportPersonLastSeenLabel.Size = new System.Drawing.Size(76, 17);
+            this._reportPersonLastSeenLabel.Size = new System.Drawing.Size(107, 25);
             this._reportPersonLastSeenLabel.TabIndex = 2;
             this._reportPersonLastSeenLabel.Text = "Last Seen:";
             // 
             // _reportPersonNameLabel
             // 
             this._reportPersonNameLabel.AutoSize = true;
-            this._reportPersonNameLabel.Location = new System.Drawing.Point(21, 34);
+            this._reportPersonNameLabel.Location = new System.Drawing.Point(29, 51);
+            this._reportPersonNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._reportPersonNameLabel.Name = "_reportPersonNameLabel";
-            this._reportPersonNameLabel.Size = new System.Drawing.Size(75, 17);
+            this._reportPersonNameLabel.Size = new System.Drawing.Size(106, 25);
             this._reportPersonNameLabel.TabIndex = 1;
             this._reportPersonNameLabel.Text = "Full Name:";
             // 
             // _reportPersonNameTextBox
             // 
-            this._reportPersonNameTextBox.Location = new System.Drawing.Point(103, 34);
-            this._reportPersonNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._reportPersonNameTextBox.Location = new System.Drawing.Point(142, 51);
+            this._reportPersonNameTextBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._reportPersonNameTextBox.Name = "_reportPersonNameTextBox";
-            this._reportPersonNameTextBox.Size = new System.Drawing.Size(253, 22);
+            this._reportPersonNameTextBox.Size = new System.Drawing.Size(346, 29);
             this._reportPersonNameTextBox.TabIndex = 0;
             // 
             // _historyPage
@@ -523,11 +533,11 @@
             this._historyPage.Controls.Add(this.button2);
             this._historyPage.Controls.Add(this.button1);
             this._historyPage.Controls.Add(this.listView1);
-            this._historyPage.Location = new System.Drawing.Point(4, 25);
-            this._historyPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this._historyPage.Location = new System.Drawing.Point(4, 33);
+            this._historyPage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this._historyPage.Name = "_historyPage";
-            this._historyPage.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this._historyPage.Size = new System.Drawing.Size(451, 372);
+            this._historyPage.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this._historyPage.Size = new System.Drawing.Size(1133, 721);
             this._historyPage.TabIndex = 2;
             this._historyPage.Text = "History";
             this._historyPage.UseVisualStyleBackColor = true;
@@ -535,56 +545,56 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 39);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(10, 58);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 17);
+            this.label2.Size = new System.Drawing.Size(42, 25);
             this.label2.TabIndex = 5;
             this.label2.Text = "To:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 12);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(10, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 17);
+            this.label1.Size = new System.Drawing.Size(63, 25);
             this.label1.TabIndex = 4;
             this.label1.Text = "From:";
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(55, 36);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker2.Location = new System.Drawing.Point(76, 54);
+            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(304, 22);
+            this.dateTimePicker2.Size = new System.Drawing.Size(416, 29);
             this.dateTimePicker2.TabIndex = 3;
             this.dateTimePicker2.Value = new System.DateTime(2018, 10, 2, 10, 4, 42, 0);
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(55, 7);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePicker1.Location = new System.Drawing.Point(76, 10);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(304, 22);
+            this.dateTimePicker1.Size = new System.Drawing.Size(416, 29);
             this.dateTimePicker1.TabIndex = 2;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(368, 36);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Location = new System.Drawing.Point(506, 54);
+            this.button2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(73, 25);
+            this.button2.Size = new System.Drawing.Size(100, 38);
             this.button2.TabIndex = 0;
             this.button2.Text = "Search";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(337, 336);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(463, 504);
+            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(104, 27);
+            this.button1.Size = new System.Drawing.Size(143, 40);
             this.button1.TabIndex = 1;
             this.button1.Text = "Clear history";
             this.button1.UseVisualStyleBackColor = true;
@@ -592,10 +602,10 @@
             // listView1
             // 
             this.listView1.LargeImageList = this.imageList1;
-            this.listView1.Location = new System.Drawing.Point(3, 68);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4);
+            this.listView1.Location = new System.Drawing.Point(4, 102);
+            this.listView1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(441, 260);
+            this.listView1.Size = new System.Drawing.Size(605, 388);
             this.listView1.SmallImageList = this.imageList1;
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -607,15 +617,15 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // Form1
+            // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(842, 516);
+            this.ClientSize = new System.Drawing.Size(1168, 771);
             this.Controls.Add(this.Tabs);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Tabs.ResumeLayout(false);
