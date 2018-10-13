@@ -40,8 +40,7 @@ namespace epicenterWin
         public bool FaceSquare { get; set; } = true;
         public bool EyeSquare { get; set; } = true;
 
-        private const int _threshold = 3750;               // value of FaceRecognizer.PredictionResult.distance to positively identify
-
+        private const int _threshold = 3750;
         // non-face recognition
 
         private MouseEventArgs _removeMe;
@@ -53,20 +52,14 @@ namespace epicenterWin
             InitializeComponent();
             BackgroundImageLayout = ImageLayout.Stretch;
 
-            // face recognition
-            /*FaceRecognition = new EigenFaceRecognizer(80, double.PositiveInfinity);
-            FaceDetection = new CascadeClassifier(System.IO.Path.GetFullPath(@"../../Algo/haarcascade_frontalface_default.xml"));
-            EyeDetection = new CascadeClassifier(System.IO.Path.GetFullPath(@"../../Algo/haarcascade_eye.xml"));
-            Frame = new Mat();
-            Faces = new List<Image<Gray, byte>>();
-            IDs = new List<int>();
-            TestCapture(@"D:/_root/test_video.mp4");
-            */
+
             _faceRecognizer = new FaceRecognizer
             {
-                PictureBox = webcamPictureBox
+                PictureBox = webcamPictureBox,
+                DrawEyesSquare = true,
+                DrawFaceSquare = true
             };
-            _faceRecognizer.CreateVideoCapture(@"D:/_root/test_video.mp4");
+            _faceRecognizer.CreateVideoCapture(null);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -88,12 +81,20 @@ namespace epicenterWin
                 OutputBox.AppendText($"Training has started. {Environment.NewLine}");
                 idTextBox.Enabled = !idTextBox.Enabled;
 
+                _faceRecognizer.RecognizeFrameAs(_faceRecognizer.Frame, int.Parse(idTextBox.Text));
+                trainingButton.Enabled = !trainingButton.Enabled;
+            }
+            /*if (idTextBox.Text != string.Empty)
+            {
+                OutputBox.AppendText($"Training has started. {Environment.NewLine}");
+                idTextBox.Enabled = !idTextBox.Enabled;
+
                 Timer = new Timer();
                 Timer.Interval = 300;
                 Timer.Tick += Timer_Tick;
                 Timer.Start();
                 trainingButton.Enabled = !trainingButton.Enabled;
-            }
+            }*/
         }
 
         private void Timer_Tick(object sender, EventArgs e)

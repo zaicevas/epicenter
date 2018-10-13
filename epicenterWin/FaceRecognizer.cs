@@ -25,7 +25,7 @@ namespace epicenterWin
         private CascadeClassifier _faceCascade;
         private CascadeClassifier _eyeCascade;
 
-        private Mat _frame;
+        public Mat Frame { get; set; }
 
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
@@ -40,7 +40,7 @@ namespace epicenterWin
             _eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
             _faceCascade = new CascadeClassifier(Path.GetFullPath(_faceXML));
             _eyeCascade = new CascadeClassifier(Path.GetFullPath(_eyeXML));
-            _frame = new Mat();
+            Frame = new Mat();
             _faces = new List<Image<Gray, byte>>();
             _ids = new List<int>();
         }
@@ -67,10 +67,10 @@ namespace epicenterWin
 
         private void VideoCapture_ImageGrabbed(object sender, System.EventArgs e)
         {
-            if (!VideoCapture.Retrieve(_frame))
+            if (!VideoCapture.Retrieve(Frame))
                 return;
 
-            Image<Bgr, byte> image = _frame.ToImage<Bgr, byte>();
+            Image<Bgr, byte> image = Frame.ToImage<Bgr, byte>();
             Image<Gray, byte> grayFrame = image.Convert<Gray, byte>();
             Rectangle[] faces = _faceCascade.DetectMultiScale(grayFrame, 1.3, 5);
             Rectangle[] eyes = _eyeCascade.DetectMultiScale(grayFrame, 1.3, 5);
@@ -111,10 +111,13 @@ namespace epicenterWin
             _eigenFaceRecognizer.Write(_YMLPath);
         }
 
-        public void Recognize(Mat frame)
+        //TODO: return "Person" instead of id if matches missing
+        //null if not.
+        public int Recognize(Mat frame)
         {
+            int id = -1;
             if (frame == null)
-                return;
+                return -1;
             Image<Gray, byte> grayImage = frame.ToImage<Gray, byte>();
             Rectangle[] detected = _faceCascade.DetectMultiScale(grayImage, 1.3, 5);
             if (detected.Length > 0)
@@ -123,12 +126,32 @@ namespace epicenterWin
                 try
                 {
                     PredictionResult result = _eigenFaceRecognizer.Predict(processedImage);
+                    id = GetMatchingId(result, _threshold);
                 }
                 catch
                 {
 
                 }
             }
+            return id;
+        }
+
+        public int GetMatchingId(PredictionResult result, int threshold)
+        {
+            string eigenLabel;
+            float eigenDistance = -1;
+            if (result.Label == -1)
+            {
+                eigenLabel = "Unknown";
+                eigenDistance = 0;
+            }
+            else
+            {
+                eigenLabel = result.Label.ToString();
+                eigenDistance = (float)result.Distance;
+                eigenLabel = eigenDistance > threshold ? "Unknown" : result.Label.ToString();
+            }
+            return int.Parse(eigenLabel);
         }
 
         public string GetMatchingLabel(PredictionResult result, int threshold)
