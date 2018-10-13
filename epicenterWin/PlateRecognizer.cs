@@ -10,7 +10,7 @@ namespace epicenterWin
 {
     struct PlateRecognizer
     {
-        private static string _region = "lt";
+        private static string _localRegion = "lt";
         private static string _configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
         private static string _runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
         private static string AssemblyDirectory
@@ -28,13 +28,13 @@ namespace epicenterWin
         {
             List<string> result = new List<string>();
 
-            using (AlprNet alpr = new AlprNet(_region, _configFile, _runtimeDataDirectory))
+            using (AlprNet alpr = new AlprNet("eu", _configFile, _runtimeDataDirectory))
             {
 
                 if (!alpr.IsLoaded())
                     return result;
 
-                alpr.DefaultRegion = _region;
+                alpr.DefaultRegion = _localRegion;
 
                 AlprResultsNet results = alpr.Recognize(fileName);
 
