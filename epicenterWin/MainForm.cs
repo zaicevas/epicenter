@@ -248,7 +248,8 @@ namespace epicenterWin
             if (frame == null)
                 return;
 
-
+            Image<Gray, byte> img = _faceRecognizer.GetFaceFromFrame(frame);
+            
             /*Webcam.Retrieve(Frame);
             Image<Gray, byte> imageFrame = Frame.ToImage<Gray, byte>();
 

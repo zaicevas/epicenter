@@ -104,6 +104,8 @@ namespace epicenterWin
                 return;
 
             Image<Gray, byte> image = GetFaceFromFrame(frame);
+            if (image == null)
+                return;
             _faces.Add(image);
             _ids.Add(id);
         }
@@ -118,26 +120,13 @@ namespace epicenterWin
 
         //TODO: return "Person" instead of id if matches missing
         //null if not.
-        public int Recognize(Mat frame)
+        public int Recognize(Image<Gray, byte> grayImage)
         {
             int id = -1;
-            if (frame == null)
+            if (grayImage == null)
                 return -1;
-            Image<Gray, byte> grayImage = frame.ToImage<Gray, byte>();
-            Rectangle[] detected = _faceCascade.DetectMultiScale(grayImage, 1.3, 5);
-            if (detected.Length > 0)
-            {
-                Image<Gray, byte> processedImage = grayImage.Copy(detected[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
-                try
-                {
-                    PredictionResult result = _eigenFaceRecognizer.Predict(processedImage);
-                    id = GetMatchingId(result, _threshold);
-                }
-                catch
-                {
-
-                }
-            }
+            PredictionResult result = _eigenFaceRecognizer.Predict(grayImage);
+            id = GetMatchingId(result, _threshold);
             return id;
         }
 
