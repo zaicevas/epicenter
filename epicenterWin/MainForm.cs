@@ -76,14 +76,15 @@ namespace epicenterWin
 
         private void trainingButton_Click(object sender, EventArgs e)
         {
-            if (idTextBox.Text != string.Empty)
-            {
-                OutputBox.AppendText($"Training has started. {Environment.NewLine}");
-                idTextBox.Enabled = !idTextBox.Enabled;
-
-                _faceRecognizer.RecognizeFrameAs(_faceRecognizer.Frame, int.Parse(idTextBox.Text));
-                trainingButton.Enabled = !trainingButton.Enabled;
-            }
+            string txt = idTextBox.Text;
+            if (txt == null | txt == string.Empty)
+                return;
+            int id = -1;
+            int.TryParse(idTextBox.Text, out id);
+            if (id == -1)
+                return;
+            _faceRecognizer.RecognizeFrameAs(_faceRecognizer.Frame, id);
+            _faceRecognizer.TrainAll();
             /*if (idTextBox.Text != string.Empty)
             {
                 OutputBox.AppendText($"Training has started. {Environment.NewLine}");
@@ -243,8 +244,12 @@ namespace epicenterWin
             Bitmap bmpImage = (Bitmap)hardcodedFb;
             var imageFrame = new Image<Gray, byte>(bmpImage); */
 
+            Mat frame = _faceRecognizer.Frame;
+            if (frame == null)
+                return;
 
-            Webcam.Retrieve(Frame);
+
+            /*Webcam.Retrieve(Frame);
             Image<Gray, byte> imageFrame = Frame.ToImage<Gray, byte>();
 
             if (imageFrame != null)
@@ -270,7 +275,7 @@ namespace epicenterWin
                     MessageBox.Show("No faces found");
                 }
 
-            }
+            }*/
         }
 
         private string CheckRecognizeResults(PredictionResult result, int threshold)          

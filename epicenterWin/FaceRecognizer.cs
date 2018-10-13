@@ -65,6 +65,18 @@ namespace epicenterWin
             VideoCapture.Start();
         }
 
+        public Image<Gray, byte> GetFaceFromFrame(Mat frame)
+        {
+            if (frame == null)
+                return null;
+            Image<Gray, byte> grayScale = frame.ToImage<Gray, byte>();
+            Rectangle[] arr = _faceCascade.DetectMultiScale(grayScale, 1.3, 5);
+            if (arr.Length <= 0)
+                return null;
+            Image<Gray, byte> result = grayScale.Copy(arr[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
+            return result;
+        }
+
         private void VideoCapture_ImageGrabbed(object sender, System.EventArgs e)
         {
             if (!VideoCapture.Retrieve(Frame))
@@ -91,16 +103,9 @@ namespace epicenterWin
             if (frame == null)
                 return;
 
-            Image<Gray, byte> image = frame.ToImage<Gray, byte>();
-
-            Rectangle[] detected = _faceCascade.DetectMultiScale(image, 1.3, 5);
-
-            if (detected.Length > 0)
-            {
-                Image<Gray, byte> processedImage = image.Copy(detected[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
-                _faces.Add(processedImage);
-                _ids.Add(id);
-            }
+            Image<Gray, byte> image = GetFaceFromFrame(frame);
+            _faces.Add(image);
+            _ids.Add(id);
         }
 
         public void TrainAll()
