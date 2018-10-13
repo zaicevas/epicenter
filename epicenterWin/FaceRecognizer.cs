@@ -25,10 +25,16 @@ namespace epicenterWin
         private CascadeClassifier _faceCascade;
         private CascadeClassifier _eyeCascade;
 
+        private Timer _timer;
+        private int _timeout = 50;
+        private int _currentTick = 0;
+
         public Mat Frame { get; set; }
+        public Image<Gray, byte> LastRecognized { get; private set; }
 
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
+        private int _currentTrainingId = -1;
 
         public bool DrawFaceSquare { get; set; }
         public bool DrawEyesSquare { get; set; }
@@ -96,6 +102,30 @@ namespace epicenterWin
 
             if (PictureBox != null)
                 PictureBox.Image = image.ToBitmap();
+        }
+
+        public void StartTraining(int id)
+        {
+            _currentTick = 0;
+            _currentTrainingId = id;
+
+            _timer = new Timer()
+            {
+                Interval = 300,
+            };
+            _timer.Tick += TrainingTick;
+            _timer.Start();
+        }
+
+        private void TrainingTick(object sender, System.EventArgs e)
+        {
+            _currentTick++;
+            RecognizeFrameAs(Frame, _currentTrainingId);
+            if (_currentTick >= _timeout)
+            {
+                _timer.Stop();
+                TrainAll();
+            }
         }
 
         public void RecognizeFrameAs(Mat frame, int id)
