@@ -177,3 +177,9 @@ D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CopyCo
 D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.exe
 D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.pdb
 C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.MainForm.resources
+C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\sqliteDB.db
+C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\Dapper.dll
+C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\System.Data.SQLite.dll
+C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\Dapper.xml
+C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\System.Data.SQLite.xml
+C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\System.Data.SQLite.dll.config
