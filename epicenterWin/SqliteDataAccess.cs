@@ -11,14 +11,15 @@ using Dapper;
 namespace epicenterWin
 {
     /*
- * Table 'Person' has 5 columns:
+ * Table 'Person' has 6 columns:
  * ID
  * FaceID       matches training data labels
  * FirstName
  * LastName     (can be null)
- * Lost
+ * Missing
+ * YML
  * */
-    static class SqliteDataAccess
+    static class SqliteDataAccess<T> where T : DbEntity
     {
         private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());         // dapper the object mapper
 
@@ -27,12 +28,16 @@ namespace epicenterWin
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        public static void CreatePerson(Person person)
+        public static void CreateRow(T entity)
         {
+            string tableName = entity.GetType().ToString();
+            bool person = entity is Person;
             try
             {
-                int LostInt = person.Lost ? 1 : 0;
-                _sqliteConnect.Execute($"INSERT INTO Person (FirstName, LastName, FaceID, Lost) values (@FirstName, @LastName, @FaceID, {LostInt}", person);
+                int MissingInt = entity.Missing ? 1 : 0;
+                string queryString = $"INSERT INTO {tableName} (FirstName, LastName, Missing, ";
+                queryString += person ? $"FaceID) values (@FirstName, @LastName, {MissingInt}, @FaceID)" : $"NumberPlate) values (@FirstName, @LastName, {MissingInt}, @NumberPlate";
+                _sqliteConnect.Execute(queryString, entity);
             }
             catch (SQLiteException)
             {
@@ -40,11 +45,11 @@ namespace epicenterWin
             }
         }
 
-        public static IEnumerable<Person> ReadPeople()
+        public static IEnumerable<T> ReadRows()
         {
             try
             {
-                return _sqliteConnect.Query<Person>("SELECT * FROM Person", new DynamicParameters());
+                return _sqliteConnect.Query<T>($"SELECT * FROM {typeof(T).GetType().ToString()}", new DynamicParameters());             // not sure if typeof(T) would just work
             }
             catch (SQLiteException)
             {
@@ -53,13 +58,17 @@ namespace epicenterWin
             }
         }
 
-        public static void UpdatePerson(Person person)
+        public static void UpdatePerson(T entity)
         {
+            string tableName = entity.GetType().ToString();
+            bool person = entity is Person;
             try
             {
-                int LostInt = person.Lost ? 1 : 0;
-                _sqliteConnect.Execute($@"UPDATE Person SET FirstName = @FirstName, LastName = @LastName, FaceID = @FaceID, Lost = {LostInt}) 
-                    WHERE ID = @ID", person);
+                int MissingInt = entity.Missing ? 1 : 0;
+                string queryString = $"UPDATE {tableName} SET FirstName = @FirstName, LastName = @LastName, MissingInt = {MissingInt}, ";
+                queryString += person ? "FaceID = @FaceID " : "NumberPlate = @NumberPlate ";
+                queryString += "WHERE ID = @ID";
+                _sqliteConnect.Execute(queryString, entity);
             }
             catch (SQLiteException)
             {
@@ -67,11 +76,12 @@ namespace epicenterWin
             }
         }
 
-        public static void DeletePerson(Person person)
+        public static void DeleteRow(T entity)
         {
+            string tableName = entity.GetType().ToString();
             try
             {
-                _sqliteConnect.Execute("DELETE FROM Person WHERE ID = @ID", person);
+                _sqliteConnect.Execute($"DELETE FROM {tableName} WHERE ID = @ID", entity);
             }
             catch (SQLiteException)
             {
@@ -79,12 +89,13 @@ namespace epicenterWin
             }
         }
 
-        public static void DeleteAllPersons()
+        public static void DeleteAllRows()
         {
             // Use it with great care :)
+            string tableName = typeof(T).GetType().ToString();
             try
             {
-                _sqliteConnect.Execute("DELETE FROM Person");
+                _sqliteConnect.Execute($"DELETE FROM {tableName}");
             }
             catch (SQLiteException)
             {
