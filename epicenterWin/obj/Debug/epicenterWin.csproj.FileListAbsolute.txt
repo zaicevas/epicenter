@@ -59,7 +59,6 @@ C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\epicenterWin.exe
 C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\epicenterWin.pdb
 C:\Users\ferN\reps\epicenter\epicenterWin\bin\Debug\openalpr-net.dll
 C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.csprojAssemblyReference.cache
-C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.Form1.resources
 C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.Properties.Resources.resources
 C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.GenerateResource.cache
 C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CoreCompileInputs.cache
@@ -177,3 +176,4 @@ D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CoreCo
 D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.csproj.CopyComplete
 D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.exe
 D:\_root\programming\epicenter\epicenterWin\obj\Debug\epicenterWin.pdb
+C:\Users\ferN\reps\epicenter\epicenterWin\obj\Debug\epicenterWin.MainForm.resources

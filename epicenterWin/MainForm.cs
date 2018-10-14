@@ -20,11 +20,10 @@ namespace epicenterWin
 
         private FaceRecognizer _faceRecognizer;
 
+
         public MainForm()
         {
             InitializeComponent();
-            BackgroundImageLayout = ImageLayout.Stretch;
-
 
             _faceRecognizer = new FaceRecognizer
             {
