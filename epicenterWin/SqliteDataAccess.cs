@@ -94,24 +94,3 @@ namespace epicenterWin
 
     }
 }
-
-/* Examples:
-            IEnumerable<Person> allPeople = SqliteDataAccess.ReadPeople();
-            foreach(Person i in allPeople)
-            {
-                ;
-            }
-
-    Adding to databse:
-                Person Tomas = new Person()
-            {
-                ID = 2,
-                FirstName = "Tomas",
-                LastName = "Tomaitis2",
-                FaceID = 1,
-                Lost = 0
-            };
-
-            SqliteDataAccess.CreatePerson(Tomas);
-
-    */

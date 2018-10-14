@@ -12,8 +12,8 @@ namespace epicenterWin
         public int FaceID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Lost { get; set; }                                       // sqlite has no boolean data type
+        public bool Lost { get; set; }
 
-        public string FullName => $"{FirstName} {LastName}";                // expression body definition
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
