@@ -20,7 +20,7 @@ namespace epicenterWin
  * */
     static class SqliteDataAccess
     {
-        private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());
+        private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());         // dapper the object mapper
 
         private static string LoadConnectionString(string id = "Default")
         {
@@ -31,7 +31,8 @@ namespace epicenterWin
         {
             try
             {
-                _sqliteConnect.Execute("INSERT INTO Person (FirstName, LastName, FaceID, Lost) values (@FirstName, @LastName, @FaceID, @Lost)", person);
+                int LostInt = person.Lost ? 1 : 0;
+                _sqliteConnect.Execute($"INSERT INTO Person (FirstName, LastName, FaceID, Lost) values (@FirstName, @LastName, @FaceID, {LostInt}", person);
             }
             catch (SQLiteException)
             {
@@ -52,18 +53,13 @@ namespace epicenterWin
             }
         }
 
-        public static void UpdatePerson(Person current, Person updated)
+        public static void UpdatePerson(Person person)
         {
-            if (current.ID != updated.ID)
-            {
-                System.Diagnostics.Debug.WriteLine(@"Wrong SqliteDataAccess.UpdatePerson(Person current, Person updated) query, 
-                    current.ID has tomatch updated.ID");
-                return;
-            }
             try
             {
-                _sqliteConnect.Execute(@"UPDATE Person SET FirstName = @FirstName, LastName = @LastName, FaceID = @FaceID, Lost = @Lost) 
-                    WHERE ID = @ID", updated);
+                int LostInt = person.Lost ? 1 : 0;
+                _sqliteConnect.Execute($@"UPDATE Person SET FirstName = @FirstName, LastName = @LastName, FaceID = @FaceID, Lost = {LostInt}) 
+                    WHERE ID = @ID", person);
             }
             catch (SQLiteException)
             {
@@ -83,7 +79,7 @@ namespace epicenterWin
             }
         }
 
-        public static void DeleteAllPerson()
+        public static void DeleteAllPersons()
         {
             // Use it with great care :)
             try
