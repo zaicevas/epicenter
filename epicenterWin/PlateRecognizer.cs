@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// openalpr
 using System.IO;
 using System.Reflection;
 
@@ -11,76 +10,53 @@ namespace epicenterWin
 {
     struct PlateRecognizer
     {
+        private static string _localRegion = "lt";
+        private static string _configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
+        private static string _runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
         private static string AssemblyDirectory
         {
             get
             {
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                var uri = new UriBuilder(codeBase);
-                var path = Uri.UnescapeDataString(uri.Path);
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
         }
 
-        public static List<string> ProcessImageFile(string fileName)                            // empty
+        public static List<string> ProcessImageFile(string fileName)
         {
-            var region = "eu";                                                              // could be us
-            var configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
-            var runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
+            List<string> result = new List<string>();
 
-            var resultas = new List<string>();
-
-            using (var alpr = new AlprNet(region, configFile, runtimeDataDirectory))
+            using (AlprNet alpr = new AlprNet("eu", _configFile, _runtimeDataDirectory))
             {
-                var platesList = new List<string>();
 
                 if (!alpr.IsLoaded())
-                {
-                    platesList.Add("Error starting OpenALPR");
-                    return resultas;
-                }
-                alpr.DefaultRegion = "lt";                                                  // match @@@### pattern
-                var results = alpr.Recognize(fileName);
+                    return result;
 
-                foreach (var result in results.Plates)                                      // for every plate
+                alpr.DefaultRegion = _localRegion;
+
+                AlprResultsNet results = alpr.Recognize(fileName);
+
+                foreach (AlprPlateResultNet plate in results.Plates)
                 {
-                    //platesList.Add("\t\t-- Plate #" + i++ + " --");
-                    //foreach (var plate in result.TopNPlates)
-                    //{
-                    //    platesList.Add(string.Format(@"{0} {1}% {2}",
-                    //                                      plate.Characters.PadRight(12),
-                    //                                      plate.OverallConfidence.ToString("N1").PadLeft(8),
-                    //                                      plate.MatchesTemplate.ToString().PadLeft(8)));
-                    //}
-                    var index = GetBestPlateIndex(result.TopNPlates);
-                    if (index != -1)
+                    AlprPlateNet matching = GetMatchingPlate(plate.TopNPlates);
+                    if (matching != null)
                     {
-                        resultas.Add(result.TopNPlates[index].Characters);
+                        result.Add(matching.Characters);
                     }
                 }
-
-                //var path = @"C:\Users\ferN\plate_testing\output.txt";
-                //using (var tw = new StreamWriter(path, true))
-                //{
-                //    foreach (var s in platesList)
-                //    {
-                //        tw.WriteLine(s);
-                //    }
-                //}
             }
-            return resultas;
+            return result;
         }
 
-        private static int GetBestPlateIndex(List<AlprPlateNet> plates)         // returns -1 if there's no match for region pattern
+        private static AlprPlateNet GetMatchingPlate(List<AlprPlateNet> plates)
         {
-            for (var i=0; i<plates.Count; i++)
-            {
-                if (plates[i].MatchesTemplate)
-                {
-                    return i;
-                }
-            }
-            return -1;
+            foreach (AlprPlateNet plate in plates)
+                if (plate.MatchesTemplate)
+                    return plate;
+
+            return null;
         }
 
 
