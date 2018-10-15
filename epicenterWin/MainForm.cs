@@ -49,20 +49,10 @@ namespace epicenterWin
             if (firstName == null || firstName == string.Empty || lastName == null || lastName == string.Empty)
                 return;
 
-            //int id = -1;
-            //int.TryParse(_firstNameTextBox.Text, out id);
-            //if (id == -1)
-            //{
-            //    MessageBox.Show("Please enter a valid id!");
-            //    return;
-            //}
-
-            string fullName = firstName + " " + lastName;
-
             _firstNameTextBox.Enabled = false;
             trainingButton.Enabled = false;
             recognizeButton.Enabled = false;
-            _faceRecognizer.StartTraining(fullName);
+            _faceRecognizer.StartTraining(firstName, lastName);
         }
 
         public void TrainingStopped()

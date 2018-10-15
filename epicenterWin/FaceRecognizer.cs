@@ -18,7 +18,6 @@ namespace epicenterWin
         private const string _YMLPath = @"../../Algo/";
         private const string _YMLFileName = @"person";
         private const string _YMLFileExtention = @".yml";
-        //private const string _YMLPath = @"../../Algo/trainingData.yml";
         private const string _faceXML = @"../../Algo/haarcascade_frontalface_default.xml";
         private const string _eyeXML = @"../../Algo/haarcascade_eye.xml";
 
@@ -37,8 +36,9 @@ namespace epicenterWin
         public Mat Frame { get; set; }
         public Image<Gray, byte> LastRecognized { get; private set; }
 
-        private List<Image<Gray, byte>> _facesToSave;
-        private List<int> _idsToSave;
+        private List<Person> _people;
+        private List<Face> _trainedFaces;
+        private List<EigenFaceRecognizer> _recognizers;
 
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
@@ -51,16 +51,6 @@ namespace epicenterWin
 
         private MainForm _mainForm;
 
-
-
-
-        private List<Person> _people;
-        private List<Face> _trainedFaces;
-        private List<EigenFaceRecognizer> _recognizers;
-
-
-
-
         public FaceRecognizer()
         {
             _eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
@@ -69,12 +59,6 @@ namespace epicenterWin
             Frame = new Mat();
             _faces = new List<Image<Gray, byte>>();
             _ids = new List<int>();
-
-            _facesToSave = new List<Image<Gray, byte>>();
-            _idsToSave = new List<int>();
-
-
-
             _people = new List<Person>();
             _trainedFaces = new List<Face>();
             _recognizers = new List<EigenFaceRecognizer>();
@@ -137,17 +121,23 @@ namespace epicenterWin
                 PictureBox.Image = image.ToBitmap();
         }
 
-        public void StartTraining(string fullName)
+        public void StartTraining(string firstName, string lastName)
         {
-            _people = SqliteDataAccess<Person>.ReadRows().ToList();
-            foreach(Person person in _people)
+            Person currentPerson = new Person
             {
-                if(person.FullName == fullName)
-                {
-                    _currentTrainingID = person.ID;
-                    break;
-                }
+                FirstName = firstName,
+                LastName = lastName
+            };
+            currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
+
+            if(currentPerson == null)
+            {
+                _mainForm.TrainingStopped();
+                MessageBox.Show("This person doesn't exist");
+                return;
             }
+
+            _currentTrainingID = currentPerson.ID;
             _trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
             foreach (Face face in _trainedFaces)
             {
@@ -192,32 +182,27 @@ namespace epicenterWin
             Image<Gray, byte> image = GetFaceFromFrame(frame);
             if (image == null)
                 return;
-            _facesToSave.Add(image);
-            _idsToSave.Add(id);
+
+            Face face = new Face
+            {
+                Blob = image.Bytes,
+                PersonID = _currentTrainingID                                                    //all labels are the same
+            };
+            SqliteDataAccess<Face>.CreateRow(face);
+            _faces.Add(image);
+            _ids.Add(id);
         }
 
         public void TrainAll()
         {
-            if (_facesToSave.Count <= 0)
+            if (_faces.Count <= 0)
                 return;
-
-            foreach (Image<Gray, byte> image in _facesToSave)
-            {
-                Face face = new Face
-                {
-                    Blob = image.Bytes,
-                    PersonID = _idsToSave[0]                                                    //all labels are the same
-                };
-                SqliteDataAccess<Face>.CreateRow(face);
-                _faces.Add(image);
-                _ids.Add(_idsToSave[0]);
-            }
 
             _eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
             _eigenFaceRecognizer.Write(_YMLPath + _YMLFileName + _currentTrainingID.ToString() + _YMLFileExtention);
 
-            _facesToSave.Clear();                                                                   //clearing lists so we don't save same images again in DB
-            _idsToSave.Clear();
+            _faces.Clear();                                                                   //clearing lists so we don't save same images again in DB
+            _ids.Clear();
         }
 
         //TODO: return "Person" instead of id if matches missing
@@ -228,10 +213,7 @@ namespace epicenterWin
                 return null;
 
             if (_people.Count == 0)
-            {
                 _people = SqliteDataAccess<Person>.ReadRows().ToList();
-                Console.WriteLine("vyksta");
-            }
             PredictionResult closestResult = new PredictionResult
             {
                 Distance = double.PositiveInfinity
@@ -240,12 +222,10 @@ namespace epicenterWin
             {
                 EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
                 eigenFaceRecognizer.Read(_YMLPath + _YMLFileName + person.ID.ToString() + _YMLFileExtention);
-                Console.WriteLine(_YMLPath + _YMLFileName + person.ID.ToString() + _YMLFileExtention + " loaded");
                 PredictionResult result = eigenFaceRecognizer.Predict(grayImage);
                 if (result.Distance < closestResult.Distance)
                     closestResult = result;
             }
-
             return GetMatchingPerson(closestResult, _threshold);
         }
 
@@ -255,16 +235,12 @@ namespace epicenterWin
             {
                 return null;
             }
-
             try
             {
-                List<Person> people = SqliteDataAccess<Person>.ReadRows().ToList();
-                foreach (Person person in people)
+                foreach (Person person in _people)
                 {
                     if (person.ID == result.Label)
-                    {
                         return person;
-                    }
                 }
             }
             catch (Exception ex)
