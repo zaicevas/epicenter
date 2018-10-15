@@ -189,14 +189,15 @@ namespace epicenterWin
 
         private void _reportCarReportButton_Click(object sender, EventArgs e)
         {
-            Regex regex = new Regex(@"^[A-z]{3}\d{3}$", RegexOptions.IgnoreCase);
+            string carPlate = _reportCarPlateTextBox.Text;
+            Regex ltuPlate = new Regex(@"^[A-z]{3}\d{3}$", RegexOptions.IgnoreCase);
 
-            if (!regex.IsMatch(_reportCarPlateTextBox.Text))
+            if (!ltuPlate.IsMatch(carPlate))
             {
                 MessageBox.Show("Please use Lithuanian number plate notation.");
                 return;
             }
-            Plate newPlate = new Plate(_reportCarPlateTextBox.Text);
+            Plate newPlate = new Plate(carPlate);
             newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
             newPlate.FirstName = _reportCarFirstNameTextBox.Text;
             newPlate.LastName = _reportCarLastNameTextBox.Text;
