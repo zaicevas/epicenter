@@ -173,9 +173,18 @@ namespace epicenterWin
 
         private void _reportPersonReportButton_Click(object sender, EventArgs e)
         {
-            Person newPerson = new Person(_reportPersonFirstNameTextBox.Text, _reportPersonLastNameTextBox.Text);
+            string firstName = _reportPersonFirstNameTextBox.Text;
+            string lastName = _reportPersonLastNameTextBox.Text;
+            Regex nameRegex = new Regex(@"^[A-Z][a-z]*$");
+            if (!nameRegex.IsMatch(firstName) || !nameRegex.IsMatch(lastName))
+            {
+                MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
+                return;
+            }
+            Person newPerson = new Person(firstName, lastName);
             newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
             SqliteDataAccess<Person>.CreateRow(newPerson);
+            MessageBox.Show("Created!");
         }
 
         private void _reportCarReportButton_Click(object sender, EventArgs e)
