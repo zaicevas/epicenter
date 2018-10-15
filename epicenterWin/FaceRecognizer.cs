@@ -15,7 +15,7 @@ namespace epicenterWin
 {
     public class FaceRecognizer
     {
-        private const string _YMLPath = @"../../Algo/";
+        private const string _YMLPath = @"../../Algo/YMLFiles/";
         private const string _YMLFileName = @"person";
         private const string _YMLFileExtention = @".yml";
         private const string _faceXML = @"../../Algo/haarcascade_frontalface_default.xml";
@@ -25,9 +25,10 @@ namespace epicenterWin
         private const int _imgHeight = 150;
         private const int _imgWidth = 128;
 
-        private EigenFaceRecognizer _eigenFaceRecognizer;
         private CascadeClassifier _faceCascade;
         private CascadeClassifier _eyeCascade;
+
+        private bool _ymlsRead = false;
 
         private Timer _timer;
         private int _timeout = 50;
@@ -38,11 +39,12 @@ namespace epicenterWin
 
         private List<Person> _people;
         private List<Face> _trainedFaces;
-        private List<EigenFaceRecognizer> _recognizers;
 
+        private Dictionary<string, EigenFaceRecognizer> _recognizers;
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
         private int _currentTrainingID = -1;
+        private Person _currentPerson;
 
         public bool DrawFaceSquare { get; set; }
         public bool DrawEyesSquare { get; set; }
@@ -53,7 +55,6 @@ namespace epicenterWin
 
         public FaceRecognizer()
         {
-            _eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
             _faceCascade = new CascadeClassifier(Path.GetFullPath(_faceXML));
             _eyeCascade = new CascadeClassifier(Path.GetFullPath(_eyeXML));
             Frame = new Mat();
@@ -61,7 +62,9 @@ namespace epicenterWin
             _ids = new List<int>();
             _people = new List<Person>();
             _trainedFaces = new List<Face>();
-            _recognizers = new List<EigenFaceRecognizer>();
+            _recognizers = new Dictionary<string, EigenFaceRecognizer>();
+
+            Directory.CreateDirectory(_YMLPath);
         }
 
         public FaceRecognizer(MainForm mainForm) : this()
@@ -126,14 +129,14 @@ namespace epicenterWin
             Person currentPerson = new Person(firstName, lastName);
             currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
 
-            if(currentPerson == null)
+            if(_currentPerson == null)
             {
                 _mainForm.TrainingStopped();
                 MessageBox.Show("This person doesn't exist");
                 return;
             }
 
-            _currentTrainingID = currentPerson.ID;
+            _currentTrainingID = _currentPerson.ID;
             _trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
             foreach (Face face in _trainedFaces)
             {
@@ -194,15 +197,25 @@ namespace epicenterWin
             if (_faces.Count <= 0)
                 return;
 
-            _eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
-            _eigenFaceRecognizer.Write(_YMLPath + _YMLFileName + _currentTrainingID.ToString() + _YMLFileExtention);
-
+            EigenFaceRecognizer eigenFaceRecognizer;
+            if (_recognizers.ContainsKey(_currentPerson.FullName))
+            {
+                eigenFaceRecognizer = _recognizers[_currentPerson.FullName];
+                _recognizers.Remove(_currentPerson.FullName);
+            }
+            else
+                eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
+            eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
+            string YMLFullPath = _YMLPath + _YMLFileName + _currentTrainingID.ToString() + _YMLFileExtention;
+            eigenFaceRecognizer.Write(YMLFullPath);
+            if (_ymlsRead)
+                _recognizers.Add(_currentPerson.FullName, eigenFaceRecognizer);
+            _currentPerson.YML = YMLFullPath;
+            SqliteDataAccess<Person>.UpdatePerson(_currentPerson);
             _faces.Clear();                                                                   //clearing lists so we don't save same images again in DB
             _ids.Clear();
         }
 
-        //TODO: return "Person" instead of id if matches missing
-        //null if not.
         public Person Recognize(Image<Gray, byte> grayImage)
         {
             if (grayImage == null)
@@ -210,14 +223,23 @@ namespace epicenterWin
 
             if (_people.Count == 0)
                 _people = SqliteDataAccess<Person>.ReadRows().ToList();
+
+            foreach (Person person in _people)
+            {
+                if (!_ymlsRead && person.YML != null)
+                {
+                    EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
+                    eigenFaceRecognizer.Read(person.YML);
+                    _recognizers.Add(_currentPerson.FullName, eigenFaceRecognizer);
+                }
+            }
+            _ymlsRead = true;
             PredictionResult closestResult = new PredictionResult
             {
                 Distance = double.PositiveInfinity
             };
-            foreach (Person person in _people)
+            foreach (EigenFaceRecognizer eigenFaceRecognizer in _recognizers.Values)
             {
-                EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
-                eigenFaceRecognizer.Read(_YMLPath + _YMLFileName + person.ID.ToString() + _YMLFileExtention);
                 PredictionResult result = eigenFaceRecognizer.Predict(grayImage);
                 if (result.Distance < closestResult.Distance)
                     closestResult = result;
