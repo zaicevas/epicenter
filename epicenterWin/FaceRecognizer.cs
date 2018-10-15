@@ -224,13 +224,16 @@ namespace epicenterWin
             if (_people.Count == 0)
                 _people = SqliteDataAccess<Person>.ReadRows().ToList();
 
-            foreach (Person person in _people)
+            if (!_ymlsRead)
             {
-                if (!_ymlsRead && person.YML != null)
+                foreach (Person person in _people)
                 {
-                    EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
-                    eigenFaceRecognizer.Read(person.YML);
-                    _recognizers.Add(_currentPerson.FullName, eigenFaceRecognizer);
+                    if (person.YML != null)
+                    {
+                        EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
+                        eigenFaceRecognizer.Read(person.YML);
+                        _recognizers.Add(person.FullName, eigenFaceRecognizer);
+                    }
                 }
             }
             _ymlsRead = true;
