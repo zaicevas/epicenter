@@ -8,6 +8,7 @@ namespace epicenterWin
 {
     public abstract class DbEntity
     {
+        [UnecessaryColumnAttribute]
         public int ID { get; set; }
     }
 }

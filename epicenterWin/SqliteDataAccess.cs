@@ -37,7 +37,7 @@ namespace epicenterWin
             List<string> names = new List<string>();
             foreach (PropertyInfo property in _propertyInfo)
             {
-                if (property.Name != "ID" && property.Name != "FullName")
+                if (!Attribute.IsDefined(property, typeof(UnecessaryColumnAttribute)))
                 {
                     names.Add(property.Name);
                 }
@@ -65,7 +65,7 @@ namespace epicenterWin
                 string finalQuery = $"INSERT INTO {_tableName} (" + tmpQuery + ") values (";
                 tmpQuery = BuildPropertyQueryString(true);
                 finalQuery += tmpQuery + ")";
-                System.Diagnostics.Debug.WriteLine(finalQuery);
+                System.Diagnostics.Debug.WriteLine("finalQuery: " + finalQuery);
                 _sqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
