@@ -8,5 +8,6 @@ namespace epicenterWin
 {
     public class Person : MissingEntity
     {
+        public string YML { get; set; }
     }
 }
