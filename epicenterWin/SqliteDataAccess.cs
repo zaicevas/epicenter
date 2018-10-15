@@ -27,17 +27,22 @@ namespace epicenterWin
         readonly private static string _tableName = _typeParameter.Name;
         readonly private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
 
+
         private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
 
-        private static List<string> GetPropertyNames()
+        private static List<string> GetPropertyNames<A>(bool exclude) where A : Attribute
         {
+            // returns List of property names which either have or DO NOT have attribute of type A, based on bool exclude
+            // exclude = true -> returns all property names BUT ones who don't have attribute of type A
             List<string> names = new List<string>();
             foreach (PropertyInfo property in _propertyInfo)
             {
-                if (!Attribute.IsDefined(property, typeof(UnecessaryColumnAttribute)))
+                bool excludeFinal = Attribute.IsDefined(property, typeof(A));
+                excludeFinal = exclude ? !excludeFinal : excludeFinal;
+                if (excludeFinal)
                 {
                     names.Add(property.Name);
                 }
@@ -47,7 +52,7 @@ namespace epicenterWin
 
         private static string BuildPropertyQueryString(bool atSign)
         {
-            List<string> propertyNames = GetPropertyNames();
+            List<string> propertyNames = GetPropertyNames<UnecessaryColumnAttribute>(true);
             string endQuery = "";
             foreach (string name in propertyNames)
             {
@@ -91,9 +96,8 @@ namespace epicenterWin
         {
             try
             {
-                string tmpQuery = BuildPropertyQueryString(false);
                 string finalQuery = $"UPDATE {_tableName} SET ";
-                foreach (string name in GetPropertyNames())
+                foreach (string name in GetPropertyNames<UnecessaryColumnAttribute>(true))
                 {
                     finalQuery += name + " = @" + name + ", ";
                 }
@@ -129,6 +133,26 @@ namespace epicenterWin
             catch (SQLiteException)
             {
                 System.Diagnostics.Debug.WriteLine("SQLiteException caught in DeleteAllPerson");
+            }
+        }
+
+        public static T ReadByCompositeKey(T entity)
+        {
+            try
+            {
+                string finalQuery = $"SELECT * FROM {_tableName} WHERE ";
+                foreach (string name in GetPropertyNames<CompositeKeyAttribute>(false))
+                {
+                    finalQuery += name + " = @" + name + " AND ";
+                }
+                finalQuery = finalQuery.Substring(0, finalQuery.Length - " AND ".Length);
+                System.Diagnostics.Debug.WriteLine(finalQuery);
+                return _sqliteConnect.Query<T>(finalQuery, entity).First();
+            }
+            catch (SQLiteException)
+            {
+                System.Diagnostics.Debug.WriteLine("SQLiteException caught in ReadByCompositeKey");
+                return null;
             }
         }
 
