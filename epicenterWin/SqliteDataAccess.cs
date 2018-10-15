@@ -14,7 +14,6 @@ namespace epicenterWin
     /*
  * Table 'Person' has 6 columns:
  * ID
- * FaceID       matches training data labels
  * FirstName
  * LastName     (can be null)
  * Missing
@@ -22,11 +21,11 @@ namespace epicenterWin
  * */
     static class SqliteDataAccess<T> where T : DbEntity
     {
-        private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());         // dapper the object mapper
+        private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());
 
-        private static Type _typeParameter = typeof(T);
-        private static string _tableName = _typeParameter.Name;
-        private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
+        readonly private static Type _typeParameter = typeof(T);
+        readonly private static string _tableName = _typeParameter.Name;
+        readonly private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
 
         private static string LoadConnectionString(string id = "Default")
         {
@@ -38,7 +37,7 @@ namespace epicenterWin
             List<string> names = new List<string>();
             foreach (PropertyInfo property in _propertyInfo)
             {
-                if (property.Name != "ID")
+                if (property.Name != "ID" && property.Name != "FullName")
                 {
                     names.Add(property.Name);
                 }
@@ -46,7 +45,7 @@ namespace epicenterWin
             return names;
         }
 
-        private static string BuildPropertyQueryString(bool atSign)         
+        private static string BuildPropertyQueryString(bool atSign)
         {
             List<string> propertyNames = GetPropertyNames();
             string endQuery = "";
@@ -60,13 +59,13 @@ namespace epicenterWin
 
         public static void CreateRow(T entity)
         {
-            bool person = entity is Person;
             try
             {
                 string tmpQuery = BuildPropertyQueryString(false);
                 string finalQuery = $"INSERT INTO {_tableName} (" + tmpQuery + ") values (";
                 tmpQuery = BuildPropertyQueryString(true);
-                finalQuery += tmpQuery;
+                finalQuery += tmpQuery + ")";
+                System.Diagnostics.Debug.WriteLine(finalQuery);
                 _sqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
@@ -79,7 +78,7 @@ namespace epicenterWin
         {
             try
             {
-                return _sqliteConnect.Query<T>($"SELECT * FROM {typeof(T).GetType().Name}", new DynamicParameters());             // not sure if typeof(T) would just work
+                return _sqliteConnect.Query<T>($"SELECT * FROM {_tableName}", new DynamicParameters());             // not sure if typeof(T) would just work
             }
             catch (SQLiteException)
             {
@@ -90,12 +89,11 @@ namespace epicenterWin
 
         public static void UpdatePerson(T entity)
         {
-            bool person = entity is Person;
             try
             {
                 string tmpQuery = BuildPropertyQueryString(false);
                 string finalQuery = $"UPDATE {_tableName} SET ";
-                foreach(string name in GetPropertyNames())
+                foreach (string name in GetPropertyNames())
                 {
                     finalQuery += name + " = @" + name + ", ";
                 }

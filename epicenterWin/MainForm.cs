@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 using Emgu.CV;
-using Emgu.CV.Face;
 using Emgu.CV.Structure;
-using static Emgu.CV.Face.FaceRecognizer;
 
 namespace epicenterWin
 {
@@ -25,37 +21,28 @@ namespace epicenterWin
         {
             InitializeComponent();
 
-            _faceRecognizer = new FaceRecognizer
+            _faceRecognizer = new FaceRecognizer(this)
             {
                 PictureBox = webcamPictureBox,
                 DrawEyesSquare = true,
-                DrawFaceSquare = true
+                DrawFaceSquare = true,
             };
             _faceRecognizer.CreateVideoCapture(null);
-
-            Person Tomas = new Person()
-            {
-                FirstName = "TOMAS",
-                LastName = "NOTTOMAS",
-                Missing = true,
-                FaceID = 5
-            };
-            SqliteDataAccess<Person>.checkNames();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
         }
 
-        private void removeImageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RemoveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
 
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
         }
 
-        private void trainingButton_Click(object sender, EventArgs e)
+        private void TrainingButton_Click(object sender, EventArgs e)
         {
             string txt = idTextBox.Text;
             if (txt == null | txt == string.Empty)
@@ -67,28 +54,33 @@ namespace epicenterWin
                 MessageBox.Show("Please enter a valid id!");
                 return;
             }
-            idTextBox.Enabled = !idTextBox.Enabled;
-            trainingButton.Enabled = !trainingButton.Enabled;
-            
+            idTextBox.Enabled = false;
+            trainingButton.Enabled = false;
+            recognizeButton.Enabled = false;
             _faceRecognizer.StartTraining(id);
-
-            idTextBox.Enabled = !idTextBox.Enabled;
-            trainingButton.Enabled = !trainingButton.Enabled;
         }
 
-        private void recognizeButton_Click(object sender, EventArgs e)
+        public void TrainingStopped()
+        {
+            idTextBox.Enabled = true;
+            trainingButton.Enabled = true;
+            recognizeButton.Enabled = true;
+        }
+
+        private void RecognizeButton_Click(object sender, EventArgs e)
         {
             Mat frame = _faceRecognizer.Frame;
             if (frame == null)
                 return;
 
             Image<Gray, byte> img = _faceRecognizer.GetFaceFromFrame(frame);
-            int prediction = _faceRecognizer.Recognize(img);
-            MessageBox.Show(prediction.ToString());
+            Person prediction = _faceRecognizer.Recognize(img);
+
+            if (prediction == null)
+                MessageBox.Show("Unknown");
+            else
+                MessageBox.Show(prediction.FullName);
         }
-
-
-
 
         private void FilePathBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -102,7 +94,7 @@ namespace epicenterWin
                 }
                 else
                 {
-                    MessageBox.Show("Wrong image path or it already in the list.");
+                    MessageBox.Show("Wrong image path or it's already in the list.");
                 }
             }
         }
@@ -167,12 +159,20 @@ namespace epicenterWin
             };
         }
 
-        private void removeToolStripMenuItem_Click(object sender, EventArgs e)                              // clicking remove
+        private void RemoveToolStripMenuItem_Click(object sender, EventArgs e)                              // clicking remove
         {
             int index = BrowseListBox.IndexFromPoint(_removeMe.Location);
             BrowseListBox.Items.RemoveAt(index);
         }
 
+        private void _reportCarTab_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void _reportCarPlateTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

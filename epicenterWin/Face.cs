@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace epicenterWin
 {
-    class Plate : MissingEntity
+    class Face : DbEntity
     {
-        public string NumberPlate { get; set; }
+        public byte[] Blob { get; set; }
+        public int PersonID { get; set; }
     }
 }

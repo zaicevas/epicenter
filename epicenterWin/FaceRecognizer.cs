@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 using Emgu.CV;
@@ -25,12 +27,17 @@ namespace epicenterWin
         private CascadeClassifier _faceCascade;
         private CascadeClassifier _eyeCascade;
 
+        private bool initialized = false;
+
         private Timer _timer;
         private int _timeout = 50;
         private int _currentTick = 0;
 
         public Mat Frame { get; set; }
         public Image<Gray, byte> LastRecognized { get; private set; }
+
+        private List<Image<Gray, byte>> _facesToSave;
+        private List<int> _idsToSave;
 
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
@@ -41,6 +48,8 @@ namespace epicenterWin
         public VideoCapture VideoCapture { get; private set; }
         public PictureBox PictureBox { get; set; }
 
+        private MainForm _mainForm;
+
         public FaceRecognizer()
         {
             _eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
@@ -49,14 +58,49 @@ namespace epicenterWin
             Frame = new Mat();
             _faces = new List<Image<Gray, byte>>();
             _ids = new List<int>();
+
+            _facesToSave = new List<Image<Gray, byte>>();
+            _idsToSave = new List<int>();
+
+            PrepareForRecognizing();
         }
 
+        public FaceRecognizer(MainForm mainForm) : this()
+        {
+            _mainForm = mainForm;
+        }
         /// <summary>
         /// sets the _videoCapture object to a new videoCapture where
         /// the video is either the provided filename
         /// or if the filename is null then it opens up ze webcam
         /// </summary>
         /// <param name="filename"></param>
+        private void PrepareForRecognizing()
+        {
+            try
+            {
+                if (SqliteDataAccess<Face>.ReadRows() != null)
+                {
+                    List<Face> trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
+                    foreach (Face face in trainedFaces)
+                    {
+                        Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
+                        {
+                            Bytes = face.Blob
+                        };
+                        _faces.Add(grayImage);
+                        _ids.Add(face.PersonID);
+                    }
+                    TrainAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+            initialized = true;
+        }
+
         public void CreateVideoCapture(string filename)
         {
             if (VideoCapture != null)
@@ -113,6 +157,7 @@ namespace epicenterWin
             {
                 Interval = 300,
             };
+
             _timer.Tick += TrainingTick;
             _timer.Start();
         }
@@ -124,6 +169,7 @@ namespace epicenterWin
             if (_currentTick >= _timeout)
             {
                 _timer.Stop();
+                _mainForm.TrainingStopped();
                 TrainAll();
             }
         }
@@ -136,28 +182,70 @@ namespace epicenterWin
             Image<Gray, byte> image = GetFaceFromFrame(frame);
             if (image == null)
                 return;
-            _faces.Add(image);
-            _ids.Add(id);
+            _facesToSave.Add(image);
+            _idsToSave.Add(id);
         }
 
         public void TrainAll()
         {
-            if (_faces.Count <= 0)
+            if (_facesToSave.Count <= 0)
                 return;
+
+            if (initialized)
+            {
+                foreach (Image<Gray, byte> image in _facesToSave)
+                {
+                    Face face = new Face
+                    {
+                        Blob = image.Bytes,
+                        PersonID = _idsToSave[0]                                                    //all labels are the same
+                    };
+                    SqliteDataAccess<Face>.CreateRow(face);
+                    _faces.Add(image);
+                    _ids.Add(_idsToSave[0]);
+                }
+            }
+
             _eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
             _eigenFaceRecognizer.Write(_YMLPath);
+
+            _facesToSave.Clear();                                                                   //clearing lists so we don't save same images again in DB
+            _idsToSave.Clear();
         }
 
         //TODO: return "Person" instead of id if matches missing
         //null if not.
-        public int Recognize(Image<Gray, byte> grayImage)
+        public Person Recognize(Image<Gray, byte> grayImage)
         {
-            int id = -1;
             if (grayImage == null)
-                return -1;
+                return null;
             PredictionResult result = _eigenFaceRecognizer.Predict(grayImage);
-            id = GetMatchingId(result, _threshold);
-            return id;
+            return GetMatchingPerson(result, _threshold);
+        }
+
+        private Person GetMatchingPerson(PredictionResult result, int threshold)
+        {
+            if (result.Label == -1 || result.Distance > threshold)
+            {
+                return null;
+            }
+
+            try
+            {
+                List<Person> people = SqliteDataAccess<Person>.ReadRows().ToList();
+                foreach (Person person in people)
+                {
+                    if (person.ID == result.Label)
+                    {
+                        return person;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+            return null;
         }
 
         public int GetMatchingId(PredictionResult result, int threshold)

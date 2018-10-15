@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbEntity.cs" />
+    <Compile Include="Face.cs" />
     <Compile Include="FaceRecognizer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -76,9 +77,9 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MissingEntity.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Plate.cs" />
-    <Compile Include="PlateDatabase.cs" />
     <Compile Include="PlateRecognizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace epicenterWin
 {
-    class Person : DbEntity
+    public class Person : MissingEntity
     {
-        public int FaceID { get; set; }
     }
 }
