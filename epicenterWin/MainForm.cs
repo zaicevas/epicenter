@@ -97,7 +97,7 @@ namespace epicenterWin
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            bool bChecked = false;
+            bool bChecked = false;                                  
             for (int i = 0; i < BrowseListBox.Items.Count; i++)
             {
                 if (BrowseListBox.GetItemChecked(i))
@@ -123,19 +123,7 @@ namespace epicenterWin
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff"
-            };
-            if (fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                foreach (var v in fileDialog.FileNames)
-                {
-                    if (!BrowseListBox.Items.Contains(v))
-                        BrowseListBox.Items.Add(v, true);
-                }
-            }
+            OpenBrowseDialog(BrowseListBox);
         }
 
         private void BrowseListBox_MouseDown(object sender, MouseEventArgs e)                               // catching right button (remove) click
@@ -157,8 +145,9 @@ namespace epicenterWin
 
         private void RemoveToolStripMenuItem_Click(object sender, EventArgs e)                              // clicking remove
         {
-            int index = BrowseListBox.IndexFromPoint(_removeMe.Location);
-            BrowseListBox.Items.RemoveAt(index);
+            CheckedListBox currentBox = Tabs.SelectedTab.Name == "_train" ? _trainCheckedListBox : BrowseListBox;
+            int index = currentBox.IndexFromPoint(_removeMe.Location);
+            currentBox.Items.RemoveAt(index);
         }
 
         private void _reportCarTab_Click(object sender, EventArgs e)
@@ -190,11 +179,11 @@ namespace epicenterWin
         private void _reportCarReportButton_Click(object sender, EventArgs e)
         {
             string carPlate = _reportCarPlateTextBox.Text;
-            Regex ltuPlate = new Regex(@"^[A-z]{3}\d{3}$", RegexOptions.IgnoreCase);
+            Regex ltuPlate = new Regex(@"^[A-z]{3}\d{3}$");
 
             if (!ltuPlate.IsMatch(carPlate))
             {
-                MessageBox.Show("Please use Lithuanian number plate notation.");
+                MessageBox.Show("Please use Lithuanian number plate notation withuot -. E.g. \"EWQ153\"");
                 return;
             }
             Plate newPlate = new Plate(carPlate);
@@ -204,5 +193,82 @@ namespace epicenterWin
             SqliteDataAccess<Plate>.CreateRow(newPlate);
             MessageBox.Show("Created!");
         }
+
+        private void _trainBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenBrowseDialog(_trainCheckedListBox);
+        }
+
+        private void OpenBrowseDialog(CheckedListBox browseListBox)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "All images|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff"
+            };
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                foreach (var v in fileDialog.FileNames)
+                {
+                    if (!browseListBox.Items.Contains(v))
+                        browseListBox.Items.Add(v, true);
+                }
+            }
+        }
+
+        private void _trainCheckedListBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            removeItem(e, _trainCheckedListBox);
+        }
+
+        private void removeItem(MouseEventArgs e, CheckedListBox browseListBox)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+            int index = browseListBox.IndexFromPoint(e.Location);
+            removeContextMenu.Opening += (o, c) =>
+            {
+                if (index == ListBox.NoMatches)
+                    c.Cancel = true;
+                else
+                {
+                    _removeMe = e;
+                    c.Cancel = false;
+                }
+            };
+        }
+
+        private void _trainBrowserButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void _trainBrowseTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData.ToString() == "Return")
+            {
+                string path = _trainBrowseTextBox.Text;
+                if (File.Exists(path) && !_trainCheckedListBox.Items.Contains(path))
+                {
+                    _trainCheckedListBox.Items.Add(path, true);
+                    _trainBrowseTextBox.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Wrong image path or it's already in the list.");
+                }
+            }
+        }
+
+        public string[] GetTrainFileNames()
+        {
+            String[] paths = new string[_trainCheckedListBox.CheckedItems.Count];
+            _trainCheckedListBox.CheckedItems.CopyTo(paths, 0);
+            foreach (string path in paths)
+            {
+                System.Diagnostics.Debug.WriteLine(path);
+            }
+            return paths;
+        }
+
     }
 }

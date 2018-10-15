@@ -70,14 +70,14 @@
             this._reportFirstNameLabel = new System.Windows.Forms.Label();
             this._reportPersonFirstNameTextBox = new System.Windows.Forms.TextBox();
             this._train = new System.Windows.Forms.TabPage();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this._trainLastNameTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this._trainFirstNameTextBox = new System.Windows.Forms.TextBox();
+            this._trainBrowserButton = new System.Windows.Forms.Button();
+            this._trainBrowseButton = new System.Windows.Forms.Button();
+            this._trainBrowseTextBox = new System.Windows.Forms.TextBox();
+            this._trainCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.label7 = new System.Windows.Forms.Label();
             this._historyPage = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
@@ -524,14 +524,14 @@
             // 
             // _train
             // 
-            this._train.Controls.Add(this.textBox5);
+            this._train.Controls.Add(this._trainLastNameTextBox);
             this._train.Controls.Add(this.label8);
             this._train.Controls.Add(this.label9);
-            this._train.Controls.Add(this.textBox6);
-            this._train.Controls.Add(this.button3);
-            this._train.Controls.Add(this.button4);
-            this._train.Controls.Add(this.textBox4);
-            this._train.Controls.Add(this.checkedListBox1);
+            this._train.Controls.Add(this._trainFirstNameTextBox);
+            this._train.Controls.Add(this._trainBrowserButton);
+            this._train.Controls.Add(this._trainBrowseButton);
+            this._train.Controls.Add(this._trainBrowseTextBox);
+            this._train.Controls.Add(this._trainCheckedListBox);
             this._train.Controls.Add(this.label7);
             this._train.Location = new System.Drawing.Point(4, 22);
             this._train.Margin = new System.Windows.Forms.Padding(2);
@@ -542,13 +542,13 @@
             this._train.Text = "Train";
             this._train.UseVisualStyleBackColor = true;
             // 
-            // textBox5
+            // _trainLastNameTextBox
             // 
-            this.textBox5.Location = new System.Drawing.Point(80, 32);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(191, 20);
-            this.textBox5.TabIndex = 26;
+            this._trainLastNameTextBox.Location = new System.Drawing.Point(80, 32);
+            this._trainLastNameTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this._trainLastNameTextBox.Name = "_trainLastNameTextBox";
+            this._trainLastNameTextBox.Size = new System.Drawing.Size(191, 20);
+            this._trainLastNameTextBox.TabIndex = 26;
             // 
             // label8
             // 
@@ -570,57 +570,61 @@
             this.label9.TabIndex = 24;
             this.label9.Text = "First Name";
             // 
-            // textBox6
+            // _trainFirstNameTextBox
             // 
-            this.textBox6.Location = new System.Drawing.Point(80, 4);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(191, 20);
-            this.textBox6.TabIndex = 23;
+            this._trainFirstNameTextBox.Location = new System.Drawing.Point(80, 4);
+            this._trainFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this._trainFirstNameTextBox.Name = "_trainFirstNameTextBox";
+            this._trainFirstNameTextBox.Size = new System.Drawing.Size(191, 20);
+            this._trainFirstNameTextBox.TabIndex = 23;
             // 
-            // button3
+            // _trainBrowserButton
             // 
-            this.button3.Location = new System.Drawing.Point(281, 337);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(57, 33);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Train";
-            this.button3.UseVisualStyleBackColor = true;
+            this._trainBrowserButton.Location = new System.Drawing.Point(281, 337);
+            this._trainBrowserButton.Margin = new System.Windows.Forms.Padding(2);
+            this._trainBrowserButton.Name = "_trainBrowserButton";
+            this._trainBrowserButton.Size = new System.Drawing.Size(57, 33);
+            this._trainBrowserButton.TabIndex = 9;
+            this._trainBrowserButton.Text = "Train";
+            this._trainBrowserButton.UseVisualStyleBackColor = true;
+            this._trainBrowserButton.Click += new System.EventHandler(this._trainBrowserButton_Click);
             // 
-            // button4
+            // _trainBrowseButton
             // 
-            this.button4.Location = new System.Drawing.Point(550, 73);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(55, 22);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "Browse";
-            this.button4.UseVisualStyleBackColor = true;
+            this._trainBrowseButton.Location = new System.Drawing.Point(550, 73);
+            this._trainBrowseButton.Margin = new System.Windows.Forms.Padding(2);
+            this._trainBrowseButton.Name = "_trainBrowseButton";
+            this._trainBrowseButton.Size = new System.Drawing.Size(55, 22);
+            this._trainBrowseButton.TabIndex = 8;
+            this._trainBrowseButton.Text = "Browse";
+            this._trainBrowseButton.UseVisualStyleBackColor = true;
+            this._trainBrowseButton.Click += new System.EventHandler(this._trainBrowseButton_Click);
             // 
-            // textBox4
+            // _trainBrowseTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(7, 75);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(526, 20);
-            this.textBox4.TabIndex = 7;
+            this._trainBrowseTextBox.Location = new System.Drawing.Point(7, 75);
+            this._trainBrowseTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this._trainBrowseTextBox.Name = "_trainBrowseTextBox";
+            this._trainBrowseTextBox.Size = new System.Drawing.Size(526, 20);
+            this._trainBrowseTextBox.TabIndex = 7;
+            this._trainBrowseTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._trainBrowseTextBox_KeyDown);
             // 
-            // checkedListBox1
+            // _trainCheckedListBox
             // 
-            this.checkedListBox1.CheckOnClick = true;
-            this.checkedListBox1.ContextMenuStrip = this.removeContextMenu;
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(6, 110);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(606, 199);
-            this.checkedListBox1.TabIndex = 6;
+            this._trainCheckedListBox.CheckOnClick = true;
+            this._trainCheckedListBox.ContextMenuStrip = this.removeContextMenu;
+            this._trainCheckedListBox.FormattingEnabled = true;
+            this._trainCheckedListBox.Location = new System.Drawing.Point(6, 110);
+            this._trainCheckedListBox.Margin = new System.Windows.Forms.Padding(2);
+            this._trainCheckedListBox.Name = "_trainCheckedListBox";
+            this._trainCheckedListBox.Size = new System.Drawing.Size(606, 199);
+            this._trainCheckedListBox.TabIndex = 6;
+            this._trainCheckedListBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this._trainCheckedListBox_MouseDown);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(4, 52);
+            this.label7.Location = new System.Drawing.Point(3, 54);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(207, 13);
@@ -796,14 +800,14 @@
         private System.Windows.Forms.TextBox _lastNameTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage _train;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.Button _trainBrowserButton;
+        private System.Windows.Forms.Button _trainBrowseButton;
+        private System.Windows.Forms.TextBox _trainBrowseTextBox;
+        private System.Windows.Forms.CheckedListBox _trainCheckedListBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox _trainLastNameTextBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox _trainFirstNameTextBox;
     }
 }
