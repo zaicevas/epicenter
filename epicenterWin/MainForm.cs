@@ -169,5 +169,12 @@ namespace epicenterWin
         {
 
         }
+
+        private void _reportPersonReportButton_Click(object sender, EventArgs e)
+        {
+            Person newPerson = new Person(_reportPersonFirstNameTextBox.Text, _reportPersonLastNameTextBox.Text);
+            newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
+            SqliteDataAccess<Person>.CreateRow(newPerson);
+        }
     }
 }

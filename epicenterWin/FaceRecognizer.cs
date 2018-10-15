@@ -123,11 +123,7 @@ namespace epicenterWin
 
         public void StartTraining(string firstName, string lastName)
         {
-            Person currentPerson = new Person
-            {
-                FirstName = firstName,
-                LastName = lastName
-            };
+            Person currentPerson = new Person(firstName, lastName);
             currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
 
             if(currentPerson == null)

@@ -8,5 +8,10 @@ namespace epicenterWin
 {
     public class Person : MissingEntity
     {
+        public Person(String FirstName, String LastName)
+        {
+            this.FirstName = FirstName;
+            this.LastName = LastName;
+        }
     }
 }

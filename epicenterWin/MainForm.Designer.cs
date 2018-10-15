@@ -109,7 +109,7 @@
             this.Tabs.Controls.Add(this._train);
             this.Tabs.Controls.Add(this._historyPage);
             this.Tabs.Location = new System.Drawing.Point(7, 0);
-            this.Tabs.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(2);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
             this.Tabs.Size = new System.Drawing.Size(622, 411);
@@ -123,9 +123,9 @@
             this._searchPage.Controls.Add(this.BrowseListBox);
             this._searchPage.Controls.Add(this._searchSelectionText);
             this._searchPage.Location = new System.Drawing.Point(4, 22);
-            this._searchPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._searchPage.Margin = new System.Windows.Forms.Padding(2);
             this._searchPage.Name = "_searchPage";
-            this._searchPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._searchPage.Padding = new System.Windows.Forms.Padding(2);
             this._searchPage.Size = new System.Drawing.Size(614, 385);
             this._searchPage.TabIndex = 0;
             this._searchPage.Text = "Search";
@@ -134,7 +134,7 @@
             // CheckButton
             // 
             this.CheckButton.Location = new System.Drawing.Point(248, 302);
-            this.CheckButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CheckButton.Margin = new System.Windows.Forms.Padding(2);
             this.CheckButton.Name = "CheckButton";
             this.CheckButton.Size = new System.Drawing.Size(114, 67);
             this.CheckButton.TabIndex = 4;
@@ -145,7 +145,7 @@
             // BrowseButton
             // 
             this.BrowseButton.Location = new System.Drawing.Point(544, 22);
-            this.BrowseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BrowseButton.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(55, 22);
             this.BrowseButton.TabIndex = 3;
@@ -156,7 +156,7 @@
             // FilePathBox
             // 
             this.FilePathBox.Location = new System.Drawing.Point(6, 22);
-            this.FilePathBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FilePathBox.Margin = new System.Windows.Forms.Padding(2);
             this.FilePathBox.Name = "FilePathBox";
             this.FilePathBox.Size = new System.Drawing.Size(526, 20);
             this.FilePathBox.TabIndex = 2;
@@ -168,7 +168,7 @@
             this.BrowseListBox.ContextMenuStrip = this.removeContextMenu;
             this.BrowseListBox.FormattingEnabled = true;
             this.BrowseListBox.Location = new System.Drawing.Point(6, 47);
-            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseListBox.Name = "BrowseListBox";
             this.BrowseListBox.Size = new System.Drawing.Size(606, 229);
             this.BrowseListBox.TabIndex = 1;
@@ -213,7 +213,7 @@
             this._webCam.Controls.Add(this.webcamPictureBox);
             this._webCam.Location = new System.Drawing.Point(4, 22);
             this._webCam.Name = "_webCam";
-            this._webCam.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this._webCam.Padding = new System.Windows.Forms.Padding(3);
             this._webCam.Size = new System.Drawing.Size(614, 385);
             this._webCam.TabIndex = 3;
             this._webCam.Text = "Webcam";
@@ -238,7 +238,7 @@
             // recognizeButton
             // 
             this.recognizeButton.Location = new System.Drawing.Point(485, 342);
-            this.recognizeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.recognizeButton.Margin = new System.Windows.Forms.Padding(2);
             this.recognizeButton.Name = "recognizeButton";
             this.recognizeButton.Size = new System.Drawing.Size(99, 26);
             this.recognizeButton.TabIndex = 7;
@@ -310,9 +310,9 @@
             // 
             this._reportPage.Controls.Add(this.tabControl1);
             this._reportPage.Location = new System.Drawing.Point(4, 22);
-            this._reportPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPage.Margin = new System.Windows.Forms.Padding(2);
             this._reportPage.Name = "_reportPage";
-            this._reportPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPage.Padding = new System.Windows.Forms.Padding(2);
             this._reportPage.Size = new System.Drawing.Size(614, 385);
             this._reportPage.TabIndex = 1;
             this._reportPage.Text = "Report";
@@ -324,7 +324,7 @@
             this.tabControl1.Controls.Add(this._reportPersonTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(2, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(610, 381);
@@ -342,9 +342,9 @@
             this._reportCarTab.Controls.Add(this._reportCarPlateLabel);
             this._reportCarTab.Controls.Add(this._reportCarPlateTextBox);
             this._reportCarTab.Location = new System.Drawing.Point(4, 22);
-            this._reportCarTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarTab.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarTab.Name = "_reportCarTab";
-            this._reportCarTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarTab.Padding = new System.Windows.Forms.Padding(2);
             this._reportCarTab.Size = new System.Drawing.Size(602, 355);
             this._reportCarTab.TabIndex = 0;
             this._reportCarTab.Text = "Car";
@@ -355,7 +355,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(82, 117);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(15, 14);
             this.checkBox1.TabIndex = 24;
@@ -374,7 +374,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(82, 87);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(191, 20);
             this.textBox1.TabIndex = 22;
@@ -402,7 +402,7 @@
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(82, 59);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(191, 20);
             this.textBox2.TabIndex = 19;
@@ -410,7 +410,7 @@
             // _reportCarReportButton
             // 
             this._reportCarReportButton.Location = new System.Drawing.Point(34, 154);
-            this._reportCarReportButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarReportButton.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarReportButton.Name = "_reportCarReportButton";
             this._reportCarReportButton.Size = new System.Drawing.Size(524, 179);
             this._reportCarReportButton.TabIndex = 18;
@@ -430,7 +430,7 @@
             // _reportCarPlateTextBox
             // 
             this._reportCarPlateTextBox.Location = new System.Drawing.Point(82, 25);
-            this._reportCarPlateTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarPlateTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarPlateTextBox.Name = "_reportCarPlateTextBox";
             this._reportCarPlateTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportCarPlateTextBox.TabIndex = 10;
@@ -446,9 +446,9 @@
             this._reportPersonTab.Controls.Add(this._reportFirstNameLabel);
             this._reportPersonTab.Controls.Add(this._reportPersonFirstNameTextBox);
             this._reportPersonTab.Location = new System.Drawing.Point(4, 22);
-            this._reportPersonTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonTab.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonTab.Name = "_reportPersonTab";
-            this._reportPersonTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonTab.Padding = new System.Windows.Forms.Padding(2);
             this._reportPersonTab.Size = new System.Drawing.Size(602, 355);
             this._reportPersonTab.TabIndex = 1;
             this._reportPersonTab.Text = "Person";
@@ -458,7 +458,7 @@
             // 
             this._reportPersonMissingCheckBox.AutoSize = true;
             this._reportPersonMissingCheckBox.Location = new System.Drawing.Point(77, 85);
-            this._reportPersonMissingCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonMissingCheckBox.Name = "_reportPersonMissingCheckBox";
             this._reportPersonMissingCheckBox.Size = new System.Drawing.Size(15, 14);
             this._reportPersonMissingCheckBox.TabIndex = 12;
@@ -477,7 +477,7 @@
             // _reportPersonLastNameTextBox
             // 
             this._reportPersonLastNameTextBox.Location = new System.Drawing.Point(77, 55);
-            this._reportPersonLastNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonLastNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonLastNameTextBox.Name = "_reportPersonLastNameTextBox";
             this._reportPersonLastNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportPersonLastNameTextBox.TabIndex = 10;
@@ -485,12 +485,13 @@
             // _reportPersonReportButton
             // 
             this._reportPersonReportButton.Location = new System.Drawing.Point(119, 136);
-            this._reportPersonReportButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonReportButton.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonReportButton.Name = "_reportPersonReportButton";
             this._reportPersonReportButton.Size = new System.Drawing.Size(54, 25);
             this._reportPersonReportButton.TabIndex = 9;
             this._reportPersonReportButton.Text = "Report";
             this._reportPersonReportButton.UseVisualStyleBackColor = true;
+            this._reportPersonReportButton.Click += new System.EventHandler(this._reportPersonReportButton_Click);
             // 
             // _reportLastNameLabel
             // 
@@ -515,7 +516,7 @@
             // _reportPersonFirstNameTextBox
             // 
             this._reportPersonFirstNameTextBox.Location = new System.Drawing.Point(77, 28);
-            this._reportPersonFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonFirstNameTextBox.Name = "_reportPersonFirstNameTextBox";
             this._reportPersonFirstNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportPersonFirstNameTextBox.TabIndex = 0;
@@ -532,9 +533,9 @@
             this._train.Controls.Add(this.checkedListBox1);
             this._train.Controls.Add(this.label7);
             this._train.Location = new System.Drawing.Point(4, 22);
-            this._train.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._train.Margin = new System.Windows.Forms.Padding(2);
             this._train.Name = "_train";
-            this._train.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._train.Padding = new System.Windows.Forms.Padding(2);
             this._train.Size = new System.Drawing.Size(614, 385);
             this._train.TabIndex = 4;
             this._train.Text = "Train";
@@ -543,7 +544,7 @@
             // textBox5
             // 
             this.textBox5.Location = new System.Drawing.Point(80, 32);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(191, 20);
             this.textBox5.TabIndex = 26;
@@ -571,7 +572,7 @@
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(80, 4);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(191, 20);
             this.textBox6.TabIndex = 23;
@@ -579,7 +580,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(281, 337);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(57, 33);
             this.button3.TabIndex = 9;
@@ -589,7 +590,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(550, 73);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(55, 22);
             this.button4.TabIndex = 8;
@@ -599,7 +600,7 @@
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(7, 75);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(526, 20);
             this.textBox4.TabIndex = 7;
@@ -610,7 +611,7 @@
             this.checkedListBox1.ContextMenuStrip = this.removeContextMenu;
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(6, 110);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(606, 199);
             this.checkedListBox1.TabIndex = 6;
@@ -635,9 +636,9 @@
             this._historyPage.Controls.Add(this.button1);
             this._historyPage.Controls.Add(this.listView1);
             this._historyPage.Location = new System.Drawing.Point(4, 22);
-            this._historyPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._historyPage.Margin = new System.Windows.Forms.Padding(2);
             this._historyPage.Name = "_historyPage";
-            this._historyPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._historyPage.Padding = new System.Windows.Forms.Padding(2);
             this._historyPage.Size = new System.Drawing.Size(614, 385);
             this._historyPage.TabIndex = 2;
             this._historyPage.Text = "History";
@@ -717,7 +718,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(637, 418);
             this.Controls.Add(this.Tabs);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
