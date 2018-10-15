@@ -23,6 +23,9 @@ namespace epicenterWin
     {
         private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());         // dapper the object mapper
 
+        private static Type typeParameter = typeof(T);
+        private static string _tableName = typeParameter.Name;
+
         private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
@@ -30,12 +33,11 @@ namespace epicenterWin
 
         public static void CreateRow(T entity)
         {
-            string tableName = entity.GetType().Name;
             bool person = entity is Person;
             try
             {
                 int MissingInt = entity.Missing ? 1 : 0;
-                string queryString = $"INSERT INTO {tableName} (FirstName, LastName, Missing, ";
+                string queryString = $"INSERT INTO {_tableName} (FirstName, LastName, Missing, ";
                 queryString += person ? $"FaceID) values (@FirstName, @LastName, {MissingInt}, @FaceID)" : $"NumberPlate) values (@FirstName, @LastName, {MissingInt}, @NumberPlate";
                 System.Diagnostics.Debug.WriteLine(queryString);
                 _sqliteConnect.Execute(queryString, entity);
@@ -61,12 +63,11 @@ namespace epicenterWin
 
         public static void UpdatePerson(T entity)
         {
-            string tableName = entity.GetType().Name;
             bool person = entity is Person;
             try
             {
                 int MissingInt = entity.Missing ? 1 : 0;
-                string queryString = $"UPDATE {tableName} SET FirstName = @FirstName, LastName = @LastName, MissingInt = {MissingInt}, ";
+                string queryString = $"UPDATE {_tableName} SET FirstName = @FirstName, LastName = @LastName, MissingInt = {MissingInt}, ";
                 queryString += person ? "FaceID = @FaceID " : "NumberPlate = @NumberPlate ";
                 queryString += "WHERE ID = @ID";
                 _sqliteConnect.Execute(queryString, entity);
@@ -79,10 +80,9 @@ namespace epicenterWin
 
         public static void DeleteRow(T entity)
         {
-            string tableName = entity.GetType().Name;
             try
             {
-                _sqliteConnect.Execute($"DELETE FROM {tableName} WHERE ID = @ID", entity);
+                _sqliteConnect.Execute($"DELETE FROM {_tableName} WHERE ID = @ID", entity);
             }
             catch (SQLiteException)
             {
@@ -93,10 +93,9 @@ namespace epicenterWin
         public static void DeleteAllRows()
         {
             // Use it with great care :)
-            string tableName = typeof(T).GetType().Name;
             try
             {
-                _sqliteConnect.Execute($"DELETE FROM {tableName}");
+                _sqliteConnect.Execute($"DELETE FROM {_tableName}");
             }
             catch (SQLiteException)
             {
