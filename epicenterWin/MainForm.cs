@@ -27,7 +27,7 @@ namespace epicenterWin
                 DrawEyesSquare = true,
                 DrawFaceSquare = true,
             };
-            _faceRecognizer.CreateVideoCapture(null);
+            _faceRecognizer.CreateVideoCapture(null);            
         }
 
         private void Form1_Load(object sender, EventArgs e)
