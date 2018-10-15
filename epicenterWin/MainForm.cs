@@ -32,6 +32,15 @@ namespace epicenterWin
                 DrawFaceSquare = true
             };
             _faceRecognizer.CreateVideoCapture(null);
+
+            Person Tomas = new Person()
+            {
+                FirstName = "TOMAS",
+                LastName = "NOTTOMAS",
+                Missing = true,
+                FaceID = 5
+            };
+            SqliteDataAccess<Person>.CreateRow(Tomas);
         }
 
         private void Form1_Load(object sender, EventArgs e)
