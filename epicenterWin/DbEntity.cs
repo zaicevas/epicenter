@@ -11,7 +11,7 @@ namespace epicenterWin
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public bool Missing { get; set; }
+        public int Missing { get; set; }
 
         public string FullName => $"{FirstName} {LastName}";
     }

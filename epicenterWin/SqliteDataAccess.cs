@@ -7,6 +7,7 @@ using System.Configuration;                 // ConfigurationManager
 using System.Data;                          // IDbConnection
 using System.Data.SQLite;
 using Dapper;
+using System.Reflection;
 
 namespace epicenterWin
 {
@@ -23,12 +24,38 @@ namespace epicenterWin
     {
         private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());         // dapper the object mapper
 
-        private static Type typeParameter = typeof(T);
-        private static string _tableName = typeParameter.Name;
+        private static Type _typeParameter = typeof(T);
+        private static string _tableName = _typeParameter.Name;
+        private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
 
         private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+        }
+
+        private static List<string> GetPropertyNames()
+        {
+            List<string> names = new List<string>();
+            foreach (PropertyInfo property in _propertyInfo)
+            {
+                if (property.Name != "ID")
+                {
+                    names.Add(property.Name);
+                }
+            }
+            return names;
+        }
+
+        private static string BuildPropertyQueryString(bool atSign)         
+        {
+            List<string> propertyNames = GetPropertyNames();
+            string endQuery = "";
+            foreach (string name in propertyNames)
+            {
+                endQuery += (atSign ? "@" : "") + name + ", ";
+            }
+            endQuery = endQuery.Substring(0, endQuery.Length - 2);      // remove ", " after last property name
+            return endQuery;
         }
 
         public static void CreateRow(T entity)
@@ -36,11 +63,11 @@ namespace epicenterWin
             bool person = entity is Person;
             try
             {
-                int MissingInt = entity.Missing ? 1 : 0;
-                string queryString = $"INSERT INTO {_tableName} (FirstName, LastName, Missing, ";
-                queryString += person ? $"FaceID) values (@FirstName, @LastName, {MissingInt}, @FaceID)" : $"NumberPlate) values (@FirstName, @LastName, {MissingInt}, @NumberPlate";
-                System.Diagnostics.Debug.WriteLine(queryString);
-                _sqliteConnect.Execute(queryString, entity);
+                string tmpQuery = BuildPropertyQueryString(false);
+                string finalQuery = $"INSERT INTO {_tableName} (" + tmpQuery + ") values (";
+                tmpQuery = BuildPropertyQueryString(true);
+                finalQuery += tmpQuery;
+                _sqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
             {
@@ -66,11 +93,15 @@ namespace epicenterWin
             bool person = entity is Person;
             try
             {
-                int MissingInt = entity.Missing ? 1 : 0;
-                string queryString = $"UPDATE {_tableName} SET FirstName = @FirstName, LastName = @LastName, MissingInt = {MissingInt}, ";
-                queryString += person ? "FaceID = @FaceID " : "NumberPlate = @NumberPlate ";
-                queryString += "WHERE ID = @ID";
-                _sqliteConnect.Execute(queryString, entity);
+                string tmpQuery = BuildPropertyQueryString(false);
+                string finalQuery = $"UPDATE {_tableName} SET ";
+                foreach(string name in GetPropertyNames())
+                {
+                    finalQuery += name + " = @" + name + ", ";
+                }
+                finalQuery = finalQuery.Substring(0, finalQuery.Length - 2);
+                finalQuery += " WHERE ID = @ID";
+                _sqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
             {

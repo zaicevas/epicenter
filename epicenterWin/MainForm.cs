@@ -40,7 +40,7 @@ namespace epicenterWin
                 Missing = true,
                 FaceID = 5
             };
-            SqliteDataAccess<Person>.DeleteAllRows();
+            SqliteDataAccess<Person>.checkNames();
         }
 
         private void Form1_Load(object sender, EventArgs e)
