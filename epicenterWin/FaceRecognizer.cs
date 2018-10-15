@@ -15,7 +15,10 @@ namespace epicenterWin
 {
     public class FaceRecognizer
     {
-        private const string _YMLPath = @"../../Algo/trainingData.yml";
+        private const string _YMLPath = @"../../Algo/";
+        private const string _YMLFileName = @"person";
+        private const string _YMLFileExtention = @".yml";
+        //private const string _YMLPath = @"../../Algo/trainingData.yml";
         private const string _faceXML = @"../../Algo/haarcascade_frontalface_default.xml";
         private const string _eyeXML = @"../../Algo/haarcascade_eye.xml";
 
@@ -26,8 +29,6 @@ namespace epicenterWin
         private EigenFaceRecognizer _eigenFaceRecognizer;
         private CascadeClassifier _faceCascade;
         private CascadeClassifier _eyeCascade;
-
-        private bool initialized = false;
 
         private Timer _timer;
         private int _timeout = 50;
@@ -41,7 +42,7 @@ namespace epicenterWin
 
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
-        private int _currentTrainingId = -1;
+        private int _currentTrainingID = -1;
 
         public bool DrawFaceSquare { get; set; }
         public bool DrawEyesSquare { get; set; }
@@ -49,6 +50,16 @@ namespace epicenterWin
         public PictureBox PictureBox { get; set; }
 
         private MainForm _mainForm;
+
+
+
+
+        private List<Person> _people;
+        private List<Face> _trainedFaces;
+        private List<EigenFaceRecognizer> _recognizers;
+
+
+
 
         public FaceRecognizer()
         {
@@ -62,7 +73,11 @@ namespace epicenterWin
             _facesToSave = new List<Image<Gray, byte>>();
             _idsToSave = new List<int>();
 
-            PrepareForRecognizing();
+
+
+            _people = new List<Person>();
+            _trainedFaces = new List<Face>();
+            _recognizers = new List<EigenFaceRecognizer>();
         }
 
         public FaceRecognizer(MainForm mainForm) : this()
@@ -75,32 +90,6 @@ namespace epicenterWin
         /// or if the filename is null then it opens up ze webcam
         /// </summary>
         /// <param name="filename"></param>
-        private void PrepareForRecognizing()
-        {
-            try
-            {
-                if (SqliteDataAccess<Face>.ReadRows() != null)
-                {
-                    List<Face> trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
-                    foreach (Face face in trainedFaces)
-                    {
-                        Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
-                        {
-                            Bytes = face.Blob
-                        };
-                        _faces.Add(grayImage);
-                        _ids.Add(face.PersonID);
-                    }
-                    TrainAll();
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-            }
-            initialized = true;
-        }
-
         public void CreateVideoCapture(string filename)
         {
             if (VideoCapture != null)
@@ -148,11 +137,32 @@ namespace epicenterWin
                 PictureBox.Image = image.ToBitmap();
         }
 
-        public void StartTraining(int id)
+        public void StartTraining(string fullName)
         {
-            _currentTick = 0;
-            _currentTrainingId = id;
+            _people = SqliteDataAccess<Person>.ReadRows().ToList();
+            foreach(Person person in _people)
+            {
+                if(person.FullName == fullName)
+                {
+                    _currentTrainingID = person.ID;
+                    break;
+                }
+            }
+            _trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
+            foreach (Face face in _trainedFaces)
+            {
+                if (face.PersonID == _currentTrainingID)
+                {
+                    Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
+                    {
+                        Bytes = face.Blob
+                    };
+                    _faces.Add(grayImage);
+                    _ids.Add(_currentTrainingID);
+                }
+            }
 
+            _currentTick = 0;
             _timer = new Timer()
             {
                 Interval = 300,
@@ -162,10 +172,10 @@ namespace epicenterWin
             _timer.Start();
         }
 
-        private void TrainingTick(object sender, System.EventArgs e)
+        private void TrainingTick(object sender, EventArgs e)
         {
             _currentTick++;
-            RecognizeFrameAs(Frame, _currentTrainingId);
+            RecognizeFrameAs(Frame, _currentTrainingID);
             if (_currentTick >= _timeout)
             {
                 _timer.Stop();
@@ -191,23 +201,20 @@ namespace epicenterWin
             if (_facesToSave.Count <= 0)
                 return;
 
-            if (initialized)
+            foreach (Image<Gray, byte> image in _facesToSave)
             {
-                foreach (Image<Gray, byte> image in _facesToSave)
+                Face face = new Face
                 {
-                    Face face = new Face
-                    {
-                        Blob = image.Bytes,
-                        PersonID = _idsToSave[0]                                                    //all labels are the same
-                    };
-                    SqliteDataAccess<Face>.CreateRow(face);
-                    _faces.Add(image);
-                    _ids.Add(_idsToSave[0]);
-                }
+                    Blob = image.Bytes,
+                    PersonID = _idsToSave[0]                                                    //all labels are the same
+                };
+                SqliteDataAccess<Face>.CreateRow(face);
+                _faces.Add(image);
+                _ids.Add(_idsToSave[0]);
             }
 
             _eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
-            _eigenFaceRecognizer.Write(_YMLPath);
+            _eigenFaceRecognizer.Write(_YMLPath + _YMLFileName + _currentTrainingID.ToString() + _YMLFileExtention);
 
             _facesToSave.Clear();                                                                   //clearing lists so we don't save same images again in DB
             _idsToSave.Clear();
@@ -219,8 +226,27 @@ namespace epicenterWin
         {
             if (grayImage == null)
                 return null;
-            PredictionResult result = _eigenFaceRecognizer.Predict(grayImage);
-            return GetMatchingPerson(result, _threshold);
+
+            if (_people.Count == 0)
+            {
+                _people = SqliteDataAccess<Person>.ReadRows().ToList();
+                Console.WriteLine("vyksta");
+            }
+            PredictionResult closestResult = new PredictionResult
+            {
+                Distance = double.PositiveInfinity
+            };
+            foreach (Person person in _people)
+            {
+                EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
+                eigenFaceRecognizer.Read(_YMLPath + _YMLFileName + person.ID.ToString() + _YMLFileExtention);
+                Console.WriteLine(_YMLPath + _YMLFileName + person.ID.ToString() + _YMLFileExtention + " loaded");
+                PredictionResult result = eigenFaceRecognizer.Predict(grayImage);
+                if (result.Distance < closestResult.Distance)
+                    closestResult = result;
+            }
+
+            return GetMatchingPerson(closestResult, _threshold);
         }
 
         private Person GetMatchingPerson(PredictionResult result, int threshold)

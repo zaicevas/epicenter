@@ -44,25 +44,30 @@ namespace epicenterWin
 
         private void TrainingButton_Click(object sender, EventArgs e)
         {
-            string txt = idTextBox.Text;
-            if (txt == null | txt == string.Empty)
+            string firstName = _firstNameTextBox.Text;
+            string lastName = _lastNameTextBox.Text;
+            if (firstName == null || firstName == string.Empty || lastName == null || lastName == string.Empty)
                 return;
-            int id = -1;
-            int.TryParse(idTextBox.Text, out id);
-            if (id == -1)
-            {
-                MessageBox.Show("Please enter a valid id!");
-                return;
-            }
-            idTextBox.Enabled = false;
+
+            //int id = -1;
+            //int.TryParse(_firstNameTextBox.Text, out id);
+            //if (id == -1)
+            //{
+            //    MessageBox.Show("Please enter a valid id!");
+            //    return;
+            //}
+
+            string fullName = firstName + " " + lastName;
+
+            _firstNameTextBox.Enabled = false;
             trainingButton.Enabled = false;
             recognizeButton.Enabled = false;
-            _faceRecognizer.StartTraining(id);
+            _faceRecognizer.StartTraining(fullName);
         }
 
         public void TrainingStopped()
         {
-            idTextBox.Enabled = true;
+            _firstNameTextBox.Enabled = true;
             trainingButton.Enabled = true;
             recognizeButton.Enabled = true;
         }
