@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Emgu.CV;
@@ -175,6 +176,23 @@ namespace epicenterWin
             Person newPerson = new Person(_reportPersonFirstNameTextBox.Text, _reportPersonLastNameTextBox.Text);
             newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
             SqliteDataAccess<Person>.CreateRow(newPerson);
+        }
+
+        private void _reportCarReportButton_Click(object sender, EventArgs e)
+        {
+            Regex regex = new Regex(@"^[A-z]{3}\d{3}$", RegexOptions.IgnoreCase);
+
+            if (!regex.IsMatch(_reportCarPlateTextBox.Text))
+            {
+                MessageBox.Show("Please use Lithuanian number plate notation.");
+                return;
+            }
+            Plate newPlate = new Plate(_reportCarPlateTextBox.Text);
+            newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
+            newPlate.FirstName = _reportCarFirstNameTextBox.Text;
+            newPlate.LastName = _reportCarLastNameTextBox.Text;
+            SqliteDataAccess<Plate>.CreateRow(newPlate);
+            MessageBox.Show("Created!");
         }
     }
 }

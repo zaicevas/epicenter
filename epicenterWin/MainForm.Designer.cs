@@ -52,12 +52,12 @@
             this._reportPage = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this._reportCarTab = new System.Windows.Forms.TabPage();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this._reportCarMissingCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this._reportCarLastNameTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this._reportCarFirstNameTextBox = new System.Windows.Forms.TextBox();
             this._reportCarReportButton = new System.Windows.Forms.Button();
             this._reportCarPlateLabel = new System.Windows.Forms.Label();
             this._reportCarPlateTextBox = new System.Windows.Forms.TextBox();
@@ -332,12 +332,12 @@
             // 
             // _reportCarTab
             // 
-            this._reportCarTab.Controls.Add(this.checkBox1);
+            this._reportCarTab.Controls.Add(this._reportCarMissingCheckBox);
             this._reportCarTab.Controls.Add(this.label3);
-            this._reportCarTab.Controls.Add(this.textBox1);
+            this._reportCarTab.Controls.Add(this._reportCarLastNameTextBox);
             this._reportCarTab.Controls.Add(this.label4);
             this._reportCarTab.Controls.Add(this.label5);
-            this._reportCarTab.Controls.Add(this.textBox2);
+            this._reportCarTab.Controls.Add(this._reportCarFirstNameTextBox);
             this._reportCarTab.Controls.Add(this._reportCarReportButton);
             this._reportCarTab.Controls.Add(this._reportCarPlateLabel);
             this._reportCarTab.Controls.Add(this._reportCarPlateTextBox);
@@ -351,15 +351,15 @@
             this._reportCarTab.UseVisualStyleBackColor = true;
             this._reportCarTab.Click += new System.EventHandler(this._reportCarTab_Click);
             // 
-            // checkBox1
+            // _reportCarMissingCheckBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(82, 117);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 24;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this._reportCarMissingCheckBox.AutoSize = true;
+            this._reportCarMissingCheckBox.Location = new System.Drawing.Point(82, 117);
+            this._reportCarMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this._reportCarMissingCheckBox.Name = "_reportCarMissingCheckBox";
+            this._reportCarMissingCheckBox.Size = new System.Drawing.Size(15, 14);
+            this._reportCarMissingCheckBox.TabIndex = 24;
+            this._reportCarMissingCheckBox.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -371,13 +371,13 @@
             this.label3.TabIndex = 23;
             this.label3.Text = "Missing";
             // 
-            // textBox1
+            // _reportCarLastNameTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(82, 87);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(191, 20);
-            this.textBox1.TabIndex = 22;
+            this._reportCarLastNameTextBox.Location = new System.Drawing.Point(82, 87);
+            this._reportCarLastNameTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this._reportCarLastNameTextBox.Name = "_reportCarLastNameTextBox";
+            this._reportCarLastNameTextBox.Size = new System.Drawing.Size(191, 20);
+            this._reportCarLastNameTextBox.TabIndex = 22;
             // 
             // label4
             // 
@@ -399,13 +399,13 @@
             this.label5.TabIndex = 20;
             this.label5.Text = "First Name";
             // 
-            // textBox2
+            // _reportCarFirstNameTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(82, 59);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(191, 20);
-            this.textBox2.TabIndex = 19;
+            this._reportCarFirstNameTextBox.Location = new System.Drawing.Point(82, 59);
+            this._reportCarFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this._reportCarFirstNameTextBox.Name = "_reportCarFirstNameTextBox";
+            this._reportCarFirstNameTextBox.Size = new System.Drawing.Size(191, 20);
+            this._reportCarFirstNameTextBox.TabIndex = 19;
             // 
             // _reportCarReportButton
             // 
@@ -416,6 +416,7 @@
             this._reportCarReportButton.TabIndex = 18;
             this._reportCarReportButton.Text = "Report";
             this._reportCarReportButton.UseVisualStyleBackColor = true;
+            this._reportCarReportButton.Click += new System.EventHandler(this._reportCarReportButton_Click);
             // 
             // _reportCarPlateLabel
             // 
@@ -786,12 +787,12 @@
         private System.Windows.Forms.TextBox _reportPersonLastNameTextBox;
         private System.Windows.Forms.CheckBox _reportPersonMissingCheckBox;
         private System.Windows.Forms.Label _reportPersonMissingLabel;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox _reportCarMissingCheckBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox _reportCarLastNameTextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox _reportCarFirstNameTextBox;
         private System.Windows.Forms.TextBox _lastNameTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage _train;
