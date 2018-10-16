@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace epicenterWin
+﻿namespace epicenterWin
 {
     public abstract class MissingEntity : DbEntity
     {
@@ -15,7 +9,7 @@ namespace epicenterWin
 
         public int Missing { get; set; } = 1;
 
-        [UnecessaryColumnAttribute]
+        [UnecessaryColumn]
         public string FullName => $"{FirstName} {LastName}";
     }
 }

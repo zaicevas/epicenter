@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;                 // ConfigurationManager
-using System.Data;                          // IDbConnection
+using System.Configuration;
+using System.Data;
 using System.Data.SQLite;
 using Dapper;
 using System.Reflection;
 
 namespace epicenterWin
 {
-    /*
- * Table 'Person' has 6 columns:
- * ID
- * FirstName
- * LastName     (can be null)
- * Missing
- * YML
- * */
     static class SqliteDataAccess<T> where T : DbEntity
     {
         private static IDbConnection _sqliteConnect = new SQLiteConnection(LoadConnectionString());
@@ -35,8 +25,6 @@ namespace epicenterWin
 
         private static List<string> GetPropertyNames<A>(bool exclude) where A : Attribute
         {
-            // returns List of property names which either have or DO NOT have attribute of type A, based on bool exclude
-            // exclude = true -> returns all property names BUT ones who don't have attribute of type A
             List<string> names = new List<string>();
             foreach (PropertyInfo property in _propertyInfo)
             {
@@ -83,7 +71,7 @@ namespace epicenterWin
         {
             try
             {
-                return _sqliteConnect.Query<T>($"SELECT * FROM {_tableName}", new DynamicParameters());             // not sure if typeof(T) would just work
+                return _sqliteConnect.Query<T>($"SELECT * FROM {_tableName}", new DynamicParameters());
             }
             catch (SQLiteException)
             {
@@ -125,7 +113,6 @@ namespace epicenterWin
 
         public static void DeleteAllRows()
         {
-            // Use it with great care :)
             try
             {
                 _sqliteConnect.Execute($"DELETE FROM {_tableName}");
@@ -149,7 +136,7 @@ namespace epicenterWin
                 System.Diagnostics.Debug.WriteLine(finalQuery);
                 return _sqliteConnect.Query<T>(finalQuery, entity).First();
             }
-            catch (Exception)        // InvalidOperationException for null
+            catch
             {
                 System.Diagnostics.Debug.WriteLine("Exception caught in ReadByCompositeKey");
                 return null;

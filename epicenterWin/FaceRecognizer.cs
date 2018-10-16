@@ -212,7 +212,7 @@ namespace epicenterWin
                 _recognizers.Add(_currentPerson.FullName, eigenFaceRecognizer);
             _currentPerson.YML = YMLFullPath;
             SqliteDataAccess<Person>.UpdatePerson(_currentPerson);
-            _faces.Clear();                                                                   //clearing lists so we don't save same images again in DB
+            _faces.Clear();
             _ids.Clear();
         }
 

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace epicenterWin
+﻿namespace epicenterWin
 {
     public abstract class DbEntity
     {
-        [UnecessaryColumnAttribute]
+        [UnecessaryColumn]
         public int ID { get; set; }
     }
 }
