@@ -11,7 +11,6 @@ namespace epicenterWin
 {
     public partial class MainForm : Form
     {
-        // non-face recognition
 
         private MouseEventArgs _removeMe;
 
@@ -29,18 +28,6 @@ namespace epicenterWin
                 DrawFaceSquare = true,
             };
             _faceRecognizer.CreateVideoCapture(null);
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void RemoveImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
         }
 
         private void TrainingButton_Click(object sender, EventArgs e)

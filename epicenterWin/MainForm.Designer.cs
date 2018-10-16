@@ -726,7 +726,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.Tabs.ResumeLayout(false);
             this._searchPage.ResumeLayout(false);
             this._searchPage.PerformLayout();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using openalprnet;
@@ -40,11 +41,9 @@ namespace epicenterWin
 
                 foreach (AlprPlateResultNet plate in results.Plates)
                 {
-                    AlprPlateNet matching = GetMatchingPlate(plate.TopNPlates);
+                    AlprPlateNet matching = plate.TopNPlates.First(p => p.MatchesTemplate);
                     if (matching != null)
-                    {
                         result.Add(matching.Characters);
-                    }
                 }
             }
             return result;
@@ -52,11 +51,7 @@ namespace epicenterWin
 
         private static AlprPlateNet GetMatchingPlate(List<AlprPlateNet> plates)
         {
-            foreach (AlprPlateNet plate in plates)
-                if (plate.MatchesTemplate)
-                    return plate;
-
-            return null;
+            return plates.First(x => x.MatchesTemplate);
         }
 
 

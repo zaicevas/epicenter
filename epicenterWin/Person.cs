@@ -3,16 +3,16 @@
     public class Person : MissingEntity
     {
         public string YML { get; set; }
-        public SearchReason reason;
+        public SearchReason Reason { get; set; }
         public Person(string firstName, string lastName)
         {
             FirstName = FirstName;
             LastName = LastName;
-            reason = SearchReason.Missing;
+            Reason = SearchReason.Missing;
         }
         public Person()
         {
-            reason = SearchReason.Missing;
+            Reason = SearchReason.Missing;
         }
     }
 
