@@ -1,17 +1,25 @@
-﻿using System;
-
-namespace epicenterWin
+﻿namespace epicenterWin
 {
     public class Person : MissingEntity
     {
         public string YML { get; set; }
-        public Person(string FirstName, string LastName)
+        public SearchReason reason;
+        public Person(string firstName, string lastName)
         {
-            this.FirstName = FirstName;
-            this.LastName = LastName;
+            FirstName = FirstName;
+            LastName = LastName;
+            reason = SearchReason.Missing;
         }
         public Person()
         {
+            reason = SearchReason.Missing;
         }
+    }
+
+    public enum SearchReason : int
+    {
+        Missing,
+        Criminal,
+        Other
     }
 }
