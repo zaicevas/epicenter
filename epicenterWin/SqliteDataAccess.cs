@@ -149,9 +149,9 @@ namespace epicenterWin
                 System.Diagnostics.Debug.WriteLine(finalQuery);
                 return _sqliteConnect.Query<T>(finalQuery, entity).First();
             }
-            catch (Exception)
+            catch (Exception)        // InvalidOperationException for null
             {
-                System.Diagnostics.Debug.WriteLine("SQLiteException caught in ReadByCompositeKey");
+                System.Diagnostics.Debug.WriteLine("Exception caught in ReadByCompositeKey");
                 return null;
             }
         }

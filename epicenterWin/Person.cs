@@ -14,5 +14,8 @@ namespace epicenterWin
             this.FirstName = FirstName;
             this.LastName = LastName;
         }
+        public Person()     // for Dapper
+        {
+        }
     }
 }
