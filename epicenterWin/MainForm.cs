@@ -35,7 +35,7 @@ namespace epicenterWin
         {
             string firstName = _firstNameTextBox.Text;
             string lastName = _lastNameTextBox.Text;
-            if (firstName == null || firstName == string.Empty || lastName == null || lastName == string.Empty)
+            if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
                 return;
 
             _firstNameTextBox.Enabled = false;
