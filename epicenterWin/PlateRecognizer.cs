@@ -48,12 +48,5 @@ namespace epicenterWin
             }
             return result;
         }
-
-        private static AlprPlateNet GetMatchingPlate(List<AlprPlateNet> plates)
-        {
-            return plates.First(x => x.MatchesTemplate);
-        }
-
-
     }
 }

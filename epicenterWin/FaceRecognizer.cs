@@ -148,17 +148,14 @@ namespace epicenterWin
 
             _currentTrainingID = _currentPerson.ID;
             _trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
-            foreach (Face face in _trainedFaces)
-            {
-                if (face.PersonID == _currentTrainingID)
+            
+            foreach (Face face in _trainedFaces.Where(f => f.PersonID == _currentTrainingID)) {
+                Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
                 {
-                    Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
-                    {
-                        Bytes = face.Blob
-                    };
-                    _faces.Add(grayImage);
-                    _ids.Add(_currentTrainingID);
-                }
+                    Bytes = face.Blob
+                };
+                _faces.Add(grayImage);
+                _ids.Add(_currentTrainingID);
             }
 
             _currentTick = 0;
@@ -195,7 +192,7 @@ namespace epicenterWin
             Face face = new Face
             {
                 Blob = image.Bytes,
-                PersonID = _currentTrainingID                                                    //all labels are the same
+                PersonID = _currentTrainingID
             };
             SqliteDataAccess<Face>.CreateRow(face);
             _faces.Add(image);
