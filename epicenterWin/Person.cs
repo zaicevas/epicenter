@@ -1,4 +1,6 @@
-﻿namespace epicenterWin
+﻿using System;
+
+namespace epicenterWin
 {
     public class Person : MissingEntity
     {

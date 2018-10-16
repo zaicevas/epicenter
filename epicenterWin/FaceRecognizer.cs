@@ -77,7 +77,7 @@ namespace epicenterWin
         /// or if the filename is null then it opens up ze webcam
         /// </summary>
         /// <param name="filename"></param>
-        public void CreateVideoCapture(string filename)
+        public void CreateVideoCapture(string filename = null)
         {
             if (VideoCapture != null)
                 return;
@@ -233,14 +233,10 @@ namespace epicenterWin
 
             if (!_ymlsRead)
             {
-                foreach (Person person in _people)
-                {
-                    if (person.YML != null)
-                    {
-                        EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
-                        eigenFaceRecognizer.Read(person.YML);
-                        _recognizers.Add(person.FullName, eigenFaceRecognizer);
-                    }
+                foreach (Person person in _people.Where(p => p.YML != null)) {
+                    EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
+                    eigenFaceRecognizer.Read(person.YML);
+                    _recognizers.Add(person.FullName, eigenFaceRecognizer);
                 }
             }
             _ymlsRead = true;
@@ -265,11 +261,7 @@ namespace epicenterWin
             }
             try
             {
-                foreach (Person person in _people)
-                {
-                    if (person.ID == result.Label)
-                        return person;
-                }
+                return _people.First(person => person.ID == result.Label);
             }
             catch (Exception ex)
             {

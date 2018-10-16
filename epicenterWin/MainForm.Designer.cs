@@ -349,7 +349,6 @@
             this._reportCarTab.TabIndex = 0;
             this._reportCarTab.Text = "Car";
             this._reportCarTab.UseVisualStyleBackColor = true;
-            this._reportCarTab.Click += new System.EventHandler(this._reportCarTab_Click);
             // 
             // _reportCarMissingCheckBox
             // 
@@ -435,7 +434,6 @@
             this._reportCarPlateTextBox.Name = "_reportCarPlateTextBox";
             this._reportCarPlateTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportCarPlateTextBox.TabIndex = 10;
-            this._reportCarPlateTextBox.TextChanged += new System.EventHandler(this._reportCarPlateTextBox_TextChanged);
             // 
             // _reportPersonTab
             // 
@@ -587,7 +585,6 @@
             this._trainBrowserButton.TabIndex = 9;
             this._trainBrowserButton.Text = "Train";
             this._trainBrowserButton.UseVisualStyleBackColor = true;
-            this._trainBrowserButton.Click += new System.EventHandler(this._trainBrowserButton_Click);
             // 
             // _trainBrowseButton
             // 
