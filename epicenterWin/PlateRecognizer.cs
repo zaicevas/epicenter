@@ -9,7 +9,7 @@ using openalprnet;
 
 namespace epicenterWin
 {
-    struct PlateRecognizer
+    public class PlateRecognizer
     {
         private static string _localRegion = "lt";
         private static string _configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
@@ -25,7 +25,7 @@ namespace epicenterWin
             }
         }
 
-        public static List<string> ProcessImageFile(string fileName)
+        public List<string> ProcessImageFile(string fileName)
         {
             List<string> result = new List<string>();
 

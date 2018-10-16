@@ -14,12 +14,14 @@ namespace epicenterWin
         private MouseEventArgs _removeMe;
 
         private FaceRecognizer _faceRecognizer;
+        private PlateRecognizer _plateRecognizer;
 
 
         public MainForm()
         {
             InitializeComponent();
 
+            _plateRecognizer = new PlateRecognizer();
             _faceRecognizer = new FaceRecognizer(this)
             {
                 PictureBox = webcamPictureBox,
@@ -89,7 +91,7 @@ namespace epicenterWin
                 if (BrowseListBox.GetItemChecked(i))
                 {
                     bChecked = true;
-                    List<string> matched = PlateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
+                    List<string> matched = _plateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
                     if (matched.Count == 0)
                     {
                         MessageBox.Show(BrowseListBox.Items[i].ToString() + '\n' + "Haven't found any plates!");
