@@ -90,7 +90,17 @@ namespace epicenterWin
             VideoCapture.ImageGrabbed += VideoCapture_ImageGrabbed;
             VideoCapture.Start();
         }
-
+        public Image<Gray, byte> GetFaceFromBmp(Bitmap img)
+        {
+            if (img == null)
+                return null;
+            Image<Gray, byte> grayScale = new Image<Gray, byte>(img);
+            Rectangle[] arr = _faceCascade.DetectMultiScale(grayScale, 1.3, 5);
+            if (arr.Length <= 0)
+                return null;
+            Image<Gray, byte> result = grayScale.Copy(arr[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
+            return result;
+        }
         public Image<Gray, byte> GetFaceFromFrame(Mat frame)
         {
             if (frame == null)
