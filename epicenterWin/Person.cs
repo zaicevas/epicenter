@@ -8,8 +8,8 @@ namespace epicenterWin
         public SearchReason Reason { get; set; }
         public Person(string firstName, string lastName)
         {
-            FirstName = FirstName;
-            LastName = LastName;
+            FirstName = firstName;
+            LastName = lastName;
             Reason = SearchReason.Missing;
         }
         public Person()

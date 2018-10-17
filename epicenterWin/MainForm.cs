@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -237,12 +238,27 @@ namespace epicenterWin
         {
             string[] paths = new string[_trainCheckedListBox.CheckedItems.Count];
             _trainCheckedListBox.CheckedItems.CopyTo(paths, 0);
-            foreach (string path in paths)
-            {
-                System.Diagnostics.Debug.WriteLine(path);
-            }
             return paths;
         }
 
+        private void _trainBrowserButton_Click(object sender, EventArgs e)
+        {
+
+
+
+            string firstName = _trainFirstNameTextBox.Text;
+            string lastName = _trainLastNameTextBox.Text;
+            Person currentPerson = new Person(firstName, lastName);
+
+
+            currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
+            if (currentPerson == null)
+            {
+                MessageBox.Show("This person doesn't exist.");
+                return;
+            }
+            string[] filePaths = GetTrainFileNames();
+            //_faceRecognizer.TrainMultipleImages(filePaths, currentPerson);
+        }
     }
 }
