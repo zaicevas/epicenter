@@ -160,6 +160,7 @@ namespace epicenterWin
             string firstName = _reportPersonFirstNameTextBox.Text;
             string lastName = _reportPersonLastNameTextBox.Text;
 
+
             if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
             {
                 MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
@@ -167,7 +168,10 @@ namespace epicenterWin
             }
             Person newPerson = new Person(firstName, lastName);
             newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
+
             SqliteDataAccess<Person>.CreateRow(newPerson);
+            string[] imageFiles = GetTrainFileNames(_reportImagesListbox);
+            _faceRecognizer.TrainMultipleImages(imageFiles, newPerson);
             MessageBox.Show("Created!");
         }
 
@@ -202,10 +206,10 @@ namespace epicenterWin
             };
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
-                foreach (var v in fileDialog.FileNames)
+                foreach (string fileName in fileDialog.FileNames)
                 {
-                    if (!browseListBox.Items.Contains(v))
-                        browseListBox.Items.Add(v, true);
+                    if (!browseListBox.Items.Contains(fileName))
+                        browseListBox.Items.Add(fileName, true);
                 }
             }
         }
@@ -249,10 +253,10 @@ namespace epicenterWin
             }
         }
 
-        public string[] GetTrainFileNames()
+        public string[] GetTrainFileNames(CheckedListBox checkedListBox)
         {
-            string[] paths = new string[_trainCheckedListBox.CheckedItems.Count];
-            _trainCheckedListBox.CheckedItems.CopyTo(paths, 0);
+            string[] paths = new string[checkedListBox.CheckedItems.Count];
+            checkedListBox.CheckedItems.CopyTo(paths, 0);
             return paths;
         }
 
@@ -268,7 +272,7 @@ namespace epicenterWin
                 MessageBox.Show("This person doesn't exist.");
                 return;
             }
-            string[] filePaths = GetTrainFileNames();
+            string[] filePaths = GetTrainFileNames(_trainCheckedListBox);
             MessageBox.Show("ADDED " + _faceRecognizer.TrainMultipleImages(filePaths, currentPerson) + " faces.");
         }
 
@@ -292,6 +296,28 @@ namespace epicenterWin
         private void _clearButtonSearch_Click(object sender, EventArgs e)
         {
             BrowseListBox.Items.Clear();
+        }
+
+        private void _browseReportImageButton_Click(object sender, EventArgs e)
+        {
+            OpenBrowseDialog(_reportImagesListbox);
+        }
+
+        private void _reportImageTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData.ToString() == "Return")
+            {
+                string path = FilePathBox.Text;
+                if (File.Exists(path) && !BrowseListBox.Items.Contains(path))
+                {
+                    _reportImagesListbox.Items.Add(path, true);
+                    FilePathBox.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Wrong image path or it's already in the list.");
+                }
+            }
         }
     }
 }

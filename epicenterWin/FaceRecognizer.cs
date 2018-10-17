@@ -245,6 +245,7 @@ namespace epicenterWin
                     return null;
             }
 
+
             PredictionResult closestResult = new PredictionResult
             {
                 Distance = double.PositiveInfinity
@@ -253,7 +254,10 @@ namespace epicenterWin
             {
                 PredictionResult result = eigenFaceRecognizer.Predict(grayImage);
                 if (result.Distance < closestResult.Distance)
+                {
+                    System.Diagnostics.Debug.WriteLine("PREVIOUS DISTANCE: " + closestResult.Distance);
                     closestResult = result;
+                }
             }
             return GetMatchingPerson(closestResult, _threshold);
         }
@@ -266,6 +270,7 @@ namespace epicenterWin
             }
             try
             {
+                System.Diagnostics.Debug.WriteLine(result.Distance);
                 return _people.First(person => person.ID == result.Label);
             }
             catch (Exception ex)
@@ -357,6 +362,7 @@ namespace epicenterWin
                     faceCount++;
                 }
             }
+
             TrainAll();
             return faceCount;
         }
