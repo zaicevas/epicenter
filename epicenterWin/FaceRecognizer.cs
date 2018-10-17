@@ -51,6 +51,8 @@ namespace epicenterWin
         public VideoCapture VideoCapture { get; private set; }
         public PictureBox PictureBox { get; set; }
 
+        public bool IsCamAlive { get; set; }
+
         private MainForm _mainForm;
 
         public FaceRecognizer()
@@ -75,13 +77,11 @@ namespace epicenterWin
         /// sets the _videoCapture object to a new videoCapture where
         /// the video is either the provided filename
         /// or if the filename is null then it opens up ze webcam
+        /// should only be called when VideoCapture is disposed or null
         /// </summary>
         /// <param name="filename"></param>
         public void CreateVideoCapture(string filename = null)
         {
-            if (VideoCapture != null)
-                return;
-
             if (filename == null)
                 VideoCapture = new VideoCapture();
             else
@@ -89,18 +89,15 @@ namespace epicenterWin
 
             VideoCapture.ImageGrabbed += VideoCapture_ImageGrabbed;
             VideoCapture.Start();
+            IsCamAlive = true;
         }
-        public Image<Gray, byte> GetFaceFromBmp(Bitmap img)
+
+        public void StopVideoCapture()
         {
-            if (img == null)
-                return null;
-            Image<Gray, byte> grayScale = new Image<Gray, byte>(img);
-            Rectangle[] arr = _faceCascade.DetectMultiScale(grayScale, 1.3, 5);
-            if (arr.Length <= 0)
-                return null;
-            Image<Gray, byte> result = grayScale.Copy(arr[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
-            return result;
+            VideoCapture.Dispose();
+            IsCamAlive = false;
         }
+
         public Image<Gray, byte> GetFaceFromFrame(Mat frame)
         {
             if (frame == null)
@@ -306,50 +303,45 @@ namespace epicenterWin
             return eigenLabel + '\n' + "Distance: " + eigenDistance.ToString();
         }
 
-        public void TrainMultipleImages(string[] filePaths, Person target)
+        public int TrainMultipleImages(string[] filePaths, Person target)
         {
-
             _currentPerson = target;
             _currentTrainingID = _currentPerson.ID;
-            //EigenFaceRecognizer eigenFaceRecognizer;
-            //string FullName = target.FullName;
-            //if (_recognizers.ContainsKey(FullName))
-            //{
-            //    eigenFaceRecognizer = _recognizers[FullName];
-            //    _recognizers.Remove(FullName);
-            //}
-            //else
-            //    eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
-            //eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
-            //string YMLFullPath = _YMLPath + _YMLFileName + _currentTrainingID.ToString() + _YMLFileExtention;
-            //eigenFaceRecognizer.Write(YMLFullPath);
-            //if (_ymlsRead)
-            //    _recognizers.Add(FullName, eigenFaceRecognizer);
-            //target.YML = YMLFullPath;
-            //SqliteDataAccess<Person>.UpdatePerson(target);
-            //_faces.Clear();
-            //_ids.Clear();
 
+            int faceCount = 0;                                       // number of faces sucessfully added to data set
+
+            foreach (Face face in _trainedFaces.Where(f => f.PersonID == _currentTrainingID))           // read current data set from DB
+            {
+                Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
+                {
+                    Bytes = face.Blob
+                };
+                _faces.Add(grayImage);
+                _ids.Add(_currentTrainingID);
+            }
 
             foreach (string filePath in filePaths)
             {
-                Image<Bgr, byte> img = new Image<Bgr, Byte>(@filePath);
+                string path = Path.GetFullPath(filePath);
+                Image<Bgr, byte> img = new Image<Bgr, Byte>(path);
                 Image<Gray, byte> grayImg = img.Convert<Gray, byte>();
                 Rectangle[] faces = _faceCascade.DetectMultiScale(grayImg, 1.3, 5);
-                int face = 0;
                 if (faces.Length == 1)
                 {
                     Image<Gray, byte> faceSquare = grayImg.Copy(faces[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
                     _faces.Add(faceSquare);
                     _ids.Add(_currentTrainingID);
-                    faceSquare.Save("faceSquare.jpg");
-                    System.Diagnostics.Debug.WriteLine("FACE: " + face++);
+                    Face faceToDb = new Face
+                    {
+                        Blob = faceSquare.Bytes,
+                        PersonID = _currentTrainingID
+                    };
+                    SqliteDataAccess<Face>.CreateRow(faceToDb);
+                    faceCount++;
                 }
             }
             TrainAll();
-            MessageBox.Show("Training has ended.");
-
-
+            return faceCount;
         }
 
     }

@@ -11,7 +11,6 @@ namespace epicenterWin
 {
     public partial class MainForm : Form
     {
-
         private MouseEventArgs _removeMe;
 
         private FaceRecognizer _faceRecognizer;
@@ -29,7 +28,7 @@ namespace epicenterWin
                 DrawEyesSquare = true,
                 DrawFaceSquare = true,
             };
-            _faceRecognizer.CreateVideoCapture(filename: null);
+            //_faceRecognizer.CreateVideoCapture(filename: null);
         }
 
         private void TrainingButton_Click(object sender, EventArgs e)
@@ -243,13 +242,9 @@ namespace epicenterWin
 
         private void _trainBrowserButton_Click(object sender, EventArgs e)
         {
-
-
-
             string firstName = _trainFirstNameTextBox.Text;
             string lastName = _trainLastNameTextBox.Text;
             Person currentPerson = new Person(firstName, lastName);
-
 
             currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
             if (currentPerson == null)
@@ -258,7 +253,19 @@ namespace epicenterWin
                 return;
             }
             string[] filePaths = GetTrainFileNames();
-            //_faceRecognizer.TrainMultipleImages(filePaths, currentPerson);
+            MessageBox.Show("ADDED " + _faceRecognizer.TrainMultipleImages(filePaths, currentPerson) + " faces.");
+        }
+
+        private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Tabs.SelectedTab.Name == "_webCam")
+            {
+                _faceRecognizer.CreateVideoCapture(null);
+            }
+            else if (_faceRecognizer.IsCamAlive)
+            {
+                _faceRecognizer.StopVideoCapture();
+            }
         }
     }
 }

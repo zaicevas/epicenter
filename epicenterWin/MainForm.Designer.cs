@@ -114,6 +114,7 @@
             this.Tabs.SelectedIndex = 0;
             this.Tabs.Size = new System.Drawing.Size(829, 506);
             this.Tabs.TabIndex = 0;
+            this.Tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
             // _searchPage
             // 
