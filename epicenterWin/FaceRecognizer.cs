@@ -77,7 +77,7 @@ namespace epicenterWin
         /// or if the filename is null then it opens up ze webcam
         /// </summary>
         /// <param name="filename"></param>
-        public void CreateVideoCapture(string filename)
+        public void CreateVideoCapture(string filename = null)
         {
             if (VideoCapture != null)
                 return;
@@ -90,7 +90,17 @@ namespace epicenterWin
             VideoCapture.ImageGrabbed += VideoCapture_ImageGrabbed;
             VideoCapture.Start();
         }
-
+        public Image<Gray, byte> GetFaceFromBmp(Bitmap img)
+        {
+            if (img == null)
+                return null;
+            Image<Gray, byte> grayScale = new Image<Gray, byte>(img);
+            Rectangle[] arr = _faceCascade.DetectMultiScale(grayScale, 1.3, 5);
+            if (arr.Length <= 0)
+                return null;
+            Image<Gray, byte> result = grayScale.Copy(arr[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
+            return result;
+        }
         public Image<Gray, byte> GetFaceFromFrame(Mat frame)
         {
             if (frame == null)
@@ -138,17 +148,14 @@ namespace epicenterWin
 
             _currentTrainingID = _currentPerson.ID;
             _trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
-            foreach (Face face in _trainedFaces)
-            {
-                if (face.PersonID == _currentTrainingID)
+            
+            foreach (Face face in _trainedFaces.Where(f => f.PersonID == _currentTrainingID)) {
+                Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
                 {
-                    Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
-                    {
-                        Bytes = face.Blob
-                    };
-                    _faces.Add(grayImage);
-                    _ids.Add(_currentTrainingID);
-                }
+                    Bytes = face.Blob
+                };
+                _faces.Add(grayImage);
+                _ids.Add(_currentTrainingID);
             }
 
             _currentTick = 0;
@@ -185,7 +192,7 @@ namespace epicenterWin
             Face face = new Face
             {
                 Blob = image.Bytes,
-                PersonID = _currentTrainingID                                                    //all labels are the same
+                PersonID = _currentTrainingID
             };
             SqliteDataAccess<Face>.CreateRow(face);
             _faces.Add(image);
@@ -212,7 +219,7 @@ namespace epicenterWin
                 _recognizers.Add(_currentPerson.FullName, eigenFaceRecognizer);
             _currentPerson.YML = YMLFullPath;
             SqliteDataAccess<Person>.UpdatePerson(_currentPerson);
-            _faces.Clear();                                                                   //clearing lists so we don't save same images again in DB
+            _faces.Clear();
             _ids.Clear();
         }
 
@@ -226,14 +233,10 @@ namespace epicenterWin
 
             if (!_ymlsRead)
             {
-                foreach (Person person in _people)
-                {
-                    if (person.YML != null)
-                    {
-                        EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
-                        eigenFaceRecognizer.Read(person.YML);
-                        _recognizers.Add(person.FullName, eigenFaceRecognizer);
-                    }
+                foreach (Person person in _people.Where(p => p.YML != null)) {
+                    EigenFaceRecognizer eigenFaceRecognizer = new EigenFaceRecognizer();
+                    eigenFaceRecognizer.Read(person.YML);
+                    _recognizers.Add(person.FullName, eigenFaceRecognizer);
                 }
             }
             _ymlsRead = true;
@@ -258,11 +261,7 @@ namespace epicenterWin
             }
             try
             {
-                foreach (Person person in _people)
-                {
-                    if (person.ID == result.Label)
-                        return person;
-                }
+                return _people.First(person => person.ID == result.Label);
             }
             catch (Exception ex)
             {

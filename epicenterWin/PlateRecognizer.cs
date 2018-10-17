@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using openalprnet;
 
 namespace epicenterWin
 {
-    struct PlateRecognizer
+    public class PlateRecognizer
     {
         private static string _localRegion = "lt";
         private static string _configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
@@ -24,7 +25,7 @@ namespace epicenterWin
             }
         }
 
-        public static List<string> ProcessImageFile(string fileName)
+        public List<string> ProcessImageFile(string fileName)
         {
             List<string> result = new List<string>();
 
@@ -40,25 +41,12 @@ namespace epicenterWin
 
                 foreach (AlprPlateResultNet plate in results.Plates)
                 {
-                    AlprPlateNet matching = GetMatchingPlate(plate.TopNPlates);
+                    AlprPlateNet matching = plate.TopNPlates.First(p => p.MatchesTemplate);
                     if (matching != null)
-                    {
                         result.Add(matching.Characters);
-                    }
                 }
             }
             return result;
         }
-
-        private static AlprPlateNet GetMatchingPlate(List<AlprPlateNet> plates)
-        {
-            foreach (AlprPlateNet plate in plates)
-                if (plate.MatchesTemplate)
-                    return plate;
-
-            return null;
-        }
-
-
     }
 }

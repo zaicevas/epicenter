@@ -1,21 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace epicenterWin
 {
     public class Person : MissingEntity
     {
         public string YML { get; set; }
-        public Person(String FirstName, String LastName)
+        public SearchReason Reason { get; set; }
+        public Person(string firstName, string lastName)
         {
-            this.FirstName = FirstName;
-            this.LastName = LastName;
+            FirstName = FirstName;
+            LastName = LastName;
+            Reason = SearchReason.Missing;
         }
-        public Person()     // for Dapper
+        public Person()
         {
+            Reason = SearchReason.Missing;
         }
+    }
+
+    public enum SearchReason : int
+    {
+        Missing,
+        Criminal,
+        Other
     }
 }

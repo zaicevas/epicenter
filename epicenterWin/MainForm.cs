@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Emgu.CV;
@@ -11,43 +10,32 @@ namespace epicenterWin
 {
     public partial class MainForm : Form
     {
-        // non-face recognition
 
         private MouseEventArgs _removeMe;
 
         private FaceRecognizer _faceRecognizer;
+        private PlateRecognizer _plateRecognizer;
 
 
         public MainForm()
         {
             InitializeComponent();
 
+            _plateRecognizer = new PlateRecognizer();
             _faceRecognizer = new FaceRecognizer(this)
             {
                 PictureBox = webcamPictureBox,
                 DrawEyesSquare = true,
                 DrawFaceSquare = true,
             };
-            _faceRecognizer.CreateVideoCapture(null);
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void RemoveImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void ContextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
+            _faceRecognizer.CreateVideoCapture(filename: null);
         }
 
         private void TrainingButton_Click(object sender, EventArgs e)
         {
             string firstName = _firstNameTextBox.Text;
             string lastName = _lastNameTextBox.Text;
-            if (firstName == null || firstName == string.Empty || lastName == null || lastName == string.Empty)
+            if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
                 return;
 
             _firstNameTextBox.Enabled = false;
@@ -103,7 +91,7 @@ namespace epicenterWin
                 if (BrowseListBox.GetItemChecked(i))
                 {
                     bChecked = true;
-                    List<string> matched = PlateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
+                    List<string> matched = _plateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
                     if (matched.Count == 0)
                     {
                         MessageBox.Show(BrowseListBox.Items[i].ToString() + '\n' + "Haven't found any plates!");
@@ -150,22 +138,13 @@ namespace epicenterWin
             currentBox.Items.RemoveAt(index);
         }
 
-        private void _reportCarTab_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void _reportCarPlateTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void _reportPersonReportButton_Click(object sender, EventArgs e)
         {
             string firstName = _reportPersonFirstNameTextBox.Text;
             string lastName = _reportPersonLastNameTextBox.Text;
-            Regex nameRegex = new Regex(@"^[A-Z][a-z]*$");
-            if (!nameRegex.IsMatch(firstName) || !nameRegex.IsMatch(lastName))
+
+            if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
             {
                 MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
                 return;
@@ -179,9 +158,8 @@ namespace epicenterWin
         private void _reportCarReportButton_Click(object sender, EventArgs e)
         {
             string carPlate = _reportCarPlateTextBox.Text;
-            Regex ltuPlate = new Regex(@"^[A-z]{3}\d{3}$");
 
-            if (!ltuPlate.IsMatch(carPlate))
+            if (!carPlate.NumberPlateValid())
             {
                 MessageBox.Show("Please use Lithuanian number plate notation withuot -. E.g. \"EWQ153\"");
                 return;
@@ -238,10 +216,6 @@ namespace epicenterWin
             };
         }
 
-        private void _trainBrowserButton_Click(object sender, EventArgs e)
-        {
-        }
-
         private void _trainBrowseTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData.ToString() == "Return")
@@ -261,7 +235,7 @@ namespace epicenterWin
 
         public string[] GetTrainFileNames()
         {
-            String[] paths = new string[_trainCheckedListBox.CheckedItems.Count];
+            string[] paths = new string[_trainCheckedListBox.CheckedItems.Count];
             _trainCheckedListBox.CheckedItems.CopyTo(paths, 0);
             foreach (string path in paths)
             {
