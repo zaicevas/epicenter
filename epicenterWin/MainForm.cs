@@ -85,22 +85,38 @@ namespace epicenterWin
 
         private void CheckButton_Click(object sender, EventArgs e)
         {
-            bool bChecked = false;                                  
+            bool bChecked = false;
+            string displayString = "";
             for (int i = 0; i < BrowseListBox.Items.Count; i++)
             {
+                displayString = "";
                 if (BrowseListBox.GetItemChecked(i))
                 {
                     bChecked = true;
+                    string filePath = BrowseListBox.Items[i].ToString();
+                    displayString += filePath + '\n';
                     List<string> matched = _plateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
                     if (matched.Count == 0)
                     {
-                        MessageBox.Show(BrowseListBox.Items[i].ToString() + '\n' + "Haven't found any plates!");
-                        continue;
+                        displayString += "Haven't found any plates!\n";
                     }
                     foreach (string s in matched)
                     {
-                        MessageBox.Show(BrowseListBox.Items[i].ToString() + '\n' + s);
+                        displayString += "Found plate: " + s + '\n';
                     }
+
+                    Person recognized = _faceRecognizer.Recognize(FaceRecognizer.ConvertToGray(filePath));
+                    if (recognized == null)
+                    {
+                        displayString += "No person has been recognized.";
+                    }
+                    else
+                    {
+                        displayString += recognized.FullName + " has been found.";
+                    }
+
+                    MessageBox.Show(displayString);
+                    
                 }
             }
             if (!bChecked)
@@ -266,6 +282,16 @@ namespace epicenterWin
             {
                 _faceRecognizer.StopVideoCapture();
             }
+        }
+
+        private void _clearButtonTrain_Click(object sender, EventArgs e)
+        {
+            _trainCheckedListBox.Items.Clear();
+        }
+
+        private void _clearButtonSearch_Click(object sender, EventArgs e)
+        {
+            BrowseListBox.Items.Clear();
         }
     }
 }

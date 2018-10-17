@@ -237,6 +237,14 @@ namespace epicenterWin
                 }
             }
             _ymlsRead = true;
+
+            if (grayImage.Width != _imgWidth || grayImage.Height != _imgHeight)
+            {
+                grayImage = GetFaceFromImage(grayImage);
+                if (grayImage == null)
+                    return null;
+            }
+
             PredictionResult closestResult = new PredictionResult
             {
                 Distance = double.PositiveInfinity
@@ -303,6 +311,15 @@ namespace epicenterWin
             return eigenLabel + '\n' + "Distance: " + eigenDistance.ToString();
         }
 
+        private Image<Gray, byte> GetFaceFromImage(Image<Gray, byte> image)
+        {
+            Image<Gray, byte> grayImg = image.Convert<Gray, byte>();
+            Rectangle[] faces = _faceCascade.DetectMultiScale(grayImg, 1.3, 5);
+            if (image == null || faces.Length == 0)
+                return null;
+            return grayImg.Copy(faces[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
+        }
+
         public int TrainMultipleImages(string[] filePaths, Person target)
         {
             _currentPerson = target;
@@ -342,6 +359,13 @@ namespace epicenterWin
             }
             TrainAll();
             return faceCount;
+        }
+
+        public static Image<Gray, byte> ConvertToGray(string imagePath)
+        {
+            Image<Bgr, byte> img = new Image<Bgr, byte>(imagePath);
+            Image<Gray, byte> grayImg = img.Convert<Gray, byte>();
+            return grayImg;
         }
 
     }
