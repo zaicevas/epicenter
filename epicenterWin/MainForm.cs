@@ -43,7 +43,7 @@ namespace epicenterWin
             _firstNameTextBox.Enabled = false;
             trainingButton.Enabled = false;
             recognizeButton.Enabled = false;
-            _faceRecognizer.StartTraining(firstName, lastName);
+            _faceRecognizer.StartTraining(firstName: firstName, lastName: lastName);
         }
 
         public void TrainingStopped()
@@ -184,7 +184,6 @@ namespace epicenterWin
             Plate newPlate = new Plate(carPlate);
             System.Diagnostics.Debug.WriteLine(_reportCarReasonBox.Text);
             newPlate.Reason = (MissingEntity.SearchReason) Enum.Parse(typeof(MissingEntity.SearchReason), _reportCarReasonBox.Text);
-            //newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
             newPlate.FirstName = firstName;
             newPlate.LastName = lastName;
             SqliteDataAccess<Plate>.CreateRow(newPlate);
