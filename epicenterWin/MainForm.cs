@@ -194,6 +194,7 @@ namespace epicenterWin
                 MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
                 return;
             }
+            carPlate = carPlate.ToUpper();
             Plate newPlate = new Plate(carPlate);
             System.Diagnostics.Debug.WriteLine(_reportCarReasonBox.Text);
             newPlate.Reason = (MissingEntity.SearchReason) Enum.Parse(typeof(MissingEntity.SearchReason), _reportCarReasonBox.Text);

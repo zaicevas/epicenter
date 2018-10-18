@@ -5,27 +5,26 @@ using System.Linq;
 
 namespace epicenterWin
 {
-    class DataBaseConnector
+    static class DataBaseConnector
     {
-        public Person FindPerson(string firstName, string lastName)
+        public static Person FindPerson(string firstName, string lastName)
         {
             Person temporaryPerson = new Person(firstName, lastName);
             return SqliteDataAccess<Person>.ReadByKey<CompositeKeyAttribute>(temporaryPerson);
-            //return SqliteDataAccess<Person>.ReadByCompositeKey(temporaryPerson);
         }
 
-        public void UpdateYML(Person person, string fullPath)
+        public static void UpdateYML(Person person, string fullPath)
         {
             person.YML = fullPath;
             SqliteDataAccess<Person>.UpdatePerson(person);
         }
 
-        public List<Person> LoadAllPeople()
+        public static List<Person> LoadAllPeople()
         {
             return SqliteDataAccess<Person>.ReadRows().ToList();
         }
 
-        public void SaveNewFaces(List<Image<Gray, byte>> faces, int ID)
+        public static void SaveNewFaces(List<Image<Gray, byte>> faces, int ID)
         {
             foreach (Image<Gray, byte> image in faces)
             {
@@ -38,7 +37,7 @@ namespace epicenterWin
             }
         }
 
-        public void LoadAllFaces(List<Image<Gray, byte>> faces, List<int> ids, int currentID, int imgWidth, int imgHeight)
+        public static void LoadAllFaces(List<Image<Gray, byte>> faces, List<int> ids, int currentID, int imgWidth, int imgHeight)
         {
             List<Face> trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
             foreach (Face face in trainedFaces.Where(f => f.PersonID == currentID))

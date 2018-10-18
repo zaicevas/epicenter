@@ -71,6 +71,7 @@
     <Compile Include="CompositeKeyAttribute.cs" />
     <Compile Include="DataBaseConnector.cs" />
     <Compile Include="DbEntity.cs" />
+    <Compile Include="DirInfoWrapper.cs" />
     <Compile Include="Face.cs" />
     <Compile Include="FaceRecognizer.cs" />
     <Compile Include="MainForm.cs">

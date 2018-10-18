@@ -44,7 +44,7 @@ namespace epicenterWin
                 return _webcamHandler;
             }
         }
-        private DataBaseConnector _dataBaseConnector;
+
         private Dictionary<string, EigenFaceRecognizer> _recognizers;
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
@@ -71,7 +71,7 @@ namespace epicenterWin
                 DrawEyesSquare = true,
                 DrawFaceSquare = true,
             };
-            _dataBaseConnector = new DataBaseConnector();
+
             NewPersonCreated = true;
             Directory.CreateDirectory(_YMLPath);
         }
@@ -101,7 +101,7 @@ namespace epicenterWin
 
         public void StartTraining(string firstName, string lastName)
         {
-            _currentPerson = _dataBaseConnector.FindPerson(firstName, lastName);
+            _currentPerson = DataBaseConnector.FindPerson(firstName, lastName);
             if(_currentPerson == null)
             {
                 _mainForm.TrainingStopped();
@@ -143,10 +143,10 @@ namespace epicenterWin
             if (_faces.Count <= 0)
                 return;
 
-            _dataBaseConnector.SaveNewFaces(_faces, _currentTrainingID);
+            DataBaseConnector.SaveNewFaces(_faces, _currentTrainingID);
             _faces.Clear();
             _ids.Clear();
-            _dataBaseConnector.LoadAllFaces(_faces, _ids, _currentTrainingID, _imgWidth, _imgHeight);
+            DataBaseConnector.LoadAllFaces(_faces, _ids, _currentTrainingID, _imgWidth, _imgHeight);
             string fullName = _currentPerson.FullName;
             EigenFaceRecognizer eigenFaceRecognizer;
             if (_recognizers.ContainsKey(fullName))
@@ -162,7 +162,7 @@ namespace epicenterWin
             eigenFaceRecognizer.Write(YMLFullPath);
             if (_ymlsRead)
                 _recognizers.Add(fullName, eigenFaceRecognizer);
-            _dataBaseConnector.UpdateYML(_currentPerson, YMLFullPath);
+            DataBaseConnector.UpdateYML(_currentPerson, YMLFullPath);
             _faces.Clear();
             _ids.Clear();
         }
@@ -180,7 +180,7 @@ namespace epicenterWin
 
             if (NewPersonCreated)
             {
-                _people = _dataBaseConnector.LoadAllPeople();
+                _people = DataBaseConnector.LoadAllPeople();
                 NewPersonCreated = false;
             }
 
@@ -246,7 +246,7 @@ namespace epicenterWin
 
         public int TrainMultipleImages(string[] filePaths, Person target)
         {
-            _currentPerson = _dataBaseConnector.FindPerson(target.FirstName, target.LastName);
+            _currentPerson = DataBaseConnector.FindPerson(target.FirstName, target.LastName);
             _currentTrainingID = _currentPerson.ID;
 
             int faceCount = 0;                                       // number of faces sucessfully added to data set

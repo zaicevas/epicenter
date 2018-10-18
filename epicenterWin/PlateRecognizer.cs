@@ -11,31 +11,19 @@ namespace epicenterWin
 {
     public class PlateRecognizer
     {
-        private static string _localRegion = "lt";
-        private static string _configFile = Path.Combine(AssemblyDirectory, "openalpr.conf");
-        private static string _runtimeDataDirectory = Path.Combine(AssemblyDirectory, "runtime_data");
-        private static string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
-        }
+        private DirInfoWrapper _directoryInfo = new DirInfoWrapper(localRegion: "lt", configFile: "openalpr.conf", runtimeDataDirectory: "runtime_data");
 
         public List<string> ProcessImageFile(string fileName)
         {
             List<string> result = new List<string>();
 
-            using (AlprNet alpr = new AlprNet("eu", _configFile, _runtimeDataDirectory))
+            using (AlprNet alpr = new AlprNet("eu", _directoryInfo.ConfigFile, _directoryInfo.RuntimeDataDirectory))
             {
 
                 if (!alpr.IsLoaded())
                     return result;
 
-                alpr.DefaultRegion = _localRegion;
+                alpr.DefaultRegion = _directoryInfo.LocalRegion;
 
                 AlprResultsNet results = alpr.Recognize(fileName);
 
