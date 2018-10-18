@@ -27,15 +27,7 @@ namespace epicenterWin
                 DrawEyesSquare = true,
                 DrawFaceSquare = true,
             };
-
-            _reportPersonReasonBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            _reportCarReasonBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (MissingEntity.SearchReason reason in Enum.GetValues(typeof(MissingEntity.SearchReason)))
-            {
-                _reportPersonReasonBox.Items.Add(reason.ToString());
-                if (reason == MissingEntity.SearchReason.Missing || reason == MissingEntity.SearchReason.NotSearched)
-                    _reportCarReasonBox.Items.Add(reason.ToString());
-            }
+            SetReasonBoxes();
         }
 
         private void TrainingButton_Click(object sender, EventArgs e)
@@ -156,14 +148,15 @@ namespace epicenterWin
             string firstName = _reportPersonFirstNameTextBox.Text;
             string lastName = _reportPersonLastNameTextBox.Text;
 
-
             if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
             {
                 MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
                 return;
             }
+            
             Person newPerson = new Person(firstName, lastName);
-            newPerson.Reason = (MissingEntity.SearchReason) Enum.Parse(typeof(MissingEntity.SearchReason), _reportPersonReasonBox.Text);
+            newPerson.Reason = (MissingEntity.SearchReason)Enum.Parse(typeof(MissingEntity.SearchReason), _reportPersonReasonBox.Text);
+
 
             SqliteDataAccess<Person>.CreateRow(newPerson);
             _faceRecognizer.NewPersonCreated = true;
@@ -334,6 +327,20 @@ namespace epicenterWin
         private void _reportImagesListbox_MouseDown(object sender, MouseEventArgs e)
         {
             RemoveItem(e, _reportImagesListbox);
+        }
+
+        private void SetReasonBoxes()
+        {
+            _reportPersonReasonBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            _reportCarReasonBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (MissingEntity.SearchReason reason in Enum.GetValues(typeof(MissingEntity.SearchReason)))
+            {
+                _reportPersonReasonBox.Items.Add(reason.ToString());
+                if (reason == MissingEntity.SearchReason.Missing || reason == MissingEntity.SearchReason.NotSearched)
+                    _reportCarReasonBox.Items.Add(reason.ToString());
+            }
+            _reportPersonReasonBox.SelectedIndex = 1;
+            _reportCarReasonBox.SelectedIndex = 1;
         }
     }
 }

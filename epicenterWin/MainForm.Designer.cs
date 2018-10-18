@@ -53,7 +53,6 @@
             this._reportPage = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this._reportCarTab = new System.Windows.Forms.TabPage();
-            this._reportCarMissingCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this._reportCarLastNameTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -68,7 +67,6 @@
             this._browseReportImageButton = new System.Windows.Forms.Button();
             this._reportImageTextBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this._reportPersonMissingCheckBox = new System.Windows.Forms.CheckBox();
             this._reportPersonMissingLabel = new System.Windows.Forms.Label();
             this._reportPersonLastNameTextBox = new System.Windows.Forms.TextBox();
             this._reportPersonReportButton = new System.Windows.Forms.Button();
@@ -354,7 +352,6 @@
             // _reportCarTab
             // 
             this._reportCarTab.Controls.Add(this._reportCarReasonBox);
-            this._reportCarTab.Controls.Add(this._reportCarMissingCheckBox);
             this._reportCarTab.Controls.Add(this.label3);
             this._reportCarTab.Controls.Add(this._reportCarLastNameTextBox);
             this._reportCarTab.Controls.Add(this.label4);
@@ -371,16 +368,6 @@
             this._reportCarTab.TabIndex = 0;
             this._reportCarTab.Text = "Car";
             this._reportCarTab.UseVisualStyleBackColor = true;
-            // 
-            // _reportCarMissingCheckBox
-            // 
-            this._reportCarMissingCheckBox.AutoSize = true;
-            this._reportCarMissingCheckBox.Location = new System.Drawing.Point(339, 115);
-            this._reportCarMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this._reportCarMissingCheckBox.Name = "_reportCarMissingCheckBox";
-            this._reportCarMissingCheckBox.Size = new System.Drawing.Size(15, 14);
-            this._reportCarMissingCheckBox.TabIndex = 24;
-            this._reportCarMissingCheckBox.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -465,7 +452,6 @@
             this._reportPersonTab.Controls.Add(this._browseReportImageButton);
             this._reportPersonTab.Controls.Add(this._reportImageTextBox);
             this._reportPersonTab.Controls.Add(this.label10);
-            this._reportPersonTab.Controls.Add(this._reportPersonMissingCheckBox);
             this._reportPersonTab.Controls.Add(this._reportPersonMissingLabel);
             this._reportPersonTab.Controls.Add(this._reportPersonLastNameTextBox);
             this._reportPersonTab.Controls.Add(this._reportPersonReportButton);
@@ -532,16 +518,6 @@
             this.label10.Size = new System.Drawing.Size(205, 13);
             this.label10.TabIndex = 13;
             this.label10.Text = "Please select person\'s vidoe(s) or photo(s)";
-            // 
-            // _reportPersonMissingCheckBox
-            // 
-            this._reportPersonMissingCheckBox.AutoSize = true;
-            this._reportPersonMissingCheckBox.Location = new System.Drawing.Point(366, 83);
-            this._reportPersonMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this._reportPersonMissingCheckBox.Name = "_reportPersonMissingCheckBox";
-            this._reportPersonMissingCheckBox.Size = new System.Drawing.Size(15, 14);
-            this._reportPersonMissingCheckBox.TabIndex = 12;
-            this._reportPersonMissingCheckBox.UseVisualStyleBackColor = true;
             // 
             // _reportPersonMissingLabel
             // 
@@ -894,9 +870,7 @@
         private System.Windows.Forms.RichTextBox OutputBox;
         private System.Windows.Forms.Button recognizeButton;
         private System.Windows.Forms.TextBox _reportPersonLastNameTextBox;
-        private System.Windows.Forms.CheckBox _reportPersonMissingCheckBox;
         private System.Windows.Forms.Label _reportPersonMissingLabel;
-        private System.Windows.Forms.CheckBox _reportCarMissingCheckBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox _reportCarLastNameTextBox;
         private System.Windows.Forms.Label label4;
