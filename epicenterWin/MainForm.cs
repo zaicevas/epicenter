@@ -155,7 +155,7 @@ namespace epicenterWin
                 return;
             }
             Person newPerson = new Person(firstName, lastName);
-            newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
+            //newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
 
             SqliteDataAccess<Person>.CreateRow(newPerson);
             _faceRecognizer.NewPersonCreated = true;
@@ -181,7 +181,7 @@ namespace epicenterWin
                 return;
             }
             Plate newPlate = new Plate(carPlate);
-            newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
+            //newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
             newPlate.FirstName = firstName;
             newPlate.LastName = lastName;
             SqliteDataAccess<Plate>.CreateRow(newPlate);
