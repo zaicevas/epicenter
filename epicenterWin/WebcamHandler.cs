@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace epicenterWin
 {
-    class WebcamHandler
+    public class WebcamHandler
     {
         private const string _faceXML = @"../../Algo/haarcascade_frontalface_default.xml";
         private const string _eyeXML = @"../../Algo/haarcascade_eye.xml";
@@ -82,6 +82,12 @@ namespace epicenterWin
                 return null;
             Image<Gray, byte> result = grayScale.Copy(arr[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
             return result;
+        }
+
+        public void SaveImage(string path)
+        {
+            Image<Bgr, byte> image = Frame.ToImage<Bgr, byte>();
+            image.Save(path);
         }
     }
 }
