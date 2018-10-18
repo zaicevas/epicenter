@@ -170,6 +170,7 @@ namespace epicenterWin
             newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
 
             SqliteDataAccess<Person>.CreateRow(newPerson);
+            newPerson = SqliteDataAccess<Person>.ReadByCompositeKey(newPerson);
             string[] imageFiles = GetTrainFileNames(_reportImagesListbox);
             _faceRecognizer.TrainMultipleImages(imageFiles, newPerson);
             MessageBox.Show("Created!");

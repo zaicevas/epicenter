@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.Tabs = new System.Windows.Forms.TabControl();
             this._searchPage = new System.Windows.Forms.TabPage();
+            this._clearButtonSearch = new System.Windows.Forms.Button();
             this.CheckButton = new System.Windows.Forms.Button();
             this.BrowseButton = new System.Windows.Forms.Button();
             this.FilePathBox = new System.Windows.Forms.TextBox();
@@ -62,6 +63,10 @@
             this._reportCarPlateLabel = new System.Windows.Forms.Label();
             this._reportCarPlateTextBox = new System.Windows.Forms.TextBox();
             this._reportPersonTab = new System.Windows.Forms.TabPage();
+            this._reportImagesListbox = new System.Windows.Forms.CheckedListBox();
+            this._browseReportImageButton = new System.Windows.Forms.Button();
+            this._reportImageTextBox = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this._reportPersonMissingCheckBox = new System.Windows.Forms.CheckBox();
             this._reportPersonMissingLabel = new System.Windows.Forms.Label();
             this._reportPersonLastNameTextBox = new System.Windows.Forms.TextBox();
@@ -70,6 +75,7 @@
             this._reportFirstNameLabel = new System.Windows.Forms.Label();
             this._reportPersonFirstNameTextBox = new System.Windows.Forms.TextBox();
             this._train = new System.Windows.Forms.TabPage();
+            this._clearButtonTrain = new System.Windows.Forms.Button();
             this._trainLastNameTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -88,12 +94,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this._clearButtonTrain = new System.Windows.Forms.Button();
-            this._clearButtonSearch = new System.Windows.Forms.Button();
-            this._browseReportImageButton = new System.Windows.Forms.Button();
-            this._reportImageTextBox = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this._reportImagesListbox = new System.Windows.Forms.CheckedListBox();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this.removeContextMenu.SuspendLayout();
@@ -115,7 +115,7 @@
             this.Tabs.Controls.Add(this._train);
             this.Tabs.Controls.Add(this._historyPage);
             this.Tabs.Location = new System.Drawing.Point(7, 0);
-            this.Tabs.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(2);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
             this.Tabs.Size = new System.Drawing.Size(622, 411);
@@ -131,18 +131,28 @@
             this._searchPage.Controls.Add(this.BrowseListBox);
             this._searchPage.Controls.Add(this._searchSelectionText);
             this._searchPage.Location = new System.Drawing.Point(4, 22);
-            this._searchPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._searchPage.Margin = new System.Windows.Forms.Padding(2);
             this._searchPage.Name = "_searchPage";
-            this._searchPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._searchPage.Padding = new System.Windows.Forms.Padding(2);
             this._searchPage.Size = new System.Drawing.Size(614, 385);
             this._searchPage.TabIndex = 0;
             this._searchPage.Text = "Search";
             this._searchPage.UseVisualStyleBackColor = true;
             // 
+            // _clearButtonSearch
+            // 
+            this._clearButtonSearch.Location = new System.Drawing.Point(6, 310);
+            this._clearButtonSearch.Name = "_clearButtonSearch";
+            this._clearButtonSearch.Size = new System.Drawing.Size(53, 21);
+            this._clearButtonSearch.TabIndex = 28;
+            this._clearButtonSearch.Text = "Clear";
+            this._clearButtonSearch.UseVisualStyleBackColor = true;
+            this._clearButtonSearch.Click += new System.EventHandler(this._clearButtonSearch_Click);
+            // 
             // CheckButton
             // 
             this.CheckButton.Location = new System.Drawing.Point(246, 325);
-            this.CheckButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CheckButton.Margin = new System.Windows.Forms.Padding(2);
             this.CheckButton.Name = "CheckButton";
             this.CheckButton.Size = new System.Drawing.Size(84, 44);
             this.CheckButton.TabIndex = 4;
@@ -153,7 +163,7 @@
             // BrowseButton
             // 
             this.BrowseButton.Location = new System.Drawing.Point(544, 22);
-            this.BrowseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BrowseButton.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseButton.Name = "BrowseButton";
             this.BrowseButton.Size = new System.Drawing.Size(55, 22);
             this.BrowseButton.TabIndex = 3;
@@ -164,7 +174,7 @@
             // FilePathBox
             // 
             this.FilePathBox.Location = new System.Drawing.Point(6, 22);
-            this.FilePathBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FilePathBox.Margin = new System.Windows.Forms.Padding(2);
             this.FilePathBox.Name = "FilePathBox";
             this.FilePathBox.Size = new System.Drawing.Size(526, 20);
             this.FilePathBox.TabIndex = 2;
@@ -176,7 +186,7 @@
             this.BrowseListBox.ContextMenuStrip = this.removeContextMenu;
             this.BrowseListBox.FormattingEnabled = true;
             this.BrowseListBox.Location = new System.Drawing.Point(6, 47);
-            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BrowseListBox.Margin = new System.Windows.Forms.Padding(2);
             this.BrowseListBox.Name = "BrowseListBox";
             this.BrowseListBox.Size = new System.Drawing.Size(606, 259);
             this.BrowseListBox.TabIndex = 1;
@@ -221,7 +231,7 @@
             this._webCam.Controls.Add(this.webcamPictureBox);
             this._webCam.Location = new System.Drawing.Point(4, 22);
             this._webCam.Name = "_webCam";
-            this._webCam.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this._webCam.Padding = new System.Windows.Forms.Padding(3);
             this._webCam.Size = new System.Drawing.Size(614, 385);
             this._webCam.TabIndex = 3;
             this._webCam.Text = "Webcam";
@@ -246,7 +256,7 @@
             // recognizeButton
             // 
             this.recognizeButton.Location = new System.Drawing.Point(485, 342);
-            this.recognizeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.recognizeButton.Margin = new System.Windows.Forms.Padding(2);
             this.recognizeButton.Name = "recognizeButton";
             this.recognizeButton.Size = new System.Drawing.Size(99, 26);
             this.recognizeButton.TabIndex = 7;
@@ -318,9 +328,9 @@
             // 
             this._reportPage.Controls.Add(this.tabControl1);
             this._reportPage.Location = new System.Drawing.Point(4, 22);
-            this._reportPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPage.Margin = new System.Windows.Forms.Padding(2);
             this._reportPage.Name = "_reportPage";
-            this._reportPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPage.Padding = new System.Windows.Forms.Padding(2);
             this._reportPage.Size = new System.Drawing.Size(614, 385);
             this._reportPage.TabIndex = 1;
             this._reportPage.Text = "Report";
@@ -332,7 +342,7 @@
             this.tabControl1.Controls.Add(this._reportPersonTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(2, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(610, 381);
@@ -350,9 +360,9 @@
             this._reportCarTab.Controls.Add(this._reportCarPlateLabel);
             this._reportCarTab.Controls.Add(this._reportCarPlateTextBox);
             this._reportCarTab.Location = new System.Drawing.Point(4, 22);
-            this._reportCarTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarTab.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarTab.Name = "_reportCarTab";
-            this._reportCarTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarTab.Padding = new System.Windows.Forms.Padding(2);
             this._reportCarTab.Size = new System.Drawing.Size(602, 355);
             this._reportCarTab.TabIndex = 0;
             this._reportCarTab.Text = "Car";
@@ -362,7 +372,7 @@
             // 
             this._reportCarMissingCheckBox.AutoSize = true;
             this._reportCarMissingCheckBox.Location = new System.Drawing.Point(82, 117);
-            this._reportCarMissingCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarMissingCheckBox.Name = "_reportCarMissingCheckBox";
             this._reportCarMissingCheckBox.Size = new System.Drawing.Size(15, 14);
             this._reportCarMissingCheckBox.TabIndex = 24;
@@ -381,7 +391,7 @@
             // _reportCarLastNameTextBox
             // 
             this._reportCarLastNameTextBox.Location = new System.Drawing.Point(82, 87);
-            this._reportCarLastNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarLastNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarLastNameTextBox.Name = "_reportCarLastNameTextBox";
             this._reportCarLastNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportCarLastNameTextBox.TabIndex = 22;
@@ -409,7 +419,7 @@
             // _reportCarFirstNameTextBox
             // 
             this._reportCarFirstNameTextBox.Location = new System.Drawing.Point(82, 59);
-            this._reportCarFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarFirstNameTextBox.Name = "_reportCarFirstNameTextBox";
             this._reportCarFirstNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportCarFirstNameTextBox.TabIndex = 19;
@@ -417,7 +427,7 @@
             // _reportCarReportButton
             // 
             this._reportCarReportButton.Location = new System.Drawing.Point(47, 174);
-            this._reportCarReportButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarReportButton.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarReportButton.Name = "_reportCarReportButton";
             this._reportCarReportButton.Size = new System.Drawing.Size(511, 159);
             this._reportCarReportButton.TabIndex = 18;
@@ -438,7 +448,7 @@
             // _reportCarPlateTextBox
             // 
             this._reportCarPlateTextBox.Location = new System.Drawing.Point(82, 25);
-            this._reportCarPlateTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportCarPlateTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarPlateTextBox.Name = "_reportCarPlateTextBox";
             this._reportCarPlateTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportCarPlateTextBox.TabIndex = 10;
@@ -457,19 +467,60 @@
             this._reportPersonTab.Controls.Add(this._reportFirstNameLabel);
             this._reportPersonTab.Controls.Add(this._reportPersonFirstNameTextBox);
             this._reportPersonTab.Location = new System.Drawing.Point(4, 22);
-            this._reportPersonTab.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonTab.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonTab.Name = "_reportPersonTab";
-            this._reportPersonTab.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonTab.Padding = new System.Windows.Forms.Padding(2);
             this._reportPersonTab.Size = new System.Drawing.Size(602, 355);
             this._reportPersonTab.TabIndex = 1;
             this._reportPersonTab.Text = "Person";
             this._reportPersonTab.UseVisualStyleBackColor = true;
             // 
+            // _reportImagesListbox
+            // 
+            this._reportImagesListbox.CheckOnClick = true;
+            this._reportImagesListbox.ContextMenuStrip = this.removeContextMenu;
+            this._reportImagesListbox.FormattingEnabled = true;
+            this._reportImagesListbox.Location = new System.Drawing.Point(4, 160);
+            this._reportImagesListbox.Margin = new System.Windows.Forms.Padding(2);
+            this._reportImagesListbox.Name = "_reportImagesListbox";
+            this._reportImagesListbox.Size = new System.Drawing.Size(586, 139);
+            this._reportImagesListbox.TabIndex = 16;
+            // 
+            // _browseReportImageButton
+            // 
+            this._browseReportImageButton.Location = new System.Drawing.Point(535, 130);
+            this._browseReportImageButton.Margin = new System.Windows.Forms.Padding(2);
+            this._browseReportImageButton.Name = "_browseReportImageButton";
+            this._browseReportImageButton.Size = new System.Drawing.Size(55, 22);
+            this._browseReportImageButton.TabIndex = 15;
+            this._browseReportImageButton.Text = "Browse";
+            this._browseReportImageButton.UseVisualStyleBackColor = true;
+            this._browseReportImageButton.Click += new System.EventHandler(this._browseReportImageButton_Click);
+            // 
+            // _reportImageTextBox
+            // 
+            this._reportImageTextBox.Location = new System.Drawing.Point(5, 132);
+            this._reportImageTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this._reportImageTextBox.Name = "_reportImageTextBox";
+            this._reportImageTextBox.Size = new System.Drawing.Size(526, 20);
+            this._reportImageTextBox.TabIndex = 14;
+            this._reportImageTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._reportImageTextBox_KeyDown);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(2, 117);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(205, 13);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "Please select person\'s vidoe(s) or photo(s)";
+            // 
             // _reportPersonMissingCheckBox
             // 
             this._reportPersonMissingCheckBox.AutoSize = true;
             this._reportPersonMissingCheckBox.Location = new System.Drawing.Point(77, 85);
-            this._reportPersonMissingCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonMissingCheckBox.Name = "_reportPersonMissingCheckBox";
             this._reportPersonMissingCheckBox.Size = new System.Drawing.Size(15, 14);
             this._reportPersonMissingCheckBox.TabIndex = 12;
@@ -488,7 +539,7 @@
             // _reportPersonLastNameTextBox
             // 
             this._reportPersonLastNameTextBox.Location = new System.Drawing.Point(77, 55);
-            this._reportPersonLastNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonLastNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonLastNameTextBox.Name = "_reportPersonLastNameTextBox";
             this._reportPersonLastNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportPersonLastNameTextBox.TabIndex = 10;
@@ -496,7 +547,7 @@
             // _reportPersonReportButton
             // 
             this._reportPersonReportButton.Location = new System.Drawing.Point(257, 303);
-            this._reportPersonReportButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonReportButton.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonReportButton.Name = "_reportPersonReportButton";
             this._reportPersonReportButton.Size = new System.Drawing.Size(55, 30);
             this._reportPersonReportButton.TabIndex = 9;
@@ -527,7 +578,7 @@
             // _reportPersonFirstNameTextBox
             // 
             this._reportPersonFirstNameTextBox.Location = new System.Drawing.Point(77, 28);
-            this._reportPersonFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._reportPersonFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonFirstNameTextBox.Name = "_reportPersonFirstNameTextBox";
             this._reportPersonFirstNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._reportPersonFirstNameTextBox.TabIndex = 0;
@@ -545,18 +596,28 @@
             this._train.Controls.Add(this._trainCheckedListBox);
             this._train.Controls.Add(this.label7);
             this._train.Location = new System.Drawing.Point(4, 22);
-            this._train.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._train.Margin = new System.Windows.Forms.Padding(2);
             this._train.Name = "_train";
-            this._train.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._train.Padding = new System.Windows.Forms.Padding(2);
             this._train.Size = new System.Drawing.Size(614, 385);
             this._train.TabIndex = 4;
             this._train.Text = "Train";
             this._train.UseVisualStyleBackColor = true;
             // 
+            // _clearButtonTrain
+            // 
+            this._clearButtonTrain.Location = new System.Drawing.Point(7, 300);
+            this._clearButtonTrain.Name = "_clearButtonTrain";
+            this._clearButtonTrain.Size = new System.Drawing.Size(53, 21);
+            this._clearButtonTrain.TabIndex = 27;
+            this._clearButtonTrain.Text = "Clear";
+            this._clearButtonTrain.UseVisualStyleBackColor = true;
+            this._clearButtonTrain.Click += new System.EventHandler(this._clearButtonTrain_Click);
+            // 
             // _trainLastNameTextBox
             // 
             this._trainLastNameTextBox.Location = new System.Drawing.Point(80, 32);
-            this._trainLastNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._trainLastNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._trainLastNameTextBox.Name = "_trainLastNameTextBox";
             this._trainLastNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._trainLastNameTextBox.TabIndex = 26;
@@ -584,7 +645,7 @@
             // _trainFirstNameTextBox
             // 
             this._trainFirstNameTextBox.Location = new System.Drawing.Point(80, 4);
-            this._trainFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._trainFirstNameTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._trainFirstNameTextBox.Name = "_trainFirstNameTextBox";
             this._trainFirstNameTextBox.Size = new System.Drawing.Size(191, 20);
             this._trainFirstNameTextBox.TabIndex = 23;
@@ -592,7 +653,7 @@
             // _trainBrowserButton
             // 
             this._trainBrowserButton.Location = new System.Drawing.Point(281, 337);
-            this._trainBrowserButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._trainBrowserButton.Margin = new System.Windows.Forms.Padding(2);
             this._trainBrowserButton.Name = "_trainBrowserButton";
             this._trainBrowserButton.Size = new System.Drawing.Size(57, 33);
             this._trainBrowserButton.TabIndex = 9;
@@ -603,7 +664,7 @@
             // _trainBrowseButton
             // 
             this._trainBrowseButton.Location = new System.Drawing.Point(550, 73);
-            this._trainBrowseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._trainBrowseButton.Margin = new System.Windows.Forms.Padding(2);
             this._trainBrowseButton.Name = "_trainBrowseButton";
             this._trainBrowseButton.Size = new System.Drawing.Size(55, 22);
             this._trainBrowseButton.TabIndex = 8;
@@ -614,7 +675,7 @@
             // _trainBrowseTextBox
             // 
             this._trainBrowseTextBox.Location = new System.Drawing.Point(7, 75);
-            this._trainBrowseTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._trainBrowseTextBox.Margin = new System.Windows.Forms.Padding(2);
             this._trainBrowseTextBox.Name = "_trainBrowseTextBox";
             this._trainBrowseTextBox.Size = new System.Drawing.Size(526, 20);
             this._trainBrowseTextBox.TabIndex = 7;
@@ -626,7 +687,7 @@
             this._trainCheckedListBox.ContextMenuStrip = this.removeContextMenu;
             this._trainCheckedListBox.FormattingEnabled = true;
             this._trainCheckedListBox.Location = new System.Drawing.Point(6, 110);
-            this._trainCheckedListBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._trainCheckedListBox.Margin = new System.Windows.Forms.Padding(2);
             this._trainCheckedListBox.Name = "_trainCheckedListBox";
             this._trainCheckedListBox.Size = new System.Drawing.Size(606, 184);
             this._trainCheckedListBox.TabIndex = 6;
@@ -652,9 +713,9 @@
             this._historyPage.Controls.Add(this.button1);
             this._historyPage.Controls.Add(this.listView1);
             this._historyPage.Location = new System.Drawing.Point(4, 22);
-            this._historyPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._historyPage.Margin = new System.Windows.Forms.Padding(2);
             this._historyPage.Name = "_historyPage";
-            this._historyPage.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this._historyPage.Padding = new System.Windows.Forms.Padding(2);
             this._historyPage.Size = new System.Drawing.Size(614, 385);
             this._historyPage.TabIndex = 2;
             this._historyPage.Text = "History";
@@ -728,74 +789,13 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // _clearButtonTrain
-            // 
-            this._clearButtonTrain.Location = new System.Drawing.Point(7, 300);
-            this._clearButtonTrain.Name = "_clearButtonTrain";
-            this._clearButtonTrain.Size = new System.Drawing.Size(53, 21);
-            this._clearButtonTrain.TabIndex = 27;
-            this._clearButtonTrain.Text = "Clear";
-            this._clearButtonTrain.UseVisualStyleBackColor = true;
-            this._clearButtonTrain.Click += new System.EventHandler(this._clearButtonTrain_Click);
-            // 
-            // _clearButtonSearch
-            // 
-            this._clearButtonSearch.Location = new System.Drawing.Point(6, 310);
-            this._clearButtonSearch.Name = "_clearButtonSearch";
-            this._clearButtonSearch.Size = new System.Drawing.Size(53, 21);
-            this._clearButtonSearch.TabIndex = 28;
-            this._clearButtonSearch.Text = "Clear";
-            this._clearButtonSearch.UseVisualStyleBackColor = true;
-            this._clearButtonSearch.Click += new System.EventHandler(this._clearButtonSearch_Click);
-            // 
-            // _browseReportImageButton
-            // 
-            this._browseReportImageButton.Location = new System.Drawing.Point(535, 130);
-            this._browseReportImageButton.Margin = new System.Windows.Forms.Padding(2);
-            this._browseReportImageButton.Name = "_browseReportImageButton";
-            this._browseReportImageButton.Size = new System.Drawing.Size(55, 22);
-            this._browseReportImageButton.TabIndex = 15;
-            this._browseReportImageButton.Text = "Browse";
-            this._browseReportImageButton.UseVisualStyleBackColor = true;
-            this._browseReportImageButton.Click += new System.EventHandler(this._browseReportImageButton_Click);
-            // 
-            // _reportImageTextBox
-            // 
-            this._reportImageTextBox.Location = new System.Drawing.Point(5, 132);
-            this._reportImageTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this._reportImageTextBox.Name = "_reportImageTextBox";
-            this._reportImageTextBox.Size = new System.Drawing.Size(526, 20);
-            this._reportImageTextBox.TabIndex = 14;
-            this._reportImageTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this._reportImageTextBox_KeyDown);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(2, 117);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(205, 13);
-            this.label10.TabIndex = 13;
-            this.label10.Text = "Please select person\'s vidoe(s) or photo(s)";
-            // 
-            // _reportImagesListbox
-            // 
-            this._reportImagesListbox.CheckOnClick = true;
-            this._reportImagesListbox.ContextMenuStrip = this.removeContextMenu;
-            this._reportImagesListbox.FormattingEnabled = true;
-            this._reportImagesListbox.Location = new System.Drawing.Point(4, 160);
-            this._reportImagesListbox.Margin = new System.Windows.Forms.Padding(2);
-            this._reportImagesListbox.Name = "_reportImagesListbox";
-            this._reportImagesListbox.Size = new System.Drawing.Size(586, 139);
-            this._reportImagesListbox.TabIndex = 16;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(637, 418);
             this.Controls.Add(this.Tabs);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Tabs.ResumeLayout(false);
