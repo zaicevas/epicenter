@@ -341,5 +341,18 @@ namespace epicenterWin
             _reportPersonReasonBox.SelectedIndex = 1;
             _reportCarReasonBox.SelectedIndex = 1;
         }
+
+        private void _savePhotoButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog fileDialog = new SaveFileDialog();
+            fileDialog.Filter = "Bitmap Image|*.bmp";
+            fileDialog.ShowDialog();
+            if (fileDialog.FileName == "")
+            {
+                MessageBox.Show("Please provide a file name.");
+                return;
+            }
+            _faceRecognizer.Webcam.SaveImage(fileDialog.FileName);
+        }
     }
 }

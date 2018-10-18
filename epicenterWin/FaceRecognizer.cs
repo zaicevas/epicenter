@@ -38,6 +38,12 @@ namespace epicenterWin
 
         private List<Person> _people;
         private WebcamHandler _webcamHandler;
+        public WebcamHandler Webcam {
+            get
+            {
+                return _webcamHandler;
+            }
+        }
         private DataBaseConnector _dataBaseConnector;
         private Dictionary<string, EigenFaceRecognizer> _recognizers;
         private List<Image<Gray, byte>> _faces;
@@ -205,6 +211,7 @@ namespace epicenterWin
                 if (result.Distance < closestResult.Distance)
                 {
                     System.Diagnostics.Debug.WriteLine("PREVIOUS DISTANCE: " + closestResult.Distance);
+                    System.Diagnostics.Debug.WriteLine("UPDATED DISTANCE: " + result.Distance);
                     closestResult = result;
                 }
             }
