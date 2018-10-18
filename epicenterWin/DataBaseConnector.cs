@@ -10,7 +10,8 @@ namespace epicenterWin
         public Person FindPerson(string firstName, string lastName)
         {
             Person temporaryPerson = new Person(firstName, lastName);
-            return SqliteDataAccess<Person>.ReadByCompositeKey(temporaryPerson);
+            return SqliteDataAccess<Person>.ReadByKey<CompositeKeyAttribute>(temporaryPerson);
+            //return SqliteDataAccess<Person>.ReadByCompositeKey(temporaryPerson);
         }
 
         public void UpdateYML(Person person, string fullPath)

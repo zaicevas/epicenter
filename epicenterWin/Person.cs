@@ -2,7 +2,7 @@
 
 namespace epicenterWin
 {
-    public class Person : MissingEntity
+    public class Person : MissingEntity, IEquatable<Person>
     {
         public string YML { get; set; }
 
@@ -14,6 +14,11 @@ namespace epicenterWin
 
         public Person()
         {
+        }
+
+        public bool Equals(Person other)
+        {
+            return FullName == other.FullName;
         }
     }
 }

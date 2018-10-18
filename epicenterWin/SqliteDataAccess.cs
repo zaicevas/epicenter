@@ -123,22 +123,23 @@ namespace epicenterWin
             }
         }
 
-        public static T ReadByCompositeKey(T entity)
+        public static T ReadByKey<K> (T entity) where K : Attribute
         {
             try
             {
                 string finalQuery = $"SELECT * FROM {_tableName} WHERE ";
-                foreach (string name in GetPropertyNames<CompositeKeyAttribute>(false))
+                foreach (string name in GetPropertyNames<K>(false))
                 {
                     finalQuery += name + " = @" + name + " AND ";
                 }
                 finalQuery = finalQuery.Substring(0, finalQuery.Length - " AND ".Length);
+
                 System.Diagnostics.Debug.WriteLine(finalQuery);
                 return _sqliteConnect.Query<T>(finalQuery, entity).First();
             }
             catch
             {
-                System.Diagnostics.Debug.WriteLine("Exception caught in ReadByCompositeKey");
+                System.Diagnostics.Debug.WriteLine("Exception caught in ReadByKey");
                 return null;
             }
         }

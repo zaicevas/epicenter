@@ -15,7 +15,7 @@ namespace epicenterWin
         private FaceRecognizer _faceRecognizer;
         private PlateRecognizer _plateRecognizer;
 
-
+        
         public MainForm()
         {
             InitializeComponent();
@@ -96,21 +96,34 @@ namespace epicenterWin
                     List<string> matched = _plateRecognizer.ProcessImageFile(BrowseListBox.Items[i].ToString());
                     if (matched.Count == 0)
                     {
-                        displayString += "Haven't found any plates!\n";
+                        displayString += "No plate has been recognized!\n";
                     }
-                    foreach (string s in matched)
+                    else
                     {
-                        displayString += "Found plate: " + s + '\n';
+                        foreach (string plateNumber in matched)
+                        {
+                            displayString += "Found plate: " + plateNumber + '\n';
+                            Plate matchedPlate = new Plate(plateNumber);
+                            matchedPlate = SqliteDataAccess<Plate>.ReadByKey<PrimaryKeyAttribute>(matchedPlate);
+                            if (matchedPlate == null)
+                            {
+                                displayString += "This plate is not in our database.\n";
+                            }
+                            else
+                            {
+                                displayString += "STATUS: " + matchedPlate.Reason.ToString() + '\n';
+                            }
+                        }
                     }
 
                     Person recognized = _faceRecognizer.Recognize(FaceRecognizer.ConvertToGray(filePath));
                     if (recognized == null)
                     {
-                        displayString += "No person has been recognized.";
+                        displayString += "No person has been recognized!";
                     }
                     else
                     {
-                        displayString += recognized.FullName + " has been found.";
+                        displayString += recognized.FullName + $" has been found.\nSTATUS: {recognized.Reason.ToString()}\n";
                     }
 
                     MessageBox.Show(displayString);
@@ -155,7 +168,7 @@ namespace epicenterWin
             }
             
             Person newPerson = new Person(firstName, lastName);
-            newPerson.Reason = (MissingEntity.SearchReason)Enum.Parse(typeof(MissingEntity.SearchReason), _reportPersonReasonBox.Text);
+            newPerson.Reason = (MissingEntity.SearchReason) Enum.Parse(typeof(MissingEntity.SearchReason), _reportPersonReasonBox.Text);
 
 
             SqliteDataAccess<Person>.CreateRow(newPerson);
@@ -264,7 +277,8 @@ namespace epicenterWin
             string lastName = _trainLastNameTextBox.Text;
             Person currentPerson = new Person(firstName, lastName);
 
-            currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
+            currentPerson = SqliteDataAccess<Person>.ReadByKey<CompositeKeyAttribute>(currentPerson);
+            //currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
             if (currentPerson == null)
             {
                 MessageBox.Show("This person doesn't exist.");
