@@ -95,6 +95,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this._reportPersonReasonBox = new System.Windows.Forms.ComboBox();
+            this._reportCarReasonBox = new System.Windows.Forms.ComboBox();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this.removeContextMenu.SuspendLayout();
@@ -351,6 +353,7 @@
             // 
             // _reportCarTab
             // 
+            this._reportCarTab.Controls.Add(this._reportCarReasonBox);
             this._reportCarTab.Controls.Add(this._reportCarMissingCheckBox);
             this._reportCarTab.Controls.Add(this.label3);
             this._reportCarTab.Controls.Add(this._reportCarLastNameTextBox);
@@ -372,7 +375,7 @@
             // _reportCarMissingCheckBox
             // 
             this._reportCarMissingCheckBox.AutoSize = true;
-            this._reportCarMissingCheckBox.Location = new System.Drawing.Point(82, 117);
+            this._reportCarMissingCheckBox.Location = new System.Drawing.Point(339, 115);
             this._reportCarMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportCarMissingCheckBox.Name = "_reportCarMissingCheckBox";
             this._reportCarMissingCheckBox.Size = new System.Drawing.Size(15, 14);
@@ -385,9 +388,9 @@
             this.label3.Location = new System.Drawing.Point(4, 115);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 13);
+            this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 23;
-            this.label3.Text = "Missing";
+            this.label3.Text = "Reason";
             // 
             // _reportCarLastNameTextBox
             // 
@@ -456,6 +459,7 @@
             // 
             // _reportPersonTab
             // 
+            this._reportPersonTab.Controls.Add(this._reportPersonReasonBox);
             this._reportPersonTab.Controls.Add(this._clearReportPersonButton);
             this._reportPersonTab.Controls.Add(this._reportImagesListbox);
             this._reportPersonTab.Controls.Add(this._browseReportImageButton);
@@ -532,7 +536,7 @@
             // _reportPersonMissingCheckBox
             // 
             this._reportPersonMissingCheckBox.AutoSize = true;
-            this._reportPersonMissingCheckBox.Location = new System.Drawing.Point(77, 85);
+            this._reportPersonMissingCheckBox.Location = new System.Drawing.Point(366, 83);
             this._reportPersonMissingCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this._reportPersonMissingCheckBox.Name = "_reportPersonMissingCheckBox";
             this._reportPersonMissingCheckBox.Size = new System.Drawing.Size(15, 14);
@@ -545,9 +549,9 @@
             this._reportPersonMissingLabel.Location = new System.Drawing.Point(16, 83);
             this._reportPersonMissingLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this._reportPersonMissingLabel.Name = "_reportPersonMissingLabel";
-            this._reportPersonMissingLabel.Size = new System.Drawing.Size(42, 13);
+            this._reportPersonMissingLabel.Size = new System.Drawing.Size(44, 13);
             this._reportPersonMissingLabel.TabIndex = 11;
-            this._reportPersonMissingLabel.Text = "Missing";
+            this._reportPersonMissingLabel.Text = "Reason";
             // 
             // _reportPersonLastNameTextBox
             // 
@@ -802,6 +806,23 @@
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // _reportPersonReasonBox
+            // 
+            this._reportPersonReasonBox.AllowDrop = true;
+            this._reportPersonReasonBox.FormattingEnabled = true;
+            this._reportPersonReasonBox.Location = new System.Drawing.Point(77, 83);
+            this._reportPersonReasonBox.Name = "_reportPersonReasonBox";
+            this._reportPersonReasonBox.Size = new System.Drawing.Size(121, 21);
+            this._reportPersonReasonBox.TabIndex = 30;
+            // 
+            // _reportCarReasonBox
+            // 
+            this._reportCarReasonBox.FormattingEnabled = true;
+            this._reportCarReasonBox.Location = new System.Drawing.Point(82, 115);
+            this._reportCarReasonBox.Name = "_reportCarReasonBox";
+            this._reportCarReasonBox.Size = new System.Drawing.Size(121, 21);
+            this._reportCarReasonBox.TabIndex = 25;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -900,5 +921,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckedListBox _reportImagesListbox;
         private System.Windows.Forms.Button _clearReportPersonButton;
+        private System.Windows.Forms.ComboBox _reportPersonReasonBox;
+        private System.Windows.Forms.ComboBox _reportCarReasonBox;
     }
 }

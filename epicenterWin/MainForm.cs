@@ -27,7 +27,15 @@ namespace epicenterWin
                 DrawEyesSquare = true,
                 DrawFaceSquare = true,
             };
-            //_faceRecognizer.CreateVideoCapture(filename: null);
+
+            _reportPersonReasonBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            _reportCarReasonBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (MissingEntity.SearchReason reason in Enum.GetValues(typeof(MissingEntity.SearchReason)))
+            {
+                _reportPersonReasonBox.Items.Add(reason.ToString());
+                if (reason == MissingEntity.SearchReason.Missing || reason == MissingEntity.SearchReason.NotSearched)
+                    _reportCarReasonBox.Items.Add(reason.ToString());
+            }
         }
 
         private void TrainingButton_Click(object sender, EventArgs e)
@@ -114,7 +122,7 @@ namespace epicenterWin
                     }
 
                     MessageBox.Show(displayString);
-                    
+
                 }
             }
             if (!bChecked)
@@ -155,7 +163,7 @@ namespace epicenterWin
                 return;
             }
             Person newPerson = new Person(firstName, lastName);
-            //newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
+            newPerson.Reason = (MissingEntity.SearchReason) Enum.Parse(typeof(MissingEntity.SearchReason), _reportPersonReasonBox.Text);
 
             SqliteDataAccess<Person>.CreateRow(newPerson);
             _faceRecognizer.NewPersonCreated = true;
@@ -181,6 +189,8 @@ namespace epicenterWin
                 return;
             }
             Plate newPlate = new Plate(carPlate);
+            System.Diagnostics.Debug.WriteLine(_reportCarReasonBox.Text);
+            newPlate.Reason = (MissingEntity.SearchReason) Enum.Parse(typeof(MissingEntity.SearchReason), _reportCarReasonBox.Text);
             //newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
             newPlate.FirstName = firstName;
             newPlate.LastName = lastName;

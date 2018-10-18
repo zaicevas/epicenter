@@ -9,6 +9,8 @@ namespace epicenterWin
         [CompositeKey]
         public string LastName { get; set; }
 
+        public SearchReason Reason { get; set; } = SearchReason.Missing;
+
         [UnecessaryColumn]
         public string FullName => $"{FirstName} {LastName}";
 
@@ -17,7 +19,7 @@ namespace epicenterWin
         {               
             // flags represent priority
             NotSearched = 0,
-            Missing = 1 << 0,
+            Missing = 1 << 0, 
             Criminal = 1 << 1,
             Other = 1 << 2
         }
