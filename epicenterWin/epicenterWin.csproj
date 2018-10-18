@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompositeKeyAttribute.cs" />
+    <Compile Include="DataBaseConnector.cs" />
     <Compile Include="DbEntity.cs" />
     <Compile Include="Face.cs" />
     <Compile Include="FaceRecognizer.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="SqliteDataAccess.cs" />
     <Compile Include="StringValidator.cs" />
     <Compile Include="UnecessaryColumnAttribute.cs" />
+    <Compile Include="WebcamHandler.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

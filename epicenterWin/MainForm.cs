@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -53,11 +52,7 @@ namespace epicenterWin
 
         private void RecognizeButton_Click(object sender, EventArgs e)
         {
-            Mat frame = _faceRecognizer.Frame;
-            if (frame == null)
-                return;
-
-            Image<Gray, byte> img = _faceRecognizer.GetFaceFromFrame(frame);
+            Image<Gray, byte> img = _faceRecognizer.GetFaceFromWebcam();
             Person prediction = _faceRecognizer.Recognize(img);
 
             if (prediction == null)
@@ -170,6 +165,7 @@ namespace epicenterWin
             newPerson.Missing = _reportPersonMissingCheckBox.Checked ? 1 : 0;
 
             SqliteDataAccess<Person>.CreateRow(newPerson);
+            _faceRecognizer.NewPersonCreated = true;
             string[] imageFiles = GetTrainFileNames(_reportImagesListbox);
             _faceRecognizer.TrainMultipleImages(imageFiles, newPerson);
             MessageBox.Show("Created!");

@@ -15,11 +15,11 @@ namespace epicenterWin
 {
     public class FaceRecognizer
     {
+        private const string _faceXML = @"../../Algo/haarcascade_frontalface_default.xml";
+        private const string _eyeXML = @"../../Algo/haarcascade_eye.xml";
         private const string _YMLPath = @"../../Algo/YMLFiles/";
         private const string _YMLFileName = @"person";
         private const string _YMLFileExtention = @".yml";
-        private const string _faceXML = @"../../Algo/haarcascade_frontalface_default.xml";
-        private const string _eyeXML = @"../../Algo/haarcascade_eye.xml";
 
         private const int _threshold = 3750;
         private const int _imgHeight = 150;
@@ -28,44 +28,45 @@ namespace epicenterWin
         private CascadeClassifier _faceCascade;
         private CascadeClassifier _eyeCascade;
 
+        public bool IsCamAlive { get; set; }
+        public bool NewPersonCreated { get; set; }
         private bool _ymlsRead = false;
 
         private Timer _timer;
         private int _timeout = 50;
         private int _currentTick = 0;
 
-        public Mat Frame { get; set; }
-        public Image<Gray, byte> LastRecognized { get; private set; }
-
         private List<Person> _people;
-        private List<Face> _trainedFaces;
-
+        private WebcamHandler _webcamHandler;
+        private DataBaseConnector _dataBaseConnector;
         private Dictionary<string, EigenFaceRecognizer> _recognizers;
         private List<Image<Gray, byte>> _faces;
         private List<int> _ids;
-        private int _currentTrainingID = -1;
         private Person _currentPerson;
+        private int _currentTrainingID = -1;
 
+        public Mat Frame;
         public bool DrawFaceSquare { get; set; }
         public bool DrawEyesSquare { get; set; }
-        public VideoCapture VideoCapture { get; private set; }
         public PictureBox PictureBox { get; set; }
-
-        public bool IsCamAlive { get; set; }
-
         private MainForm _mainForm;
-
+        
         public FaceRecognizer()
         {
+            Frame = new Mat();
             _faceCascade = new CascadeClassifier(Path.GetFullPath(_faceXML));
             _eyeCascade = new CascadeClassifier(Path.GetFullPath(_eyeXML));
-            Frame = new Mat();
             _faces = new List<Image<Gray, byte>>();
             _ids = new List<int>();
             _people = new List<Person>();
-            _trainedFaces = new List<Face>();
             _recognizers = new Dictionary<string, EigenFaceRecognizer>();
-
+            _webcamHandler = new WebcamHandler()
+            {
+                DrawEyesSquare = true,
+                DrawFaceSquare = true,
+            };
+            _dataBaseConnector = new DataBaseConnector();
+            NewPersonCreated = true;
             Directory.CreateDirectory(_YMLPath);
         }
 
@@ -82,60 +83,19 @@ namespace epicenterWin
         /// <param name="filename"></param>
         public void CreateVideoCapture(string filename = null)
         {
-            if (filename == null)
-                VideoCapture = new VideoCapture();
-            else
-                VideoCapture = new VideoCapture(filename);
-
-            VideoCapture.ImageGrabbed += VideoCapture_ImageGrabbed;
-            VideoCapture.Start();
+            _webcamHandler.Start(PictureBox);
             IsCamAlive = true;
         }
 
         public void StopVideoCapture()
         {
-            VideoCapture.Dispose();
+            _webcamHandler.Stop();
             IsCamAlive = false;
-        }
-
-        public Image<Gray, byte> GetFaceFromFrame(Mat frame)
-        {
-            if (frame == null)
-                return null;
-            Image<Gray, byte> grayScale = frame.ToImage<Gray, byte>();
-            Rectangle[] arr = _faceCascade.DetectMultiScale(grayScale, 1.3, 5);
-            if (arr.Length <= 0)
-                return null;
-            Image<Gray, byte> result = grayScale.Copy(arr[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
-            return result;
-        }
-
-        private void VideoCapture_ImageGrabbed(object sender, System.EventArgs e)
-        {
-            if (!VideoCapture.Retrieve(Frame))
-                return;
-
-            Image<Bgr, byte> image = Frame.ToImage<Bgr, byte>();
-            Image<Gray, byte> grayFrame = image.Convert<Gray, byte>();
-            Rectangle[] faces = _faceCascade.DetectMultiScale(grayFrame, 1.3, 5);
-            Rectangle[] eyes = _eyeCascade.DetectMultiScale(grayFrame, 1.3, 5);
-
-            if (DrawFaceSquare)
-                foreach (Rectangle face in faces)
-                    image.Draw(face, new Bgr(Color.BurlyWood), 3);
-            if (DrawEyesSquare)
-                foreach (Rectangle eye in eyes)
-                    image.Draw(eye, new Bgr(Color.NavajoWhite), 3);
-
-            if (PictureBox != null)
-                PictureBox.Image = image.ToBitmap();
         }
 
         public void StartTraining(string firstName, string lastName)
         {
-            Person currentPerson = new Person(firstName, lastName);
-            _currentPerson = SqliteDataAccess<Person>.ReadByCompositeKey(currentPerson);
-
+            _currentPerson = _dataBaseConnector.FindPerson(firstName, lastName);
             if(_currentPerson == null)
             {
                 _mainForm.TrainingStopped();
@@ -144,23 +104,11 @@ namespace epicenterWin
             }
 
             _currentTrainingID = _currentPerson.ID;
-            _trainedFaces = SqliteDataAccess<Face>.ReadRows().ToList();
-            
-            foreach (Face face in _trainedFaces.Where(f => f.PersonID == _currentTrainingID)) {
-                Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
-                {
-                    Bytes = face.Blob
-                };
-                _faces.Add(grayImage);
-                _ids.Add(_currentTrainingID);
-            }
-
             _currentTick = 0;
             _timer = new Timer()
             {
                 Interval = 300,
             };
-
             _timer.Tick += TrainingTick;
             _timer.Start();
         }
@@ -168,7 +116,14 @@ namespace epicenterWin
         private void TrainingTick(object sender, EventArgs e)
         {
             _currentTick++;
-            RecognizeFrameAs(Frame, _currentTrainingID);
+            Mat frame = _webcamHandler.Frame;
+            Image<Gray, byte> image = _webcamHandler.GetFaceFromFrame(frame);
+            if (image != null)
+            {
+                _faces.Add(image);
+                _ids.Add(_currentTrainingID);
+            }
+
             if (_currentTick >= _timeout)
             {
                 _timer.Stop();
@@ -177,47 +132,39 @@ namespace epicenterWin
             }
         }
 
-        public void RecognizeFrameAs(Mat frame, int id)
-        {
-            if (frame == null)
-                return;
-
-            Image<Gray, byte> image = GetFaceFromFrame(frame);
-            if (image == null)
-                return;
-
-            Face face = new Face
-            {
-                Blob = image.Bytes,
-                PersonID = _currentTrainingID
-            };
-            SqliteDataAccess<Face>.CreateRow(face);
-            _faces.Add(image);
-            _ids.Add(id);
-        }
-
         public void TrainAll()
         {
             if (_faces.Count <= 0)
                 return;
 
+            _dataBaseConnector.SaveNewFaces(_faces, _currentTrainingID);
+            _faces.Clear();
+            _ids.Clear();
+            _dataBaseConnector.LoadAllFaces(_faces, _ids, _currentTrainingID, _imgWidth, _imgHeight);
+            string fullName = _currentPerson.FullName;
             EigenFaceRecognizer eigenFaceRecognizer;
-            if (_recognizers.ContainsKey(_currentPerson.FullName))
+            if (_recognizers.ContainsKey(fullName))
             {
-                eigenFaceRecognizer = _recognizers[_currentPerson.FullName];
-                _recognizers.Remove(_currentPerson.FullName);
+                eigenFaceRecognizer = _recognizers[fullName];
+                _recognizers.Remove(fullName);
             }
             else
                 eigenFaceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
+
             eigenFaceRecognizer.Train(_faces.ToArray(), _ids.ToArray());
             string YMLFullPath = _YMLPath + _YMLFileName + _currentTrainingID.ToString() + _YMLFileExtention;
             eigenFaceRecognizer.Write(YMLFullPath);
             if (_ymlsRead)
-                _recognizers.Add(_currentPerson.FullName, eigenFaceRecognizer);
-            _currentPerson.YML = YMLFullPath;
-            SqliteDataAccess<Person>.UpdatePerson(_currentPerson);
+                _recognizers.Add(fullName, eigenFaceRecognizer);
+            _dataBaseConnector.UpdateYML(_currentPerson, YMLFullPath);
             _faces.Clear();
             _ids.Clear();
+        }
+
+        public Image<Gray, byte> GetFaceFromWebcam()
+        {
+            Mat frame = _webcamHandler.Frame;
+            return _webcamHandler.GetFaceFromFrame(frame);
         }
 
         public Person Recognize(Image<Gray, byte> grayImage)
@@ -225,8 +172,11 @@ namespace epicenterWin
             if (grayImage == null)
                 return null;
 
-            if (_people.Count == 0)
-                _people = SqliteDataAccess<Person>.ReadRows().ToList();
+            if (NewPersonCreated)
+            {
+                _people = _dataBaseConnector.LoadAllPeople();
+                NewPersonCreated = false;
+            }
 
             if (!_ymlsRead)
             {
@@ -235,16 +185,15 @@ namespace epicenterWin
                     eigenFaceRecognizer.Read(person.YML);
                     _recognizers.Add(person.FullName, eigenFaceRecognizer);
                 }
+                _ymlsRead = true;
             }
-            _ymlsRead = true;
-
+            
             if (grayImage.Width != _imgWidth || grayImage.Height != _imgHeight)
             {
                 grayImage = GetFaceFromImage(grayImage);
                 if (grayImage == null)
                     return null;
             }
-
 
             PredictionResult closestResult = new PredictionResult
             {
@@ -265,9 +214,8 @@ namespace epicenterWin
         private Person GetMatchingPerson(PredictionResult result, int threshold)
         {
             if (result.Label == -1 || result.Distance > threshold)
-            {
                 return null;
-            }
+
             try
             {
                 System.Diagnostics.Debug.WriteLine(result.Distance);
@@ -278,42 +226,6 @@ namespace epicenterWin
                 System.Diagnostics.Debug.WriteLine(ex);
             }
             return null;
-        }
-
-        public int GetMatchingId(PredictionResult result, int threshold)
-        {
-            string eigenLabel;
-            float eigenDistance = -1;
-            if (result.Label == -1)
-            {
-                eigenLabel = "Unknown";
-                eigenDistance = 0;
-            }
-            else
-            {
-                eigenLabel = result.Label.ToString();
-                eigenDistance = (float)result.Distance;
-                eigenLabel = eigenDistance > threshold ? "Unknown" : result.Label.ToString();
-            }
-            return int.Parse(eigenLabel);
-        }
-
-        public string GetMatchingLabel(PredictionResult result, int threshold)
-        {
-            string eigenLabel;
-            float eigenDistance = -1;
-            if (result.Label == -1)
-            {
-                eigenLabel = "Unknown";
-                eigenDistance = 0;
-            }
-            else
-            {
-                eigenLabel = result.Label.ToString();
-                eigenDistance = (float)result.Distance;
-                eigenLabel = eigenDistance > threshold ? "Unknown" : result.Label.ToString();
-            }
-            return eigenLabel + '\n' + "Distance: " + eigenDistance.ToString();
         }
 
         private Image<Gray, byte> GetFaceFromImage(Image<Gray, byte> image)
@@ -327,25 +239,14 @@ namespace epicenterWin
 
         public int TrainMultipleImages(string[] filePaths, Person target)
         {
-            _currentPerson = target;
+            _currentPerson = _dataBaseConnector.FindPerson(target.FirstName, target.LastName);
             _currentTrainingID = _currentPerson.ID;
 
             int faceCount = 0;                                       // number of faces sucessfully added to data set
-
-            foreach (Face face in _trainedFaces.Where(f => f.PersonID == _currentTrainingID))           // read current data set from DB
-            {
-                Image<Gray, byte> grayImage = new Image<Gray, byte>(_imgWidth, _imgHeight)
-                {
-                    Bytes = face.Blob
-                };
-                _faces.Add(grayImage);
-                _ids.Add(_currentTrainingID);
-            }
-
             foreach (string filePath in filePaths)
             {
                 string path = Path.GetFullPath(filePath);
-                Image<Bgr, byte> img = new Image<Bgr, Byte>(path);
+                Image<Bgr, byte> img = new Image<Bgr, byte>(path);
                 Image<Gray, byte> grayImg = img.Convert<Gray, byte>();
                 Rectangle[] faces = _faceCascade.DetectMultiScale(grayImg, 1.3, 5);
                 if (faces.Length == 1)
@@ -353,12 +254,6 @@ namespace epicenterWin
                     Image<Gray, byte> faceSquare = grayImg.Copy(faces[0]).Resize(_imgWidth, _imgHeight, Emgu.CV.CvEnum.Inter.Cubic);
                     _faces.Add(faceSquare);
                     _ids.Add(_currentTrainingID);
-                    Face faceToDb = new Face
-                    {
-                        Blob = faceSquare.Bytes,
-                        PersonID = _currentTrainingID
-                    };
-                    SqliteDataAccess<Face>.CreateRow(faceToDb);
                     faceCount++;
                 }
             }
