@@ -315,5 +315,10 @@ namespace epicenterWin
                 }
             }
         }
+
+        private void _clearReportPersonButton_Click(object sender, EventArgs e)
+        {
+            _reportImagesListbox.Items.Clear();
+        }
     }
 }
