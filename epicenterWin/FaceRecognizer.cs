@@ -253,7 +253,15 @@ namespace epicenterWin
             foreach (string filePath in filePaths)
             {
                 string path = Path.GetFullPath(filePath);
-                Image<Bgr, byte> img = new Image<Bgr, byte>(path);
+                Image<Bgr, byte> img;
+                try
+                {
+                    img = new Image<Bgr, byte>(path);
+                }
+                catch
+                {
+                    continue;
+                }
                 Image<Gray, byte> grayImg = img.Convert<Gray, byte>();
                 Rectangle[] faces = _faceCascade.DetectMultiScale(grayImg, 1.3, 5);
                 if (faces.Length == 1)
