@@ -63,6 +63,7 @@
             this._reportCarPlateLabel = new System.Windows.Forms.Label();
             this._reportCarPlateTextBox = new System.Windows.Forms.TextBox();
             this._reportPersonTab = new System.Windows.Forms.TabPage();
+            this._clearReportPersonButton = new System.Windows.Forms.Button();
             this._reportImagesListbox = new System.Windows.Forms.CheckedListBox();
             this._browseReportImageButton = new System.Windows.Forms.Button();
             this._reportImageTextBox = new System.Windows.Forms.TextBox();
@@ -94,7 +95,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this._clearReportPersonButton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this._searchPage.SuspendLayout();
             this.removeContextMenu.SuspendLayout();
@@ -477,6 +477,16 @@
             this._reportPersonTab.Text = "Person";
             this._reportPersonTab.UseVisualStyleBackColor = true;
             // 
+            // _clearReportPersonButton
+            // 
+            this._clearReportPersonButton.Location = new System.Drawing.Point(5, 308);
+            this._clearReportPersonButton.Name = "_clearReportPersonButton";
+            this._clearReportPersonButton.Size = new System.Drawing.Size(53, 21);
+            this._clearReportPersonButton.TabIndex = 29;
+            this._clearReportPersonButton.Text = "Clear";
+            this._clearReportPersonButton.UseVisualStyleBackColor = true;
+            this._clearReportPersonButton.Click += new System.EventHandler(this._clearReportPersonButton_Click);
+            // 
             // _reportImagesListbox
             // 
             this._reportImagesListbox.CheckOnClick = true;
@@ -487,6 +497,7 @@
             this._reportImagesListbox.Name = "_reportImagesListbox";
             this._reportImagesListbox.Size = new System.Drawing.Size(586, 139);
             this._reportImagesListbox.TabIndex = 16;
+            this._reportImagesListbox.MouseDown += new System.Windows.Forms.MouseEventHandler(this._reportImagesListbox_MouseDown);
             // 
             // _browseReportImageButton
             // 
@@ -790,16 +801,6 @@
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(64, 64);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // _clearReportPersonButton
-            // 
-            this._clearReportPersonButton.Location = new System.Drawing.Point(5, 308);
-            this._clearReportPersonButton.Name = "_clearReportPersonButton";
-            this._clearReportPersonButton.Size = new System.Drawing.Size(53, 21);
-            this._clearReportPersonButton.TabIndex = 29;
-            this._clearReportPersonButton.Text = "Clear";
-            this._clearReportPersonButton.UseVisualStyleBackColor = true;
-            this._clearReportPersonButton.Click += new System.EventHandler(this._clearReportPersonButton_Click);
             // 
             // MainForm
             // 

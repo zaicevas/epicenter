@@ -35,7 +35,10 @@ namespace epicenterWin
             string firstName = _firstNameTextBox.Text;
             string lastName = _lastNameTextBox.Text;
             if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
+            {
+                MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
                 return;
+            }
 
             _firstNameTextBox.Enabled = false;
             trainingButton.Enabled = false;
@@ -127,24 +130,14 @@ namespace epicenterWin
 
         private void BrowseListBox_MouseDown(object sender, MouseEventArgs e)                               // catching right button (remove) click
         {
-            if (e.Button != MouseButtons.Right)
-                return;
-            int index = BrowseListBox.IndexFromPoint(e.Location);
-            removeContextMenu.Opening += (o, c) =>
-            {
-                if (index == ListBox.NoMatches)
-                    c.Cancel = true;
-                else
-                {
-                    _removeMe = e;
-                    c.Cancel = false;
-                }
-            };
+            RemoveItem(e, BrowseListBox);
         }
 
         private void RemoveToolStripMenuItem_Click(object sender, EventArgs e)                              // clicking remove
         {
             CheckedListBox currentBox = Tabs.SelectedTab.Name == "_train" ? _trainCheckedListBox : BrowseListBox;
+            if (Tabs.SelectedTab.Name == "_reportPage")
+                currentBox = _reportImagesListbox;
             int index = currentBox.IndexFromPoint(_removeMe.Location);
             currentBox.Items.RemoveAt(index);
         }
@@ -174,16 +167,23 @@ namespace epicenterWin
         private void _reportCarReportButton_Click(object sender, EventArgs e)
         {
             string carPlate = _reportCarPlateTextBox.Text;
+            string firstName = _reportCarFirstNameTextBox.Text;
+            string lastName = _reportCarLastNameTextBox.Text;
 
             if (!carPlate.NumberPlateValid())
             {
-                MessageBox.Show("Please use Lithuanian number plate notation withuot -. E.g. \"EWQ153\"");
+                MessageBox.Show("Please use Lithuanian number plate notation. E.g. \"EWQ153\"");
+                return;
+            }
+            if (!firstName.NamePatternValid() || !lastName.NamePatternValid())
+            {
+                MessageBox.Show("Please make sure you write down First Name and Last Name correctly.");
                 return;
             }
             Plate newPlate = new Plate(carPlate);
             newPlate.Missing = _reportCarMissingCheckBox.Checked ? 1 : 0;
-            newPlate.FirstName = _reportCarFirstNameTextBox.Text;
-            newPlate.LastName = _reportCarLastNameTextBox.Text;
+            newPlate.FirstName = firstName;
+            newPlate.LastName = lastName;
             SqliteDataAccess<Plate>.CreateRow(newPlate);
             MessageBox.Show("Created!");
         }
@@ -212,10 +212,10 @@ namespace epicenterWin
 
         private void _trainCheckedListBox_MouseDown(object sender, MouseEventArgs e)
         {
-            removeItem(e, _trainCheckedListBox);
+            RemoveItem(e, _trainCheckedListBox);
         }
 
-        private void removeItem(MouseEventArgs e, CheckedListBox browseListBox)
+        private void RemoveItem(MouseEventArgs e, CheckedListBox browseListBox)
         {
             if (e.Button != MouseButtons.Right)
                 return;
@@ -319,6 +319,11 @@ namespace epicenterWin
         private void _clearReportPersonButton_Click(object sender, EventArgs e)
         {
             _reportImagesListbox.Items.Clear();
+        }
+
+        private void _reportImagesListbox_MouseDown(object sender, MouseEventArgs e)
+        {
+            RemoveItem(e, _reportImagesListbox);
         }
     }
 }
