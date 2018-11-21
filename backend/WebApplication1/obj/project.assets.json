@@ -11531,11 +11531,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ferN\\source\\reps\\back\\WebApplication1\\WebApplication1.csproj",
+      "projectUniqueName": "C:\\Users\\ferN\\reps\\epicenter\\backend\\WebApplication1\\WebApplication1.csproj",
       "projectName": "WebApplication1",
-      "projectPath": "C:\\Users\\ferN\\source\\reps\\back\\WebApplication1\\WebApplication1.csproj",
+      "projectPath": "C:\\Users\\ferN\\reps\\epicenter\\backend\\WebApplication1\\WebApplication1.csproj",
       "packagesPath": "C:\\Users\\ferN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ferN\\source\\reps\\back\\WebApplication1\\obj\\",
+      "outputPath": "C:\\Users\\ferN\\reps\\epicenter\\backend\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
