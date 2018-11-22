@@ -10,6 +10,7 @@ namespace WebApplication1.Models
         public static AppSettings Configuration;
 
         public string ConnectionString { get; set; }
+        public string GroupID { get; set; }
 
         public AppSettings()
         {

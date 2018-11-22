@@ -141,7 +141,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<List<PersonResponse>> GetPersonsInGroup(string personGroupId)
+        public static async Task<List<FaceAPIPersonResponse>> GetPersonsInGroup(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -151,7 +151,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    List<PersonResponse> result = JsonConvert.DeserializeObject<List<PersonResponse>>(content);
+                    List<FaceAPIPersonResponse> result = JsonConvert.DeserializeObject<List<FaceAPIPersonResponse>>(content);
                     return result;
                 }
                 else
@@ -163,7 +163,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<PersonResponse> GetPerson(string personGroupId, string personId)
+        public static async Task<FaceAPIPersonResponse> GetPerson(string personGroupId, string personId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -173,7 +173,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    PersonResponse result = JsonConvert.DeserializeObject<PersonResponse>(content);
+                    FaceAPIPersonResponse result = JsonConvert.DeserializeObject<FaceAPIPersonResponse>(content);
                     return result;
                 }
                 else
@@ -309,7 +309,7 @@ namespace WebApplication1.Services
                 {
                     FaceIds = new List<string> { faceId },
                     PersonGroupId = personGroupId,
-                    MaxNumOfCandidatesReturned = (1 <= maxNumOfCandidatesReturned && maxNumOfCandidatesReturned <= 5) ? maxNumOfCandidatesReturned : 1,
+                    MaxNumOfCandidatesReturned = (1 <= maxNumOfCandidatesReturned && maxNumOfCandidatesReturned <= 5) ? maxNumOfCandidatesReturned : 1
                 };
                 string bodyText = JsonConvert.SerializeObject(body);
                 StringContent stringContent = new StringContent(bodyText, Encoding.UTF8, "application/json");
