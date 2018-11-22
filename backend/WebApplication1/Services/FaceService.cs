@@ -1,139 +1,337 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using WebApplication1.Models.FaceAPI;
+using WebApplication1.Models.FaceAPI.Responses;
+using WebApplication1.Models.FaceAPI.Requests;
 
 namespace WebApplication1.Services
 {
     public class FaceService
     {
         private const string _subscriptionKey = "822fc0c2b7704dd48003c050650f4522";
-        private const string _uriBase = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/";
-        private const string _filePath = @"C:\Users\stong\Desktop\TOP\imgs\img8.jpg";
+        private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
+        private const string _uriBase = "https://westeurope.api.cognitive.microsoft.com/face/v1.0";
 
-        public static async void MakeAnalysisRequest(string imageFilePath)
+        public static async Task<List<PersonGroupGetResponse>> GetPersonGroups()
         {
-            HttpClient client = new HttpClient();
-
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _subscriptionKey);
-
-            // Request parameters. A third optional parameter is "details".
-            string requestParameters = "returnFaceId=true&returnFaceLandmarks=false" +
-                "&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses," +
-                "emotion,hair,makeup,occlusion,accessories,blur,exposure,noise";
-
-            // Assemble the URI for the REST API Call.
-            string uri = _uriBase + "detect?" + requestParameters;
-
-            HttpResponseMessage response;
-
-            // Request body. Posts a locally stored JPEG image.
-            byte[] byteData = GetImageAsByteArray(_filePath);
-
-            Console.WriteLine(uri);
-
-            using (ByteArrayContent content = new ByteArrayContent(byteData))
+            using (HttpClient client = new HttpClient())
             {
-                // This example uses content type "application/octet-stream".
-                // The other content types you can use are "application/json"
-                // and "multipart/form-data".
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups";
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    List<PersonGroupGetResponse> result = JsonConvert.DeserializeObject<List<PersonGroupGetResponse>>(content);
+                    return result;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static async Task<PersonGroupGetResponse> GetPersonGroup(string personGroupId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}";
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    PersonGroupGetResponse list = JsonConvert.DeserializeObject<PersonGroupGetResponse>(responseBody);
+                    return list;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static async Task<bool> CreatePersonGroup(string personGroupId, string name, string description)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}";
+                PersonGroupCreateRequest body = new PersonGroupCreateRequest()
+                {
+                    Name = name,
+                    UserData = description
+                };
+                string bodyText = JsonConvert.SerializeObject(body);
+                StringContent stringContent = new StringContent(bodyText, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(uri, stringContent);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public static async Task<bool> DeletePersonGroup(string personGroupId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}";
+                HttpResponseMessage response = await client.DeleteAsync(uri);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public static async Task<bool> TrainPersonGroup(string personGroupId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/train";
+                StringContent stringContent = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(uri, stringContent);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public static async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingStatus(string personGroupId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/training";
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    PersonGroupTrainingStatusResponse result = JsonConvert.DeserializeObject<PersonGroupTrainingStatusResponse>(responseBody);
+                    return result.GetPersonGroupTrainingStatus();
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static async Task<List<PersonResponse>> GetPersonsInGroup(string personGroupId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/persons";
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    List<PersonResponse> result = JsonConvert.DeserializeObject<List<PersonResponse>>(content);
+                    return result;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static async Task<PersonResponse> GetPerson(string personGroupId, string personId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/persons/{personId}";
+                HttpResponseMessage response = await client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    PersonResponse result = JsonConvert.DeserializeObject<PersonResponse>(content);
+                    return result;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static async Task<string> CreatePerson(string personGroupId, string personName, string personDescription)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/persons";
+                PersonCreateRequest body = new PersonCreateRequest()
+                {
+                    Name = personName,
+                    UserData = personDescription
+                };
+                string bodyText = JsonConvert.SerializeObject(body);
+                StringContent httpContent = new StringContent(bodyText, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(uri, httpContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    PersonCreateResponse result = JsonConvert.DeserializeObject<PersonCreateResponse>(content);
+                    return result.PersonId;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static async Task<bool> DeletePerson(string personGroupId, string personId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/persons/{personId}";
+                HttpResponseMessage response = await client.DeleteAsync(uri);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+                return response.IsSuccessStatusCode;
+            }
+        }
+
+        public static async Task<string> AddFaceToPerson(string personGroupId, string personId, byte[] image)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/persons/{personId}/persistedFaces";
+                ByteArrayContent content = new ByteArrayContent(image);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-                // Execute the REST API call.
-                response = await client.PostAsync(uri, content);
-
-                // Get the JSON response.
-                string contentString = await response.Content.ReadAsStringAsync();
-
-                // Display the JSON response.
-                Console.WriteLine("\nResponse:\n");
-                Console.WriteLine(JsonPrettyPrint(contentString));
-                Console.WriteLine("\nPress Enter to exit...");
+                HttpResponseMessage response = await client.PostAsync(uri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    FaceAddResponse result = JsonConvert.DeserializeObject<FaceAddResponse>(responseBody);
+                    return result.PersistedFaceId;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
             }
         }
 
-        public static async void PersonGroupCreate(string groupID)
+        public static async Task<bool> DeleteFaceFromPerson(string personGroupId, string personId, string persistedFaceId)
         {
-            HttpClient client = new HttpClient();
-
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _subscriptionKey);
-
-            // Assemble the URI for the REST API Call.
-            string uri = _uriBase + "persongroups/{groupID}";
-            Console.WriteLine(uri);
-
-            HttpResponseMessage response;
-
-            PersonGroupRequest pGroup = new PersonGroupRequest()
+            using (HttpClient client = new HttpClient())
             {
-                Name = "groupName",
-                UserData = "userDefinedData"
-            };
-
-            string contentText = JsonConvert.SerializeObject(pGroup);
-
-            using (StringContent content = new StringContent(contentText))
-            {
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                // Execute the REST API call.
-                response = await client.PutAsync(uri, content);
-
-                // Get the JSON response.
-                string contentString = await response.Content.ReadAsStringAsync();
-
-                // Display the JSON response.
-                Console.WriteLine("\nResponse:\n");
-                Console.WriteLine(JsonPrettyPrint(contentString));
-                Console.WriteLine("\nPress Enter to exit...");
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}";
+                HttpResponseMessage response = await client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
             }
         }
 
-        public static async void PersonCreate(string groupID)
+        public static async Task<List<FaceDetectResponse>> DetectFaces(byte[] image)
         {
-            HttpClient client = new HttpClient();
-
-            // Request headers.
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _subscriptionKey);
-
-            // Assemble the URI for the REST API Call.
-            string uri = _uriBase + "persongroups/{groupID}/persons";
-            Console.WriteLine(uri);
-
-            HttpResponseMessage response;
-
-            PersonRequest person = new PersonRequest()
+            using (HttpClient client = new HttpClient())
             {
-                Name = "personName",
-                UserData = "userDefinedPersonData"
-            };
-
-            string contentText = JsonConvert.SerializeObject(person);
-
-            using (StringContent content = new StringContent(contentText))
-            {
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                // Execute the REST API call.
-                response = await client.PostAsync(uri, content);
-
-                // Get the JSON response.
-                string contentString = await response.Content.ReadAsStringAsync();
-
-                // Display the JSON response.
-                Console.WriteLine("\nResponse:\n");
-                Console.WriteLine(JsonPrettyPrint(contentString));
-                Console.WriteLine("\nPress Enter to exit...");
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/detect";
+                ByteArrayContent content = new ByteArrayContent(image);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                HttpResponseMessage response = await client.PostAsync(uri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    List<FaceDetectResponse> result = JsonConvert.DeserializeObject<List<FaceDetectResponse>>(responseBody);
+                    return result;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
             }
         }
 
-        static byte[] GetImageAsByteArray(string imageFilePath)
+        public static async Task<List<FaceIdentifyResponse>> Identify(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
+                string uri = $"{_uriBase}/identify";
+                FaceIdentifyRequest body = new FaceIdentifyRequest()
+                {
+                    FaceIds = new List<string> { faceId },
+                    PersonGroupId = personGroupId,
+                    MaxNumOfCandidatesReturned = (1 <= maxNumOfCandidatesReturned && maxNumOfCandidatesReturned <= 5) ? maxNumOfCandidatesReturned : 1,
+                };
+                string bodyText = JsonConvert.SerializeObject(body);
+                StringContent stringContent = new StringContent(bodyText, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(uri, stringContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    List<FaceIdentifyResponse> result = JsonConvert.DeserializeObject<List<FaceIdentifyResponse>>(responseBody);
+                    return result;
+                }
+                else
+                {
+                    string errorText = await response.Content.ReadAsStringAsync();
+                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
+                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                }
+            }
+        }
+
+        public static byte[] GetImageAsByteArray(string imageFilePath)
         {
             using (FileStream fileStream = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
             {
@@ -203,17 +401,5 @@ namespace WebApplication1.Services
 
             return sb.ToString().Trim();
         }
-    }
-
-    public class PersonGroupRequest
-    {
-        public string Name { get; set; }
-        public string UserData { get; set; }
-    }
-
-    public class PersonRequest
-    {
-        public string Name { get; set; }
-        public string UserData { get; set; }
     }
 }
