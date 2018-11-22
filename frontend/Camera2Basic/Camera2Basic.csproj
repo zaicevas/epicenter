@@ -47,6 +47,12 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Plugin.LocalNotifications, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xam.Plugins.Notifier.3.0.1\lib\MonoAndroid10\Plugin.LocalNotifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.LocalNotifications.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Xam.Plugins.Notifier.3.0.1\lib\MonoAndroid10\Plugin.LocalNotifications.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=106.5.4.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.5.4\lib\netstandard2.0\RestSharp.dll</HintPath>
     </Reference>
@@ -130,19 +136,22 @@
     <Compile Include="CompareSizesByArea.cs" />
     <Compile Include="ConfirmationDialog.cs" />
     <Compile Include="ErrorDialog.cs" />
+    <Compile Include="ExtentionMethods\ImageExtentions.cs" />
     <Compile Include="Listeners\Camera2BasicSurfaceTextureListener.cs" />
     <Compile Include="Listeners\CameraCaptureListener.cs" />
     <Compile Include="Listeners\CameraCaptureSessionCallback.cs" />
     <Compile Include="Listeners\CameraCaptureStillPictureSessionCallback.cs" />
     <Compile Include="Listeners\CameraStateListener.cs" />
     <Compile Include="Listeners\ImageAvailableListener.cs" />
+    <Compile Include="Notifications\PhoneNotificationManager.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CameraActivity.cs" />
     <Compile Include="CameraFragment.cs" />
     <Compile Include="AutoFitTextureView.cs" />
     <Compile Include="Runnables\ImageSaver.cs" />
-    <Compile Include="Runnables\ToastNotificiation.cs" />
+    <Compile Include="Notifications\ToastNotificiation.cs" />
+    <Compile Include="Runnables\ImageUploader.cs" />
     <Compile Include="Services\ImageUploadService.cs" />
   </ItemGroup>
   <ItemGroup>
