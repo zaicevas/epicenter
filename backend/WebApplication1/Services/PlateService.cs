@@ -13,10 +13,7 @@ namespace WebApplication1.Services
 {
     public class PlateService
     {
-        #region
-        private const string _shKey = "sk_7f8cafb2b09b7e5185fe9682";
-        #endregion
-
+        private readonly string _shKey = AppSettings.Configuration.AlprKey;
         private PlateRepository _plateRepository = new PlateRepository();
 
         public PlateResponse Recognize(string base64)

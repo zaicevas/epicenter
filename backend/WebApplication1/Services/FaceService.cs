@@ -12,6 +12,7 @@ namespace WebApplication1.Services
     {
         private string _groupID = AppSettings.Configuration.GroupID;
         private PersonRepository _personRepository = new PersonRepository();
+        private FaceAPIService _faceAPIService = new FaceAPIService();
 
         public async Task<PersonResponse> RecognizeAsync(string base64)
         {
@@ -33,7 +34,7 @@ namespace WebApplication1.Services
         private async Task<List<Person>> CallFaceAPI(byte[] image)
         {
             List<Person> recognizedPersons = new List<Person>();
-            List<FaceDetectResponse> detectResult = await FaceAPIService.DetectFaces(image);
+            List<FaceDetectResponse> detectResult = await _faceAPIService.DetectFaces(image);
             if (detectResult != null && detectResult.Count > 0)
             {
                 detectResult.ForEach(async x =>
@@ -41,12 +42,12 @@ namespace WebApplication1.Services
                     string faceID = x.FaceId;
                     if (!string.IsNullOrEmpty(faceID))
                     {
-                        List<FaceIdentifyResponse> identifyResult = await FaceAPIService.Identify(faceID, _groupID, 1);
+                        List<FaceIdentifyResponse> identifyResult = await _faceAPIService.Identify(faceID, _groupID, 1);
                         if (identifyResult != null && identifyResult.Count > 0 && identifyResult[0].Candidates.Count > 0)
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             double confidence = identifyResult[0].Candidates[0].Confidence;
-                            FaceAPIPersonResponse person = await FaceAPIService.GetPerson(_groupID, personId);
+                            FaceAPIPersonResponse person = await _faceAPIService.GetPerson(_groupID, personId);
                             recognizedPersons.Add(_personRepository.GetByFaceAPIID(personId));
                         }
                     }
