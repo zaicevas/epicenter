@@ -2,6 +2,7 @@
 using System.Linq;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
+using WebApplication1.Repositories.Abstract;
 
 namespace WebApplication1.Repositories
 {
@@ -29,7 +30,7 @@ namespace WebApplication1.Repositories
 
         public Person GetByID(int id)
         {
-            return (Person)GetAll().Where(x => x.ID == id);
+            return Mapper<Person>.ReadById(id);
         }
     }
 }

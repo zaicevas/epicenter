@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Infrastructure.Attributes.Database
 {
-    // Attribute for marking composite key PROPERTIES in a database.
-
     [AttributeUsage(AttributeTargets.Property)]
-    class CompositeKeyAttribute : Attribute
+    public class IDAttribute : Attribute
     {
     }
 }
