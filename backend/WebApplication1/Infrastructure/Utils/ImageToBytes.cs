@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Infrastructure.Utils
 {
-    public class ImageFromFileToBytes
+    public static class ImageToBytes
     {
         public static byte[] GetImageFromFileAsByteArray(string imageFilePath)
         {

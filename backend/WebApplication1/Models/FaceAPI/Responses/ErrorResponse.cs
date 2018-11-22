@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Models.FaceAPI
+﻿namespace WebApplication1.Models.FaceAPI.Responses
 {
-    public class FaceAPIError
+    public class ErrorResponse
     {
         public string Code { get; set; }
         public string Message { get; set; }

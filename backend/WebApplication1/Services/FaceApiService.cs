@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using WebApplication1.Models.FaceAPI;
 using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.FaceAPI.Requests;
+using WebApplication1.Infrastructure.Exceptions;
 
 namespace WebApplication1.Services
 {
@@ -32,8 +32,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -54,8 +54,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -77,8 +77,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -94,8 +94,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -112,8 +112,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -135,8 +135,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -157,8 +157,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -179,8 +179,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -208,8 +208,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -224,8 +224,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -249,8 +249,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -269,8 +269,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -293,8 +293,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -323,8 +323,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }

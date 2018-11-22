@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication1.Models.FaceAPI
+namespace WebApplication1.Infrastructure.Exceptions
 {
     public class FaceAPIException : Exception
     {
