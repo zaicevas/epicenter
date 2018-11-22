@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.FaceAPI.Requests;
 using WebApplication1.Infrastructure.Exceptions;
+using WebApplication1.Models;
 
 namespace WebApplication1.Services
 {
-    public static class FaceAPIService
+    public class FaceAPIService
     {
-        private const string _subscriptionKey = "822fc0c2b7704dd48003c050650f4522";
+        private readonly string _subscriptionKey = AppSettings.Configuration.FaceKey;
         private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
-        private const string _uriBase = "https://westeurope.api.cognitive.microsoft.com/face/v1.0";
+        private readonly string _uriBase = AppSettings.Configuration.FaceAPIEndpoint;
 
-        public static async Task<List<PersonGroupGetResponse>> GetPersonGroups()
+        public async Task<List<PersonGroupGetResponse>> GetPersonGroups()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -38,7 +39,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<PersonGroupGetResponse> GetPersonGroup(string personGroupId)
+        public async Task<PersonGroupGetResponse> GetPersonGroup(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -60,7 +61,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<bool> CreatePersonGroup(string personGroupId, string name, string description)
+        public async Task<bool> CreatePersonGroup(string personGroupId, string name, string description)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -84,7 +85,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<bool> DeletePersonGroup(string personGroupId)
+        public async Task<bool> DeletePersonGroup(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -101,7 +102,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<bool> TrainPersonGroup(string personGroupId)
+        public async Task<bool> TrainPersonGroup(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -119,7 +120,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingStatus(string personGroupId)
+        public async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingStatus(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -141,7 +142,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<List<PersonResponse>> GetPersonsInGroup(string personGroupId)
+        public async Task<List<FaceAPIPersonResponse>> GetPersonsInGroup(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -151,7 +152,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    List<PersonResponse> result = JsonConvert.DeserializeObject<List<PersonResponse>>(content);
+                    List<FaceAPIPersonResponse> result = JsonConvert.DeserializeObject<List<FaceAPIPersonResponse>>(content);
                     return result;
                 }
                 else
@@ -163,7 +164,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<PersonResponse> GetPerson(string personGroupId, string personId)
+        public async Task<FaceAPIPersonResponse> GetPerson(string personGroupId, string personId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -173,7 +174,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    PersonResponse result = JsonConvert.DeserializeObject<PersonResponse>(content);
+                    FaceAPIPersonResponse result = JsonConvert.DeserializeObject<FaceAPIPersonResponse>(content);
                     return result;
                 }
                 else
@@ -185,7 +186,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<string> CreatePerson(string personGroupId, string personName, string personDescription)
+        public async Task<string> CreatePerson(string personGroupId, string personName, string personDescription)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -214,7 +215,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<bool> DeletePerson(string personGroupId, string personId)
+        public async Task<bool> DeletePerson(string personGroupId, string personId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -231,7 +232,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<string> AddFaceToPerson(string personGroupId, string personId, byte[] image)
+        public async Task<string> AddFaceToPerson(string personGroupId, string personId, byte[] image)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -255,7 +256,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<bool> DeleteFaceFromPerson(string personGroupId, string personId, string persistedFaceId)
+        public async Task<bool> DeleteFaceFromPerson(string personGroupId, string personId, string persistedFaceId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -275,7 +276,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<List<FaceDetectResponse>> DetectFaces(byte[] image)
+        public async Task<List<FaceDetectResponse>> DetectFaces(byte[] image)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -299,7 +300,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public static async Task<List<FaceIdentifyResponse>> Identify(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
+        public async Task<List<FaceIdentifyResponse>> Identify(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -309,7 +310,7 @@ namespace WebApplication1.Services
                 {
                     FaceIds = new List<string> { faceId },
                     PersonGroupId = personGroupId,
-                    MaxNumOfCandidatesReturned = (1 <= maxNumOfCandidatesReturned && maxNumOfCandidatesReturned <= 5) ? maxNumOfCandidatesReturned : 1,
+                    MaxNumOfCandidatesReturned = (1 <= maxNumOfCandidatesReturned && maxNumOfCandidatesReturned <= 5) ? maxNumOfCandidatesReturned : 1
                 };
                 string bodyText = JsonConvert.SerializeObject(body);
                 StringContent stringContent = new StringContent(bodyText, Encoding.UTF8, "application/json");

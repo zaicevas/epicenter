@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Models.OpenALPR.Responses
 {
-    public class PlateResults
+    public class PlateAPIResult
     {
         public string Plate { get; set; }
-        public int Confidence { get; set; }
-        public int RegionConfidence { get; set; }
+        public bool MatchesPattern { get; set; }        // not from cloud
+        public double Confidence { get; set; }  
+        public double RegionConfidence { get; set; }
     }
 }

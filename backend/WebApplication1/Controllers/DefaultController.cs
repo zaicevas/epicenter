@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
@@ -16,7 +17,8 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(404)]
         public IActionResult Post([FromBody] string value)
         {
-            if (true)                           // if person has been recognized
+            new PlateService().Recognize("HEYO");
+            if (true)                           // if both person and plate has been recognized
                 return Ok("ALL GOOD BOY");
             else
             {
