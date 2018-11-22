@@ -20,7 +20,7 @@ namespace WebApplication1.Repositories
 
         public void Edit(Person entity)
         {
-            Mapper<Person>.UpdatePerson(entity);
+            Mapper<Person>.Update(entity);
         }
 
         public IEnumerable<Person> GetAll()
@@ -30,7 +30,7 @@ namespace WebApplication1.Repositories
 
         public Person GetByID(int id)
         {
-            return Mapper<Person>.ReadById(id);
+            return Mapper<Person>.ReadByID(id);
         }
     }
 }
