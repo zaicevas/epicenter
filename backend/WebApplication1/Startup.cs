@@ -31,7 +31,11 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.Configure<AppSettings>(Configuration.GetSection("ApplicationSettings"));
+            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));     to use option pattern
+            var config = new AppSettings();
+            //Configuration.Bind("AppSettings", config);
+            Configuration.GetSection("AppSettings").Bind(config);
+            services.AddSingleton(config);
             /*
              *  to inject raw Configuration
             services.AddSingleton(Configuration);

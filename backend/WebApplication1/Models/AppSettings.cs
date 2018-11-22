@@ -7,6 +7,13 @@ namespace WebApplication1.Models
 {
     public class AppSettings
     {
+        public static AppSettings Configuration;
+
         public string ConnectionString { get; set; }
+
+        public AppSettings()
+        {
+            Configuration = this;
+        }
     }
 }
