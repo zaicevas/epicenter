@@ -31,7 +31,7 @@ namespace WebApplication1.Repositories
 
         public Plate GetByID(int id)
         {
-            return Mapper<Plate>.ReadById(id);
+            return Mapper<Plate>.ReadByID(id);
         }
     }
 }

@@ -86,7 +86,8 @@ namespace WebApplication1.Mappers
                     finalQuery += name + " = @" + name + ", ";
                 }
                 finalQuery = finalQuery.Substring(0, finalQuery.Length - 2);
-                finalQuery += " WHERE ID = @ID";
+                string idProperty = GetPropertyNames<IDAttribute>(false).First();
+                finalQuery += $" WHERE {idProperty} = @{idProperty}";
                 _sqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
@@ -99,7 +100,8 @@ namespace WebApplication1.Mappers
         {
             try
             {
-                _sqliteConnect.Execute($"DELETE FROM {_tableName} WHERE ID = @ID", entity);
+                string idProperty = GetPropertyNames<IDAttribute>(false).First();
+                _sqliteConnect.Execute($"DELETE FROM {_tableName} WHERE {idProperty} = @{idProperty}", entity);
             }
             catch (SQLiteException)
             {
@@ -119,7 +121,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static T ReadById(int id)
+        public static T ReadByID(int id)
         {
             string finalQuery = $"SELECT * FROM {_tableName} WHERE ";
             string idProperty = GetPropertyNames<IDAttribute>(false).First();
