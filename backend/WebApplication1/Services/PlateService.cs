@@ -18,32 +18,8 @@ namespace WebApplication1.Services
 
         public PlateResponse Recognize(string base64)
         {
-            string message = "";
-            Dictionary<SearchReason, string> dictionary = SearchReasonMap.reasonDictionary;
-            PlateAPIResponse cloudResponse = GetPlateResponse(base64);
-            cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
-            List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
-            List<Plate> identifiedPlates = new List<Plate>();
-            matchingResults.ForEach(result =>
-            {
-                Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
-                if (plate != null)
-                    identifiedPlates.Add(plate);
-            });
-            if (identifiedPlates.Count == 0)
-            {
-                return new PlateResponse()
-                {
-                    Recognized = false,
-                    Message = "No plate has been recognized"
-                };
-            }
-            identifiedPlates.ForEach(plate => message += $"{plate.NumberPlate} is {dictionary[plate.Reason]}\n");
-            return new PlateResponse()
-            {
-                Recognized = true,
-                Message = message
-            };
+            List<Plate> identifiedPlates = GetIdentifiedPlates(base64);
+            return GetPlateResponse(identifiedPlates);
         }
 
         private PlateAPIResponse GetPlateResponse(string base64)
@@ -61,6 +37,41 @@ namespace WebApplication1.Services
 
             IRestResponse<PlateAPIResponse> response = client.Execute<PlateAPIResponse>(request);
             return response.Data;
+        }
+
+        private List<Plate> GetIdentifiedPlates(string base64)
+        {
+            PlateAPIResponse cloudResponse = GetPlateResponse(base64);
+            cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
+            List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
+            List<Plate> identifiedPlates = new List<Plate>();
+            matchingResults.ForEach(result =>
+            {
+                Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
+                if (plate != null)
+                    identifiedPlates.Add(plate);
+            });
+            return identifiedPlates;
+        }
+
+        private PlateResponse GetPlateResponse(List<Plate> identifiedPlates)
+        {
+            string message = "";
+            Dictionary<SearchReason, string> dictionary = SearchReasonMap.reasonDictionary;
+            if (identifiedPlates.Count == 0)
+            {
+                return new PlateResponse()
+                {
+                    Recognized = false,
+                    Message = "No plate has been recognized"
+                };
+            }
+            identifiedPlates.ForEach(plate => message += $"{plate.NumberPlate} is {dictionary[plate.Reason]}\n");
+            return new PlateResponse()
+            {
+                Recognized = true,
+                Message = message
+            };
         }
     }
 }
