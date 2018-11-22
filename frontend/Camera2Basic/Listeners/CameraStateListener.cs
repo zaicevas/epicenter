@@ -5,38 +5,36 @@ namespace Camera2Basic.Listeners
 {
     public class CameraStateListener : CameraDevice.StateCallback
     {
-        private readonly CameraFragment owner;
-
-        public CameraStateListener(CameraFragment owner)
-        {
-            if (owner == null)
-                throw new System.ArgumentNullException("owner");
-            this.owner = owner;
-        }
+        public CameraFragment Owner { get; set; }
 
         public override void OnOpened(CameraDevice cameraDevice)
         {
-            // This method is called when the camera is opened.  We start camera preview here.
-            owner.CameraOpenCloseLock.Release();
-            owner.CameraDevice = cameraDevice;
-            owner.CreateCameraPreviewSession();
+            if (Owner == null)
+                return;
+            Owner.CameraOpenCloseLock.Release();
+            Owner.CameraDevice = cameraDevice;
+            Owner.CreateCameraPreviewSession();
         }
 
         public override void OnDisconnected(CameraDevice cameraDevice)
         {
-            owner.CameraOpenCloseLock.Release();
+            if (Owner == null)
+                return;
+            Owner.CameraOpenCloseLock.Release();
             cameraDevice.Close();
-            owner.CameraDevice = null;
+            Owner.CameraDevice = null;
         }
 
         public override void OnError(CameraDevice cameraDevice, CameraError error)
         {
-            owner.CameraOpenCloseLock.Release();
-            cameraDevice.Close();
-            owner.CameraDevice = null;
-            if (owner == null)
+            if (Owner == null)
                 return;
-            Activity activity = owner.Activity;
+            Owner.CameraOpenCloseLock.Release();
+            cameraDevice.Close();
+            Owner.CameraDevice = null;
+            if (Owner == null)
+                return;
+            Activity activity = Owner.Activity;
             if (activity != null)
             {
                 activity.Finish();

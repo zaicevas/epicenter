@@ -27,10 +27,10 @@ using Orientation = Android.Content.Res.Orientation;
 
 namespace Camera2Basic
 {
-    public delegate void NotificationDelegate(string text);
-
     public class CameraFragment : Fragment, View.IOnClickListener, FragmentCompat.IOnRequestPermissionsResultCallback
     {
+        public static CameraFragment Instance { get; private set; }
+
         private static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
         public static readonly int REQUEST_CAMERA_PERMISSION = 1;
         private static readonly string FRAGMENT_DIALOG = "dialog";
@@ -59,8 +59,9 @@ namespace Camera2Basic
         // Max preview height that is guaranteed by Camera2 API
         private static readonly int MAX_PREVIEW_HEIGHT = 1080;
 
-        // TextureView.ISurfaceTextureListener handles several lifecycle events on a TextureView
-        private Camera2BasicSurfaceTextureListener _surfaceTextureListener;
+        // The current state of camera state for taking pictures.
+        public int CurrentCameraState = STATE_PREVIEW;
+
 
         // ID of the current {@link CameraDevice}.
         private string _cameraId;
@@ -80,6 +81,7 @@ namespace Camera2Basic
         public CaptureRequest PreviewRequest { get; set; }
         // A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
         public CameraCaptureListener CaptureCallback { get; set; }
+
         /// <summary>
         /// This is the output file for our picture.
         /// </summary>
@@ -97,23 +99,21 @@ namespace Camera2Basic
         // The size of the camera preview
         private Size _previewSize;
 
-        // CameraDevice.StateListener is called when a CameraDevice changes its state
-        private CameraStateListener _stateCallback;
+        private Lazy<CameraStateListener> _stateCallback = new Lazy<CameraStateListener>(() => new CameraStateListener(Instance));
+        private Lazy<SurfaceTextureListener> _surfaceTextureListener = new Lazy<SurfaceTextureListener>(() => new SurfaceTextureListener(Instance));
+        private Lazy<ImageAvailableListener> _onImageAvailableListener = new Lazy<ImageAvailableListener>(() => new ImageAvailableListener(Instance));
+
+        public CameraStateListener StateCallback { get { return _stateCallback.Value; } }
+        public SurfaceTextureListener SurfaceTextureListener { get { return _surfaceTextureListener.Value; } }
+        public ImageAvailableListener OnImageAvailableListener { get { return _onImageAvailableListener.Value; } }
+
+
+
 
         // An additional thread for running tasks that shouldn't block the UI.
         private HandlerThread _backgroundThread;
 
         private ImageReader _imageReader;
-
-
-        // This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
-        // still image is ready to be saved.
-        private ImageAvailableListener _onImageAvailableListener;
-
-
-        // The current state of camera state for taking pictures.
-        public int CurrentCameraState = STATE_PREVIEW;
-
         // A {@link Semaphore} to prevent the app from exiting before closing the camera.
         public Semaphore CameraOpenCloseLock = new Semaphore(1);
 
@@ -131,14 +131,23 @@ namespace Camera2Basic
         private IDisposable _timelapseTimer;
         private string _imagesDirectory;
 
-        // Shows a {@link Toast} on the UI thread.
+        public override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            Instance = this;
+
+            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 90);
+            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 0);
+            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation180, 270);
+            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation270, 180);
+        }
+
+        // Shows a toast on the UI thread.
         public void ShowToast(string text)
         {
             if (Activity != null)
                 Activity.RunOnUiThread(new ToastNotification(Activity.ApplicationContext, text));
         }
-
-
 
         private static Size ChooseOptimalSize(Size[] choices, int textureViewWidth,
             int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio)
@@ -174,18 +183,6 @@ namespace Camera2Basic
             Log.Error(TAG, "Couldn't find any suitable preview size");
             return choices[0];
         }
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-            _stateCallback = new CameraStateListener(this);
-            _surfaceTextureListener = new Camera2BasicSurfaceTextureListener(this);
-
-            // fill ORIENTATIONS list
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation0, 90);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation90, 0);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation180, 270);
-            ORIENTATIONS.Append((int)SurfaceOrientation.Rotation270, 180);
-        }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -206,7 +203,6 @@ namespace Camera2Basic
         {
             base.OnActivityCreated(savedInstanceState);
             _imagesDirectory = Activity.GetExternalFilesDir(null).AbsolutePath;
-            _onImageAvailableListener = new ImageAvailableListener(this);
 
             CaptureCallback = new CameraCaptureListener(this);
         }
@@ -223,7 +219,7 @@ namespace Camera2Basic
             if (_textureView.IsAvailable)
                 OpenCamera(_textureView.Width, _textureView.Height);
             else
-                _textureView.SurfaceTextureListener = _surfaceTextureListener;
+                _textureView.SurfaceTextureListener = SurfaceTextureListener;
         }
 
         public override void OnPause()
@@ -281,7 +277,7 @@ namespace Camera2Basic
                     Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
                     _imageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, 2);
-                    _imageReader.SetOnImageAvailableListener(_onImageAvailableListener, BackgroundHandler);
+                    _imageReader.SetOnImageAvailableListener(OnImageAvailableListener, BackgroundHandler);
 
                     _sensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
                     bool swapped = IsCameraRoationSameAsDevice(Activity.WindowManager.DefaultDisplay.Rotation, _sensorOrientation);
@@ -397,7 +393,7 @@ namespace Camera2Basic
                 {
                     throw new RuntimeException("Time out waiting to lock camera opening.");
                 }
-                manager.OpenCamera(_cameraId, _stateCallback, BackgroundHandler);
+                manager.OpenCamera(_cameraId, StateCallback, BackgroundHandler);
             }
             catch (CameraAccessException e)
             {
