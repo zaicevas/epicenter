@@ -6,7 +6,7 @@ using WebApplication1.Attributes.Database;
 
 namespace WebApplication1.Models.Abstract
 {
-    public class MissingModel
+    public class MissingModel : Model
     {
         [CompositeKey]
         public string FirstName { get; set; }
