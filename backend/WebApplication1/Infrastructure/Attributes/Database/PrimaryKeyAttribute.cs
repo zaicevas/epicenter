@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Attributes.Database
+namespace WebApplication1.Infrastructure.Attributes.Database
 {
     [AttributeUsage(AttributeTargets.Property)]
     class PrimaryKeyAttribute : Attribute

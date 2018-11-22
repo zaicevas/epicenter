@@ -29,7 +29,7 @@ namespace WebApplication1.Repositories
 
         public Person GetByID(int id)
         {
-            return (Person)GetAll().Where(x => x.ID == id);
+            return Mapper<Person>.ReadById(id);
         }
     }
 }

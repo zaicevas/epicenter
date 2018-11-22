@@ -6,7 +6,7 @@ using Dapper;
 using System.Reflection;
 using System.Data;
 using System.Data.SQLite;
-using WebApplication1.Attributes.Database;
+using WebApplication1.Infrastructure.Attributes.Database;
 
 namespace WebApplication1.Mappers
 {
@@ -19,7 +19,7 @@ namespace WebApplication1.Mappers
         readonly private static string _tableName = _typeParameter.Name;
         readonly private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
 
-        private static List<string> GetPropertyNames<A>(bool exclude) where A : Attribute
+        private static List<string> GetPropertyNames<A> (bool exclude) where A : Attribute
         {
             List<string> names = new List<string>();
             foreach (PropertyInfo property in _propertyInfo)
@@ -119,8 +119,26 @@ namespace WebApplication1.Mappers
             }
         }
 
+        public static T ReadById(int id)
+        {
+            string finalQuery = $"SELECT * FROM {_tableName} WHERE ";
+            string idProperty = GetPropertyNames<IDAttribute>(false).First();
+            finalQuery += $"{idProperty} = {id}";
+            try
+            {
+                return _sqliteConnect.Query<T>(finalQuery, new DynamicParameters()).First();
+            }
+            catch (SQLiteException)
+            {
+                System.Diagnostics.Debug.WriteLine("SQLiteException caught in DeleteAllPerson");
+                return default(T);
+            }
+        }
+
         public static T ReadByKey<K>(T entity) where K : Attribute
         {
+            // Use this for complex keys, for example when you want to get row by Composite key
+            // This method looks for properties with attribute K and matches them with database entities
             try
             {
                 string finalQuery = $"SELECT * FROM {_tableName} WHERE ";
