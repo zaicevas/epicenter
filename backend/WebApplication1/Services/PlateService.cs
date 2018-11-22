@@ -42,7 +42,11 @@ namespace WebApplication1.Services
                 };
             }
             identifiedPlates.ForEach(plate => message += $"{plate.NumberPlate} is {dictionary[plate.Reason]}\n");
-            return new PlateResponse();
+            return new PlateResponse()
+            {
+                Recognized = true,
+                Message = message
+            };
         }
 
         private PlateAPIResponse GetPlateResponse(string base64)
