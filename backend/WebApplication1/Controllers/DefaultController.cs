@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(404)]
         public IActionResult Post([FromBody] string value)
         {
-            if (true)                           // if person has been recognized
+            if (true)                           // if both person and plate has been recognized
                 return Ok("ALL GOOD BOY");
             else
             {
