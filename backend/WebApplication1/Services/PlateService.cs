@@ -1,32 +1,55 @@
 ﻿using RestSharp;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Collections;
 using System.Linq;
-using System.Threading.Tasks;
+using WebApplication1.Infrastructure.Utils;
+using WebApplication1.Models;
 using WebApplication1.Models.OpenALPR.Responses;
 using WebApplication1.Models.Responses;
+using WebApplication1.Repositories;
+using static WebApplication1.Models.Abstract.MissingModel;
 
 namespace WebApplication1.Services
 {
     public class PlateService
     {
-        #region
-        private const string _shKey = "sk_7f8cafb2b09b7e5185fe9682";
-        #endregion
+        private readonly string _shKey = AppSettings.Configuration.AlprKey;
+        private PlateRepository _plateRepository = new PlateRepository();
 
         public PlateResponse Recognize(string base64)
         {
+            string message = "";
+            Dictionary<SearchReason, string> dictionary = SearchReasonMap.reasonDictionary;
             PlateAPIResponse cloudResponse = GetPlateResponse(base64);
-            
-            //TODO: finish this method
-            return new PlateResponse();
+            cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
+            List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
+            List<Plate> identifiedPlates = new List<Plate>();
+            matchingResults.ForEach(result =>
+            {
+                Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
+                if (plate != null)
+                    identifiedPlates.Add(plate);
+            });
+            if (identifiedPlates.Count == 0)
+            {
+                return new PlateResponse()
+                {
+                    Recognized = false,
+                    Message = "No plate has been recognized"
+                };
+            }
+            identifiedPlates.ForEach(plate => message += $"{plate.NumberPlate} is {dictionary[plate.Reason]}\n");
+            return new PlateResponse()
+            {
+                Recognized = true,
+                Message = message
+            };
         }
 
-        public PlateAPIResponse GetPlateResponse(string base64)
+        private PlateAPIResponse GetPlateResponse(string base64)
         {
             const ParameterType queryString = ParameterType.QueryString;
-            RestClient client = new RestClient("https://api.openalpr.com/v2");
+            RestClient client = new RestClient(AppSettings.Configuration.PlateAPIEndpoint);
             RestRequest request = new RestRequest("recognize_bytes", Method.POST);
             request.AddParameter("secret_key", _shKey, queryString);
             request.AddParameter("recognize_vehicle", 0, queryString);

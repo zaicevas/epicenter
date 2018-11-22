@@ -24,24 +24,15 @@ namespace WebApplication1
             // these are injected by default (from Program.cs)
             Configuration = configuration;
             HostingEnvironment = env;
-
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));     to use option pattern
-            var config = new AppSettings();
-            //Configuration.Bind("AppSettings", config);
+            AppSettings config = new AppSettings();
             Configuration.GetSection("AppSettings").Bind(config);
             services.AddSingleton(config);
-            /*
-             *  to inject raw Configuration
-            services.AddSingleton(Configuration);
-                after that you can do smth like 
-            var environment = Configuration["ConnectionString:Default"];
-            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
