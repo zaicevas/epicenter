@@ -1,7 +1,7 @@
 ﻿namespace WebApplication1.Models.FaceAPI
 {
-    public class FaceApiErrorResponse
+    public class FaceAPIErrorResponse
     {
-        public FaceApiError Error { get; set; }
+        public FaceAPIError Error { get; set; }
     }
 }

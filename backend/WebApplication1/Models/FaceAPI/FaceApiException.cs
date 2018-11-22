@@ -2,11 +2,11 @@
 
 namespace WebApplication1.Models.FaceAPI
 {
-    public class FaceApiException : Exception
+    public class FaceAPIException : Exception
     {
-        public string Code { get; private set; }
+        public string Code { get; set; }
 
-        public FaceApiException(string code, string message) : base(message)
+        public FaceAPIException(string code, string message) : base(message)
         {
             Code = code;
         }

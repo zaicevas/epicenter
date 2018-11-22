@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,7 +10,7 @@ using WebApplication1.Models.FaceAPI.Requests;
 
 namespace WebApplication1.Services
 {
-    public class FaceService
+    public static class FaceAPIService
     {
         private const string _subscriptionKey = "822fc0c2b7704dd48003c050650f4522";
         private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
@@ -34,8 +32,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -56,8 +54,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -79,8 +77,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -96,8 +94,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -114,8 +112,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -137,8 +135,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -159,8 +157,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -181,8 +179,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -210,8 +208,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -226,8 +224,8 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -251,8 +249,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -271,8 +269,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -282,7 +280,7 @@ namespace WebApplication1.Services
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
-                string uri = $"{_uriBase}/detect";
+                string uri = $"{_uriBase}/detect?returnFaceLandmarks=false";
                 ByteArrayContent content = new ByteArrayContent(image);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 HttpResponseMessage response = await client.PostAsync(uri, content);
@@ -295,8 +293,8 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
         }
@@ -325,81 +323,10 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
-                    FaceApiErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceApiErrorResponse>(errorText);
-                    throw new FaceApiException(errorResponse.Error.Code, errorResponse.Error.Message);
+                    FaceAPIErrorResponse errorResponse = JsonConvert.DeserializeObject<FaceAPIErrorResponse>(errorText);
+                    throw new FaceAPIException(errorResponse.Error.Code, errorResponse.Error.Message);
                 }
             }
-        }
-
-        public static byte[] GetImageAsByteArray(string imageFilePath)
-        {
-            using (FileStream fileStream = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
-            {
-                BinaryReader binaryReader = new BinaryReader(fileStream);
-                return binaryReader.ReadBytes((int)fileStream.Length);
-            }
-        }
-
-        static string JsonPrettyPrint(string json)
-        {
-            if (string.IsNullOrEmpty(json))
-                return string.Empty;
-
-            json = json.Replace(Environment.NewLine, "").Replace("\t", "");
-
-            StringBuilder sb = new StringBuilder();
-            bool quote = false;
-            bool ignore = false;
-            int offset = 0;
-            int indentLength = 3;
-
-            foreach (char ch in json)
-            {
-                switch (ch)
-                {
-                    case '"':
-                        if (!ignore) quote = !quote;
-                        break;
-                    case '\'':
-                        if (quote) ignore = !ignore;
-                        break;
-                }
-
-                if (quote)
-                    sb.Append(ch);
-                else
-                {
-                    switch (ch)
-                    {
-                        case '{':
-                        case '[':
-                            sb.Append(ch);
-                            sb.Append(Environment.NewLine);
-                            sb.Append(new string(' ', ++offset * indentLength));
-                            break;
-                        case '}':
-                        case ']':
-                            sb.Append(Environment.NewLine);
-                            sb.Append(new string(' ', --offset * indentLength));
-                            sb.Append(ch);
-                            break;
-                        case ',':
-                            sb.Append(ch);
-                            sb.Append(Environment.NewLine);
-                            sb.Append(new string(' ', offset * indentLength));
-                            break;
-                        case ':':
-                            sb.Append(ch);
-                            sb.Append(' ');
-                            break;
-                        default:
-                            if (ch != ' ') sb.Append(ch);
-                            break;
-                    }
-                }
-            }
-
-            return sb.ToString().Trim();
         }
     }
 }
