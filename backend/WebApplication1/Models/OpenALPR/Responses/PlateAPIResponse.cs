@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Models.OpenALPR.Responses
 {
-    public class PlateResponse
+    public class PlateAPIResponse
     {
-        public List<PlateResults> Results { get; set; }
+        public List<PlateAPIResult> Results { get; set; }
     }
 }
