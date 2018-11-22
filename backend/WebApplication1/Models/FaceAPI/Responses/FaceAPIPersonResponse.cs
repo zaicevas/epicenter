@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Models.FaceAPI.Responses
 {
-    public class PersonResponse
+    public class FaceAPIPersonResponse
     {
         public string PersonId { get; set; }
         public string Name { get; set; }

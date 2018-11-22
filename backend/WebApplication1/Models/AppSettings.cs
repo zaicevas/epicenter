@@ -12,6 +12,7 @@ namespace WebApplication1.Models
         public string ConnectionString { get; set; }
         public string PlateAPIEndpoint { get; set; }
         public string PlatePattern { get; set; }
+        public string GroupID { get; set; }
 
         public AppSettings()
         {
