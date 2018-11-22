@@ -4,7 +4,8 @@ namespace WebApplication1.Infrastructure.Utils
 {
     public static class ImageToBytes
     {
-        public static byte[] GetImageFromFileAsByteArray(string imageFilePath)
+        //Might be uneccessary as we probably won't use files
+        public static byte[] GetImageAsByteArray(string imageFilePath)
         {
             using (FileStream fileStream = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
             {
