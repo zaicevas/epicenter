@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication1.Infrastructure.Attributes.Database;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
 
@@ -32,6 +33,11 @@ namespace WebApplication1.Repositories
         public Plate GetByID(int id)
         {
             return Mapper<Plate>.ReadByID(id);
+        }
+
+        public Plate GetByPlateNumber(string number)
+        {
+            return Mapper<Plate>.ReadByKey<PrimaryKeyAttribute>(new Plate(number));
         }
     }
 }

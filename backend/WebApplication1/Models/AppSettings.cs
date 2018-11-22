@@ -10,6 +10,8 @@ namespace WebApplication1.Models
         public static AppSettings Configuration;
 
         public string ConnectionString { get; set; }
+        public string PlateAPIEndpoint { get; set; }
+        public string PlatePattern { get; set; }
 
         public AppSettings()
         {
