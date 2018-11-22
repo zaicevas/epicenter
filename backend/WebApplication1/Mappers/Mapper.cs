@@ -7,38 +7,17 @@ using System.Reflection;
 using System.Data;
 using System.Data.SQLite;
 using WebApplication1.Attributes.Database;
-using System.Data.SqlClient;
 
 namespace WebApplication1.Mappers
 {
     public class Mapper<T>
     {
         private static string _connectionString = AppSettings.Configuration.ConnectionString;
-        private static SQLiteConnectionStringBuilder _sqlConnection = new SQLiteConnectionStringBuilder(_connectionString);
-
         private static IDbConnection _sqliteConnect = new SQLiteConnection(_connectionString);
 
         readonly private static Type _typeParameter = typeof(T);
         readonly private static string _tableName = _typeParameter.Name;
         readonly private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
-
-        class Person
-        {
-            public int ID { get; set; }
-            public string FirstName { get; set; } = "AHAHATOMAS";
-            public string LastName { get; set; } = "Netomas";
-            public int Reason { get; set; } = 0;
-        }
-
-        public Mapper()
-        {
-            //string connectionStringas = _connectionString;
-            _sqliteConnect.Open();
-            string query = "SELECT * FROM Person";
-            List<Person> all =_sqliteConnect.Query<Person>("SELECT * FROM Person", new DynamicParameters()).ToList<Person>();
-            if (_sqliteConnect.State == ConnectionState.Open)
-                System.Diagnostics.Debug.WriteLine("YE");
-        }
 
         private static List<string> GetPropertyNames<A>(bool exclude) where A : Attribute
         {
