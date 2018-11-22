@@ -10,7 +10,7 @@ namespace WebApplication1.Repositories
     interface IRepository<T> where T : Model
     {
         T GetByID(int id);
-        IEnumerable<T> All();
+        IEnumerable<T> GetAll();
         void Add(T entity);
         void Delete(T entity);
         void Edit(T entity);
