@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Models.Abstract;
 
-namespace WebApplication1.Repositories
+namespace WebApplication1.Repositories.Abstract
 {
     // Model has property ID
     interface IRepository<T> where T : Model
