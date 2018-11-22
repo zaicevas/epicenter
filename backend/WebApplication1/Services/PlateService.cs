@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models;
-using WebApplication1.Models.Response;
+using WebApplication1.Models.OpenALPR.Responses;
 
 namespace WebApplication1.Services
 {

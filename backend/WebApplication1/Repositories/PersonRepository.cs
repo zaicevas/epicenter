@@ -20,7 +20,7 @@ namespace WebApplication1.Repositories
 
         public void Edit(Person entity)
         {
-            Mapper<Person>.UpdatePerson(entity);
+            Mapper<Person>.Update(entity);
         }
 
         public IEnumerable<Person> GetAll()

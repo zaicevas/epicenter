@@ -76,7 +76,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static void UpdatePerson(T entity)
+        public static void Update(T entity)
         {
             try
             {
