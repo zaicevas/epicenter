@@ -23,6 +23,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         public async System.Threading.Tasks.Task<IActionResult> PostAsync([FromBody] string value)
         {
             try
@@ -31,12 +32,12 @@ namespace WebApplication1.Controllers
                 PlateResponse plateResponse = _plateService.Recognize(value);
                 if (plateResponse.Recognized || personResponse.Recognized)
                     return Ok(plateResponse.Message + "\n" + personResponse.Message);
-                else
-                    return NotFound();
+
+                return NotFound();
             }
-            catch(HttpException e)
+            catch(HttpException ex)
             {
-                return BadRequest(e);
+                return BadRequest(ex.Message);
             }
         }
     }
