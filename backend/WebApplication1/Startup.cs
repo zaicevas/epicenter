@@ -40,6 +40,8 @@ namespace WebApplication1
             services.AddScoped<FaceAPIService>();
             services.AddScoped<PersonRepository>();
             services.AddScoped<PlateRepository>();
+            services.AddScoped<Mapper<Person>>();
+            services.AddScoped<Mapper<Plate>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

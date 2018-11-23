@@ -9,7 +9,13 @@ namespace WebApplication1.Repositories
 {
     public class PersonRepository : IRepository<Person>
     {
-        private Mapper<Person> _mapper = new Mapper<Person>();
+        private readonly Mapper<Person> _mapper;
+
+        public PersonRepository(Mapper<Person> mapper)
+        {
+            _mapper = mapper;
+        }
+
         public void Add(Person entity)
         {
             _mapper.CreateRow(entity);

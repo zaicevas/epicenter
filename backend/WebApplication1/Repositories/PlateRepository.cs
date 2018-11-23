@@ -10,7 +10,13 @@ namespace WebApplication1.Repositories
 {
     public class PlateRepository
     {
-        private Mapper<Plate> _mapper = new Mapper<Plate>();
+        private readonly Mapper<Plate> _mapper;
+
+        public PlateRepository(Mapper<Plate> mapper)
+        {
+            _mapper = mapper;
+        }
+
         public void Add(Plate entity)
         {
             _mapper.CreateRow(entity);

@@ -26,8 +26,8 @@ namespace WebApplication1.Controllers
         {
             byte[] imageArray = System.IO.File.ReadAllBytes(@"C:\Users\ferN\plate_testing\FNN883.jpg");
             string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-            _plateService.Recognize("noob");
-            //System.Diagnostics.Debug.WriteLine(plateResponse.Message);
+            PlateResponse plateResponse = _plateService.Recognize(base64ImageRepresentation);
+            System.Diagnostics.Debug.WriteLine(plateResponse.Message);
             return Ok("ALL GOOD BOY");
         }
     }
