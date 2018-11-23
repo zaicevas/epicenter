@@ -10,9 +10,15 @@ namespace WebApplication1.Services
 {
     public class FaceService
     {
-        private string _groupID = AppSettings.Configuration.GroupID;
-        private PersonRepository _personRepository = new PersonRepository();
-        private FaceAPIService _faceAPIService = new FaceAPIService();
+        private readonly string _groupID = AppSettings.Configuration.GroupID;
+        private readonly PersonRepository _personRepository;
+        private readonly FaceAPIService _faceAPIService;
+
+        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository)
+        {
+            _faceAPIService = faceAPIService;
+            _personRepository = personRepository;
+        }
 
         public async Task<PersonResponse> RecognizeAsync(string base64)
         {
