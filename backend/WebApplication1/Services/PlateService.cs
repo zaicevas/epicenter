@@ -17,7 +17,12 @@ namespace WebApplication1.Services
     public class PlateService
     {
         private readonly string _shKey = AppSettings.Configuration.AlprKey;
-        private PlateRepository _plateRepository = new PlateRepository();
+        private PlateRepository _plateRepository;
+
+        public PlateService(PlateRepository plateRepository)
+        {
+            _plateRepository = plateRepository;
+        }
 
         public PlateResponse Recognize(string base64)
         {

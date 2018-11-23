@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
+using WebApplication1.Repositories;
+using WebApplication1.Services;
 
 namespace WebApplication1
 {
@@ -33,6 +35,11 @@ namespace WebApplication1
             AppSettings config = new AppSettings();
             Configuration.GetSection("AppSettings").Bind(config);
             services.AddSingleton(config);
+            services.AddScoped<PlateService>();
+            services.AddScoped<FaceService>();
+            services.AddScoped<FaceAPIService>();
+            services.AddScoped<PersonRepository>();
+            services.AddScoped<PlateRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

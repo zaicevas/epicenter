@@ -10,34 +10,35 @@ namespace WebApplication1.Repositories
 {
     public class PlateRepository
     {
+        private Mapper<Plate> _mapper = new Mapper<Plate>();
         public void Add(Plate entity)
         {
-            Mapper<Plate>.CreateRow(entity);
+            _mapper.CreateRow(entity);
         }
 
         public void Delete(Plate entity)
         {
-            Mapper<Plate>.DeleteRow(entity);
+            _mapper.DeleteRow(entity);
         }
 
         public void Edit(Plate entity)
         {
-            Mapper<Plate>.Update(entity);
+            _mapper.Update(entity);
         }
 
         public IEnumerable<Plate> GetAll()
         {
-            return Mapper<Plate>.ReadRows();
+            return _mapper.ReadRows();
         }
 
         public Plate GetByID(int id)
         {
-            return Mapper<Plate>.ReadByID(id);
+            return _mapper.ReadByID(id);
         }
 
         public Plate GetByPlateNumber(string number)
         {
-            return Mapper<Plate>.ReadByKey<PrimaryKeyAttribute>(new Plate(number));
+            return _mapper.ReadByKey<PrimaryKeyAttribute>(new Plate(number));
         }
     }
 }

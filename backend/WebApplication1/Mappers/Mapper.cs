@@ -19,7 +19,7 @@ namespace WebApplication1.Mappers
         readonly private static string _tableName = _typeParameter.Name;
         readonly private static PropertyInfo[] _propertyInfo = _typeParameter.GetProperties();
 
-        private static List<string> GetPropertyNames<A> (bool exclude) where A : Attribute
+        private List<string> GetPropertyNames<A> (bool exclude) where A : Attribute
         {
             List<string> names = new List<string>();
             foreach (PropertyInfo property in _propertyInfo)
@@ -34,7 +34,7 @@ namespace WebApplication1.Mappers
             return names;
         }
 
-        private static string BuildPropertyQueryString(bool atSign)
+        private string BuildPropertyQueryString(bool atSign)
         {
             List<string> propertyNames = GetPropertyNames<NonDatabaseAttribute>(true);
             string endQuery = "";
@@ -46,7 +46,7 @@ namespace WebApplication1.Mappers
             return endQuery;
         }
 
-        public static void CreateRow(T entity)
+        public void CreateRow(T entity)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static IEnumerable<T> ReadRows()
+        public IEnumerable<T> ReadRows()
         {
             try
             {
@@ -76,7 +76,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static void Update(T entity)
+        public void Update(T entity)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static void DeleteRow(T entity)
+        public void DeleteRow(T entity)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static void DeleteAllRows()
+        public void DeleteAllRows()
         {
             try
             {
@@ -121,14 +121,17 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static T ReadByID(int id)
+        public T ReadByID(int id)
         {
             string finalQuery = $"SELECT * FROM {_tableName} WHERE ";
             string idProperty = GetPropertyNames<IDAttribute>(false).First();
             finalQuery += $"{idProperty} = {id}";
             try
             {
-                return _sqliteConnect.Query<T>(finalQuery, new DynamicParameters()).First();
+                var list = _sqliteConnect.Query<T>(finalQuery, new DynamicParameters());
+                if (list.Count() > 0)
+                    return list.First();
+                return default(T);
             }
             catch (SQLiteException)
             {
@@ -137,7 +140,7 @@ namespace WebApplication1.Mappers
             }
         }
 
-        public static T ReadByKey<K>(T entity) where K : Attribute
+        public T ReadByKey<K>(T entity) where K : Attribute
         {
             // Use this for complex keys, for example when you want to get row by Composite key
             // This method looks for properties with attribute K and matches them with database entities
@@ -151,7 +154,10 @@ namespace WebApplication1.Mappers
                 finalQuery = finalQuery.Substring(0, finalQuery.Length - " AND ".Length);
 
                 System.Diagnostics.Debug.WriteLine(finalQuery);
-                return _sqliteConnect.Query<T>(finalQuery, entity).First();
+                var list = _sqliteConnect.Query<T>(finalQuery, entity);
+                if (list.Count() > 0)
+                    return list.First();
+                return default(T);
             }
             catch
             {

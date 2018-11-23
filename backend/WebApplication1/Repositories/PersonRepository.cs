@@ -9,34 +9,35 @@ namespace WebApplication1.Repositories
 {
     public class PersonRepository : IRepository<Person>
     {
+        private Mapper<Person> _mapper = new Mapper<Person>();
         public void Add(Person entity)
         {
-            Mapper<Person>.CreateRow(entity);
+            _mapper.CreateRow(entity);
         }
 
         public void Delete(Person entity)
         {
-            Mapper<Person>.DeleteRow(entity);
+            _mapper.DeleteRow(entity);
         }
 
         public void Edit(Person entity)
         {
-            Mapper<Person>.Update(entity);
+            _mapper.Update(entity);
         }
 
         public IEnumerable<Person> GetAll()
         {
-            return Mapper<Person>.ReadRows();
+            return _mapper.ReadRows();
         }
 
         public Person GetByID(int id)
         {
-            return Mapper<Person>.ReadByID(id);
+            return _mapper.ReadByID(id);
         }
 
         public Person GetByFaceAPIID(string id)
         {
-            return Mapper<Person>.ReadByKey<PrimaryKeyAttribute>(new Person { FaceAPIID = id });
+            return _mapper.ReadByKey<PrimaryKeyAttribute>(new Person { FaceAPIID = id });
         }
     }
 }
