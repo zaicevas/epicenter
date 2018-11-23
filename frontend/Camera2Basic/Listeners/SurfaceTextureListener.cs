@@ -8,9 +8,7 @@ namespace Camera2Basic.Listeners
 
         public Camera2BasicSurfaceTextureListener(CameraFragment owner)
         {
-            if (owner == null)
-                throw new System.ArgumentNullException("owner");
-            this.owner = owner;
+            this.owner = owner ?? throw new System.ArgumentNullException("owner");
         }
 
         public void OnSurfaceTextureAvailable(Android.Graphics.SurfaceTexture surface, int width, int height)

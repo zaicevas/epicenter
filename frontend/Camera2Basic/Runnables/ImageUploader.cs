@@ -1,10 +1,14 @@
 ﻿using Android.Media;
 using Camera2Basic.Services;
+using Newtonsoft.Json.Linq;
 
 namespace Camera2Basic.Runnables
 {
+    public delegate void ResponseDelagate(JObject text);
+
     public class ImageUploader : Java.Lang.Object, Java.Lang.IRunnable
     {
+        public event ResponseDelagate UploadComplete;
         public Image Image { get; set; }
 
         private ImageUploadService imageUploadService;
@@ -15,9 +19,10 @@ namespace Camera2Basic.Runnables
             imageUploadService = new ImageUploadService();
         }
 
-        public void Run()
+        public async void Run()
         {
-            imageUploadService.Upload(Image);
+            JObject response = await imageUploadService.Upload(Image) as JObject;
+            UploadComplete?.Invoke(response);
         }
     }
 }
