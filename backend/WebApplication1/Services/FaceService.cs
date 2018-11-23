@@ -26,7 +26,7 @@ namespace WebApplication1.Services
                 {
                     message += x.FullName + " (" + x.Reason + "), ";
                 });
-                message.Substring(message.Length - 2);
+                message = message.Substring(0, message.Length - 2);
             }
             return new PersonResponse { Recognized = recognized, Message = message };
         }
@@ -37,7 +37,7 @@ namespace WebApplication1.Services
             List<FaceDetectResponse> detectResult = await _faceAPIService.DetectFaces(image);
             if (detectResult != null && detectResult.Count > 0)
             {
-                detectResult.ForEach(async x =>
+                foreach(FaceDetectResponse x in detectResult)
                 {
                     string faceID = x.FaceId;
                     if (!string.IsNullOrEmpty(faceID))
@@ -51,7 +51,7 @@ namespace WebApplication1.Services
                             recognizedPersons.Add(_personRepository.GetByFaceAPIID(personId));
                         }
                     }
-                });
+                };
             }
             return recognizedPersons;
         }
