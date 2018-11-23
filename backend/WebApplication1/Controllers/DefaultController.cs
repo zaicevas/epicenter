@@ -12,7 +12,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(404)]
-        public async System.Threading.Tasks.Task<IActionResult> PostAsync([FromBody] string value)
+        public IActionResult PostAsync([FromBody] string value)
         {
             byte[] imageArray = System.IO.File.ReadAllBytes(@"C:\Users\ferN\plate_testing\FNN883.jpg");
             string base64ImageRepresentation = Convert.ToBase64String(imageArray);
