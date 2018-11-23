@@ -1,7 +1,7 @@
 ﻿using Android.Content;
 using Android.Widget;
 
-namespace Camera2Basic
+namespace Camera2Basic.Notifications
 {
     public class ToastNotification : Java.Lang.Object, Java.Lang.IRunnable
     {

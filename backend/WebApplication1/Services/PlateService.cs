@@ -8,6 +8,9 @@ using WebApplication1.Models.OpenALPR.Responses;
 using WebApplication1.Models.Responses;
 using WebApplication1.Repositories;
 using static WebApplication1.Models.Abstract.MissingModel;
+using WebApplication1.Infrastructure.Exceptions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace WebApplication1.Services
 {
@@ -36,6 +39,17 @@ namespace WebApplication1.Services
             request.AddBody(base64);
 
             IRestResponse<PlateAPIResponse> response = client.Execute<PlateAPIResponse>(request);
+            if (!response.IsSuccessful)
+            {
+                ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response.Content, new JsonSerializerSettings()
+                {
+                    ContractResolver = new DefaultContractResolver()
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    }
+                });
+                throw new HttpException(errorResponse.ErrorCode, errorResponse.Error);
+            }
             return response.Data;
         }
 
