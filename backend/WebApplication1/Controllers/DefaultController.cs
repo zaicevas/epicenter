@@ -32,8 +32,7 @@ namespace WebApplication1.Controllers
                 PlateResponse plateResponse = _plateService.Recognize(value);
                 if (plateResponse.Recognized || personResponse.Recognized)
                     return Ok(plateResponse.Message + "\n" + personResponse.Message);
-
-                return NotFound();
+                return NotFound("Didn't find anything.");
             }
             catch(HttpException ex)
             {

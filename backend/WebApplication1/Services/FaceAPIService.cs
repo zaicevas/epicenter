@@ -17,7 +17,7 @@ namespace WebApplication1.Services
         private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
         private readonly string _uriBase = AppSettings.Configuration.FaceAPIEndpoint;
 
-        public async Task<List<PersonGroupGetResponse>> GetPersonGroups()
+        public async Task<List<PersonGroupGetResponse>> GetPersonGroupsAsync()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -39,7 +39,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<PersonGroupGetResponse> GetPersonGroup(string personGroupId)
+        public async Task<PersonGroupGetResponse> GetPersonGroupAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -61,7 +61,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<bool> CreatePersonGroup(string personGroupId, string name, string description)
+        public async Task<bool> CreatePersonGroupAsync(string personGroupId, string name, string description)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -85,7 +85,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<bool> DeletePersonGroup(string personGroupId)
+        public async Task<bool> DeletePersonGroupAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -102,7 +102,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<bool> TrainPersonGroup(string personGroupId)
+        public async Task<bool> TrainPersonGroupAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -120,7 +120,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingStatus(string personGroupId)
+        public async Task<PersonGroupTrainingStatus> GetPersonGroupTrainingStatusAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -142,7 +142,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<List<FaceAPIPersonResponse>> GetPersonsInGroup(string personGroupId)
+        public async Task<List<FaceAPIPersonResponse>> GetPersonsInGroupAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -164,7 +164,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<FaceAPIPersonResponse> GetPerson(string personGroupId, string personId)
+        public async Task<FaceAPIPersonResponse> GetPersonAsync(string personGroupId, string personId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -186,7 +186,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<string> CreatePerson(string personGroupId, string personName, string personDescription)
+        public async Task<string> CreatePersonAsync(string personGroupId, string personName, string personDescription)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -215,7 +215,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<bool> DeletePerson(string personGroupId, string personId)
+        public async Task<bool> DeletePersonAsync(string personGroupId, string personId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -232,7 +232,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<string> AddFaceToPerson(string personGroupId, string personId, byte[] image)
+        public async Task<string> AddFaceToPersonAsync(string personGroupId, string personId, byte[] image)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -256,7 +256,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<bool> DeleteFaceFromPerson(string personGroupId, string personId, string persistedFaceId)
+        public async Task<bool> DeleteFaceFromPersonAsync(string personGroupId, string personId, string persistedFaceId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -276,7 +276,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<List<FaceDetectResponse>> DetectFaces(byte[] image)
+        public async Task<List<FaceDetectResponse>> DetectFacesAsync(byte[] image)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -300,7 +300,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<List<FaceIdentifyResponse>> Identify(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
+        public async Task<List<FaceIdentifyResponse>> IdentifyAsync(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
         {
             using (HttpClient client = new HttpClient())
             {
