@@ -34,6 +34,8 @@ namespace WebApplication1.Services
                 });
                 message = message.Substring(0, message.Length - 2);
             }
+            else
+                message = "No people were recognized.";
             return new PersonResponse { Recognized = recognized, Message = message };
         }
 

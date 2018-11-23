@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Infrastructure.Exceptions;
 using WebApplication1.Models.Responses;
 using WebApplication1.Repositories;
 using WebApplication1.Services;
@@ -22,13 +23,21 @@ namespace WebApplication1.Controllers
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(404)]
-        public IActionResult PostAsync([FromBody] string value)
+        public async System.Threading.Tasks.Task<IActionResult> PostAsync([FromBody] string value)
         {
-            byte[] imageArray = System.IO.File.ReadAllBytes(@"C:\Users\ferN\plate_testing\FNN883.jpg");
-            string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-            PlateResponse plateResponse = _plateService.Recognize(base64ImageRepresentation);
-            System.Diagnostics.Debug.WriteLine(plateResponse.Message);
-            return Ok("ALL GOOD BOY");
+            try
+            {
+                PersonResponse personResponse = await _faceService.RecognizeAsync(value);
+                PlateResponse plateResponse = _plateService.Recognize(value);
+                if (plateResponse.Recognized || personResponse.Recognized)
+                    return Ok(plateResponse.Message + "\n" + personResponse.Message);
+                else
+                    return NotFound();
+            }
+            catch(HttpException e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }
