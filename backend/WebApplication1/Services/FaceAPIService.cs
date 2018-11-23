@@ -34,7 +34,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -96,7 +96,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -114,7 +114,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -137,7 +137,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -159,7 +159,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -226,7 +226,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
                 return response.IsSuccessStatusCode;
             }
@@ -251,7 +251,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -271,7 +271,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -295,7 +295,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
@@ -325,7 +325,7 @@ namespace WebApplication1.Services
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
-                    throw new FaceAPIException(errorResponse.Code, errorResponse.Message);
+                    throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
             }
         }
