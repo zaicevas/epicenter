@@ -74,7 +74,6 @@ namespace WebApplication1.Services
                     _plateTimestamper.Save(plate);
                     identifiedPlates.Add(plate);
                 }
-                    
             });
             return identifiedPlates;
         }
