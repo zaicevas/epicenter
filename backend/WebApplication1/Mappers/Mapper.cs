@@ -7,10 +7,11 @@ using System.Reflection;
 using System.Data;
 using System.Data.SQLite;
 using WebApplication1.Infrastructure.Attributes.Database;
+using WebApplication1.Models.Abstract;
 
 namespace WebApplication1.Mappers
 {
-    public class Mapper<T>
+    public class Mapper<T> where T : Model
     {
         private static string _connectionString = AppSettings.Configuration.ConnectionString;
         private static IDbConnection _sqliteConnect = new SQLiteConnection(_connectionString);
