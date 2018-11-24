@@ -44,7 +44,7 @@ namespace WebApplication1.Services
 
         private async Task<List<Person>> CallFaceAPIAsync(byte[] image)
         {
-            ILogger databaseLogger = new DatabaseLogger(new LogRepository(new Mappers.Mapper<Log>()));
+            ILogger logger = new DatabaseLogger(new LogRepository(new Mappers.Mapper<Log>()));
             List<Person> recognizedPersons = new List<Person>();
             List<FaceDetectResponse> detectResult = await _faceAPIService.DetectFacesAsync(image);
             if (detectResult != null && detectResult.Count > 0)
@@ -60,7 +60,7 @@ namespace WebApplication1.Services
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             double confidence = identifyResult[0].Candidates[0].Confidence;
                             Person person = _personRepository.GetByFaceAPIID(personId);
-                            databaseLogger.Log(LoggableEntity.Person, person.ID);
+                            logger.Log(LoggableEntity.Person, person.ID);
                             recognizedPersons.Add(person);
                         }
                     }

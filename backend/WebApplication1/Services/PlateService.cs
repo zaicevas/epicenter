@@ -63,7 +63,7 @@ namespace WebApplication1.Services
 
         private List<Plate> GetIdentifiedPlates(string base64)
         {
-            ILogger databaseLogger = new DatabaseLogger(new LogRepository(new Mappers.Mapper<Log>()));
+            ILogger logger = new DatabaseLogger(new LogRepository(new Mappers.Mapper<Log>()));
             PlateAPIResponse cloudResponse = GetPlateResponse(base64);
             cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
             List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
@@ -73,7 +73,7 @@ namespace WebApplication1.Services
                 Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
                 if (plate != null)
                 {
-                    databaseLogger.Log(LoggableEntity.Plate, plate.ID);
+                    logger.Log(LoggableEntity.Plate, plate.ID);
                     identifiedPlates.Add(plate);
                 }
                     
