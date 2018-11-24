@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using WebApplication1.Infrastructure.Timestampers;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
@@ -40,8 +35,12 @@ namespace WebApplication1
             services.AddScoped<FaceAPIService>();
             services.AddScoped<PersonRepository>();
             services.AddScoped<PlateRepository>();
+            services.AddScoped<TimestampRepository>();
             services.AddScoped<Mapper<Person>>();
             services.AddScoped<Mapper<Plate>>();
+            services.AddScoped<Mapper<Timestamp>>();
+            services.AddScoped<PlateTimestamper>();
+            services.AddScoped<PersonTimestamper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +50,6 @@ namespace WebApplication1
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
     }

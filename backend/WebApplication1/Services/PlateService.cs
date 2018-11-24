@@ -1,6 +1,5 @@
 ﻿using RestSharp;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using WebApplication1.Infrastructure.Utils;
 using WebApplication1.Models;
@@ -11,9 +10,7 @@ using static WebApplication1.Models.Abstract.MissingModel;
 using WebApplication1.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WebApplication1.Infrastructure.Loggers;
-using static WebApplication1.Models.Log;
-using WebApplication1.Infrastructure.Loggers.Abstract;
+using WebApplication1.Infrastructure.Timestampers;
 
 namespace WebApplication1.Services
 {
@@ -21,10 +18,12 @@ namespace WebApplication1.Services
     {
         private readonly string _shKey = AppSettings.Configuration.AlprKey;
         private PlateRepository _plateRepository;
+        private PlateTimestamper _plateTimestamper;
 
-        public PlateService(PlateRepository plateRepository)
+        public PlateService(PlateRepository plateRepository, PlateTimestamper plateTimestamper)
         {
             _plateRepository = plateRepository;
+            _plateTimestamper = plateTimestamper;
         }
 
         public PlateResponse Recognize(string base64)
@@ -63,7 +62,6 @@ namespace WebApplication1.Services
 
         private List<Plate> GetIdentifiedPlates(string base64)
         {
-            ILogger logger = new DatabaseLogger(new LogRepository(new Mappers.Mapper<Log>()));
             PlateAPIResponse cloudResponse = GetPlateResponse(base64);
             cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
             List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
@@ -73,7 +71,7 @@ namespace WebApplication1.Services
                 Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
                 if (plate != null)
                 {
-                    logger.Log(LoggableEntity.Plate, plate.ID);
+                    _plateTimestamper.Save(plate);
                     identifiedPlates.Add(plate);
                 }
                     

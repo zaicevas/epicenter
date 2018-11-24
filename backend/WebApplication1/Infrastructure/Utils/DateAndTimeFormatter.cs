@@ -2,9 +2,9 @@
 
 namespace WebApplication1.Infrastructure.Utils
 {
-    public static class TimestampFormatter
+    public static class DateAndTimeFormatter
     {
-        public static string GetFormattedTimestamp(DateTime timestamp)
+        public static string GetFormattedDateAndTime(DateTime timestamp)
         {
             return timestamp.ToString("yyyy-MM-dd HH:mm:ss");
         }
