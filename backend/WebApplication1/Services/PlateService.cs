@@ -10,7 +10,7 @@ using static WebApplication1.Models.Abstract.MissingModel;
 using WebApplication1.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WebApplication1.Infrastructure.Timestampers;
+using WebApplication1.Infrastructure.Timestampers.Abstract;
 
 namespace WebApplication1.Services
 {
@@ -18,12 +18,12 @@ namespace WebApplication1.Services
     {
         private readonly string _shKey = AppSettings.Configuration.AlprKey;
         private PlateRepository _plateRepository;
-        private PlateTimestamper _plateTimestamper;
+        private readonly ITimestamper<Plate> _timestamper;
 
-        public PlateService(PlateRepository plateRepository, PlateTimestamper plateTimestamper)
+        public PlateService(PlateRepository plateRepository, ITimestamper<Plate> timestamper)
         {
             _plateRepository = plateRepository;
-            _plateTimestamper = plateTimestamper;
+            _timestamper = timestamper;
         }
 
         public PlateResponse Recognize(string base64)
@@ -71,7 +71,7 @@ namespace WebApplication1.Services
                 Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
                 if (plate != null)
                 {
-                    _plateTimestamper.Save(plate);
+                    _timestamper.Save(plate);
                     identifiedPlates.Add(plate);
                 }
             });

@@ -2,24 +2,24 @@
 using WebApplication1.Infrastructure.Timestampers.Abstract;
 using WebApplication1.Infrastructure.Utils;
 using WebApplication1.Models;
+using WebApplication1.Models.Abstract;
 using WebApplication1.Repositories;
-using static WebApplication1.Models.Timestamp;
 
 namespace WebApplication1.Infrastructure.Timestampers
 {
-    public class PlateTimestamper : ITimestamper<Plate>
+    public class DatabaseTimestamper<T> : ITimestamper<T> where T : Model
     {
         private readonly TimestampRepository _timestampRepository;
 
-        public PlateTimestamper(TimestampRepository logRepository)
+        public DatabaseTimestamper(TimestampRepository timestampRepository)
         {
-            _timestampRepository = logRepository;
+            _timestampRepository = timestampRepository;
         }
 
-        public void Save(Plate entity)
+        public void Save(T entity)
         {
             string dateAndTime = DateAndTimeFormatter.GetFormattedDateAndTime(DateTime.Now);
-            _timestampRepository.Add(new Timestamp(LoggableEntity.Plate, dateAndTime, entity.ID));
+            _timestampRepository.Add(new Timestamp(typeof(T), entity.ID, dateAndTime));
         }
     }
 }

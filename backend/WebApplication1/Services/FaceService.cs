@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication1.Infrastructure.Timestampers;
+using WebApplication1.Infrastructure.Timestampers.Abstract;
 using WebApplication1.Models;
 using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.Responses;
@@ -14,13 +14,13 @@ namespace WebApplication1.Services
         private readonly string _groupID = AppSettings.Configuration.GroupID;
         private readonly PersonRepository _personRepository;
         private readonly FaceAPIService _faceAPIService;
-        private readonly PersonTimestamper _personTimestamper;
+        private readonly ITimestamper<Person> _timestamper;
 
-        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, PersonTimestamper personTimestamper)
+        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, ITimestamper<Person> timestamper)
         {
             _faceAPIService = faceAPIService;
             _personRepository = personRepository;
-            _personTimestamper = personTimestamper;
+            _timestamper = timestamper;
         }
 
         public async Task<PersonResponse> RecognizeAsync(string base64)
@@ -59,7 +59,7 @@ namespace WebApplication1.Services
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             double confidence = identifyResult[0].Candidates[0].Confidence;
                             Person person = _personRepository.GetByFaceAPIID(personId);
-                            _personTimestamper.Save(person);
+                            _timestamper.Save(person);
                             recognizedPersons.Add(person);
                         }
                     }

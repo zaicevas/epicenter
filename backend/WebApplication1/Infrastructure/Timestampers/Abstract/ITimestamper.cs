@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Infrastructure.Timestampers.Abstract
 {
-    interface ITimestamper<T> where T : Model
+    public interface ITimestamper<T> where T : Model
     {
         void Save(T entity);
     }

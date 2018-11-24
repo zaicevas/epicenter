@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApplication1.Infrastructure.Timestampers;
+using WebApplication1.Infrastructure.Timestampers.Abstract;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
@@ -39,8 +40,8 @@ namespace WebApplication1
             services.AddScoped<Mapper<Person>>();
             services.AddScoped<Mapper<Plate>>();
             services.AddScoped<Mapper<Timestamp>>();
-            services.AddScoped<PlateTimestamper>();
-            services.AddScoped<PersonTimestamper>();
+            services.AddScoped<ITimestamper<Plate>, DatabaseTimestamper<Plate>>();
+            services.AddScoped<ITimestamper<Person>, DatabaseTimestamper<Person>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
