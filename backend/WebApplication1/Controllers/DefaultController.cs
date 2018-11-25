@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Infrastructure.Exceptions;
 using WebApplication1.Models.Responses;
@@ -24,12 +25,14 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        public async System.Threading.Tasks.Task<IActionResult> PostAsync([FromBody] string value)
+        public async Task<IActionResult> PostAsync([FromBody] string value)
         {
             try
             {
-                PersonResponse personResponse = await _faceService.RecognizeAsync(value);
-                PlateResponse plateResponse = _plateService.Recognize(value);
+                Task<PlateResponse> getPlateResponseTask = _plateService.RecognizeAsync(value);
+                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(value);
+                PlateResponse plateResponse = await getPlateResponseTask;
+                PersonResponse personResponse = await getPersonResponseTask;
                 if (plateResponse.Recognized || personResponse.Recognized)
                     return Ok(plateResponse.Message + "\n" + personResponse.Message);
                 return NotFound("Didn't find anything.");

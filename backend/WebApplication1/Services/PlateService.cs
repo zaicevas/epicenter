@@ -11,6 +11,7 @@ using WebApplication1.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApplication1.Infrastructure.Timestampers.Abstract;
+using System.Threading.Tasks;
 
 namespace WebApplication1.Services
 {
@@ -26,43 +27,15 @@ namespace WebApplication1.Services
             _timestamper = timestamper;
         }
 
-        public PlateResponse Recognize(string base64)
+        public async Task<PlateResponse> RecognizeAsync(string base64)
         {
-            List<Plate> identifiedPlates = GetIdentifiedPlates(base64);
+            List<Plate> identifiedPlates = await GetIdentifiedPlatesAsync(base64);
             return GetPlateResponse(identifiedPlates);
         }
 
-        private PlateAPIResponse GetPlateResponse(string base64)
+        private async Task<List<Plate>> GetIdentifiedPlatesAsync(string base64)
         {
-            const ParameterType queryString = ParameterType.QueryString;
-            RestClient client = new RestClient(AppSettings.Configuration.PlateAPIEndpoint);
-            RestRequest request = new RestRequest("recognize_bytes", Method.POST);
-            request.AddParameter("secret_key", _shKey, queryString);
-            request.AddParameter("recognize_vehicle", 0, queryString);
-            request.AddParameter("country", "eu", queryString);
-            request.AddParameter("return_image", 0, queryString);
-            request.AddParameter("topn", 10, queryString);
-            request.RequestFormat = DataFormat.Json;
-            request.AddBody(base64);
-
-            IRestResponse<PlateAPIResponse> response = client.Execute<PlateAPIResponse>(request);
-            if (!response.IsSuccessful)
-            {
-                ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response.Content, new JsonSerializerSettings()
-                {
-                    ContractResolver = new DefaultContractResolver()
-                    {
-                        NamingStrategy = new SnakeCaseNamingStrategy()
-                    }
-                });
-                throw new HttpException(errorResponse.ErrorCode, errorResponse.Error);
-            }
-            return response.Data;
-        }
-
-        private List<Plate> GetIdentifiedPlates(string base64)
-        {
-            PlateAPIResponse cloudResponse = GetPlateResponse(base64);
+            PlateAPIResponse cloudResponse = await GetPlateAPIResponseAsync(base64);
             cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
             List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
             List<Plate> identifiedPlates = new List<Plate>();
@@ -96,6 +69,35 @@ namespace WebApplication1.Services
                 Recognized = true,
                 Message = message
             };
+        }
+
+        private async Task<PlateAPIResponse> GetPlateAPIResponseAsync(string base64)
+        {
+            const ParameterType queryString = ParameterType.QueryString;
+            RestClient client = new RestClient(AppSettings.Configuration.PlateAPIEndpoint);
+            RestRequest request = new RestRequest("recognize_bytes", Method.POST);
+            request.AddParameter("secret_key", _shKey, queryString);
+            request.AddParameter("recognize_vehicle", 0, queryString);
+            request.AddParameter("country", "eu", queryString);
+            request.AddParameter("return_image", 0, queryString);
+            request.AddParameter("topn", 10, queryString);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(base64);
+
+            IRestResponse<PlateAPIResponse> response = await client.ExecuteTaskAsync<PlateAPIResponse>(request);
+
+            if (!response.IsSuccessful)
+            {
+                ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response.Content, new JsonSerializerSettings()
+                {
+                    ContractResolver = new DefaultContractResolver()
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    }
+                });
+                throw new HttpException(errorResponse.ErrorCode, errorResponse.Error);
+            }
+            return response.Data;
         }
     }
 }
