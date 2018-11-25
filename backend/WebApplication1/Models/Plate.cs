@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +12,7 @@ namespace WebApplication1.Models
         [PrimaryKey]
         public string NumberPlate { get; set; }
 
-        public Plate(string numberPlate)
-        {
-            NumberPlate = numberPlate;
-        }
+        public Plate(string numberPlate) => NumberPlate = numberPlate;
 
         public Plate()
         {
