@@ -29,12 +29,10 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                //PersonResponse personResponse = await _faceService.RecognizeAsync(value);
-                //PlateResponse plateResponse = _plateService.Recognize(value);
-                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(value);
                 Task<PlateResponse> getPlateResponseTask = _plateService.RecognizeAsync(value);
-                PersonResponse personResponse = await getPersonResponseTask;
+                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(value);
                 PlateResponse plateResponse = await getPlateResponseTask;
+                PersonResponse personResponse = await getPersonResponseTask;
                 if (plateResponse.Recognized || personResponse.Recognized)
                     return Ok(plateResponse.Message + "\n" + personResponse.Message);
                 return NotFound("Didn't find anything.");
