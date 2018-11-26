@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Infrastructure.Debugging.Abstract;
@@ -29,21 +31,33 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
         {
-            _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()\n");
+            _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()");
             try
             {
-                Task<PlateResponse> getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
-                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
-                PlateResponse plateResponse = await getPlateResponseTask;
-                PersonResponse personResponse = await getPersonResponseTask;
-                _logger.Log(LogType.NORMAL, "Request finished sucessfully\n");
-                if (plateResponse.Recognized || personResponse.Recognized)
-                    return Ok(plateResponse.Message + "\n" + personResponse.Message);
-                return NotFound("Didn't find anything.");
+                Task<List<RecognizedObject>> getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
+                Task<List<RecognizedObject>> getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
+                List<RecognizedObject> plateResponse = await getPlateResponseTask;
+                List<RecognizedObject> personResponse = await getPersonResponseTask;
+                RecognizedObject[] responses = plateResponse.Concat(personResponse).ToArray();
+                if (responses.Length > 0)
+                {
+                    string message = "Found:";
+                    foreach (RecognizedObject response in responses)
+                        message += Environment.NewLine + response.ToString();
+                    _logger.Log(LogType.NORMAL, message);
+                    _logger.Log(LogType.NORMAL, "Request finished sucessfully");
+                    return Ok(responses);
+                }
+                else
+                {
+                    _logger.Log(LogType.NORMAL, "Found: None");
+                    _logger.Log(LogType.NORMAL, "Request finished sucessfully");
+                    return NotFound("Didn't find anything.");
+                }
             }
             catch(HttpException ex)
             {
-                _logger.Log(LogType.ERROR, $"{ex.Message}\n");
+                _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
             }
         }
