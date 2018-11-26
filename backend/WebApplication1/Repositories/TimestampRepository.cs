@@ -3,7 +3,7 @@ using WebApplication1.Mappers;
 using WebApplication1.Models;
 using WebApplication1.Repositories.Abstract;
 using System.Linq;
-using WebApplication1.Infrastructure.Attributes.Database;
+using WebApplication1.Models.Abstract;
 
 namespace WebApplication1.Repositories
 {
@@ -41,28 +41,17 @@ namespace WebApplication1.Repositories
             return _mapper.ReadByID(id);
         }
 
-        ///TODO make generic !!!!
-        public IEnumerable<Timestamp> GetByPersonID(int id)
+        public IEnumerable<Timestamp> GetByModelID<T>(int id) where T : MissingModel
         {
             IEnumerable<Timestamp> allTimestamps = GetAll();
-            return allTimestamps.Where(stamp => stamp.PersonID == id);
-        }
-
-        public IEnumerable<Timestamp> GetByPlateID(int id)
-        {
-            IEnumerable<Timestamp> allTimestamps = GetAll();
+            if(typeof(T) == typeof(Person))
+                return allTimestamps.Where(stamp => stamp.PersonID == id);
             return allTimestamps.Where(stamp => stamp.PlateID == id);
         }
 
-        public Timestamp GetLatestPersonTimestamp(int id)
+        public Timestamp GetLatestModelTimestamp<T>(int id) where T : MissingModel
         {
-            IEnumerable<Timestamp> timestamps = GetByPersonID(id);
-            return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
-        }
-
-        public Timestamp GetLatestPlateTimestamp(int id)
-        {
-            IEnumerable<Timestamp> timestamps = GetByPlateID(id);
+            IEnumerable<Timestamp> timestamps = GetByModelID<T>(id);
             return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
         }
     }
