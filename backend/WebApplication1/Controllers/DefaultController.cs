@@ -50,13 +50,13 @@ namespace WebApplication1.Controllers
             if (responses.Length > 0)
             {
                 _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
-                _logger.Log(LogType.NORMAL, "Request finished sucessfully");
+                _logger.Log(LogType.NORMAL, "Request finished successfully");
                 return Ok(responses);
             }
             else
             {
                 _logger.Log(LogType.NORMAL, "Found: None");
-                _logger.Log(LogType.NORMAL, "Request finished sucessfully");
+                _logger.Log(LogType.NORMAL, "Request finished successfully");
                 return NotFound("Didn't find anything.");
             }
         }

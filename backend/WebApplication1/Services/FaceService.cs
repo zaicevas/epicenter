@@ -45,7 +45,7 @@ namespace WebApplication1.Services
                     Reason = person.Reason,
                     Type = ModelType.Person,
                     Message = "no description",
-                    LastSeen = timestamp.DateTime
+                    LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                 });
                 _timestampRepository.Add(new Timestamp()
                 {

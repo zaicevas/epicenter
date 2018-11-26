@@ -59,7 +59,7 @@ namespace WebApplication1.Services
                         Reason = plate.Reason,
                         Type = ModelType.Plate,
                         Message = plate.NumberPlate,
-                        LastSeen = timestamp.DateTime
+                        LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                     });
                     _timestampRepository.Add(new Timestamp()
                     {

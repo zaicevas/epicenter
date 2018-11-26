@@ -1,6 +1,4 @@
-﻿using System;
-using WebApplication1.Infrastructure.Extensions;
-using static WebApplication1.Models.Abstract.MissingModel;
+﻿using static WebApplication1.Models.Abstract.MissingModel;
 
 namespace WebApplication1.Models.Responses
 {
@@ -11,11 +9,11 @@ namespace WebApplication1.Models.Responses
         public SearchReason Reason { get; set; }
         public ModelType Type { get; set; }
         public string Message { get; set; }
-        public DateTime LastSeen { get; set; }
+        public string LastSeen { get; set; }
 
         public override string ToString()
         {
-            return $"{FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen.GetFormattedDateAndTime()}";
+            return $"{FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen}";
         }
     }
 }
