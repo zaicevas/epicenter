@@ -59,7 +59,7 @@ namespace WebApplication1.Services
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             double confidence = identifyResult[0].Candidates[0].Confidence;
                             Person person = _personRepository.GetByFaceAPIID(personId);
-                            _timestamper.Save(person);
+                            _timestamper.Save(person, DateTime.Now);
                             recognizedPersons.Add(person);
                         }
                     }

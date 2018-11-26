@@ -2,6 +2,8 @@
 using WebApplication1.Mappers;
 using WebApplication1.Models;
 using WebApplication1.Repositories.Abstract;
+using System.Linq;
+using WebApplication1.Infrastructure.Attributes.Database;
 
 namespace WebApplication1.Repositories
 {
@@ -37,6 +39,31 @@ namespace WebApplication1.Repositories
         public Timestamp GetByID(int id)
         {
             return _mapper.ReadByID(id);
+        }
+
+        ///TODO make generic !!!!
+        public IEnumerable<Timestamp> GetByPersonID(int id)
+        {
+            IEnumerable<Timestamp> allTimestamps = GetAll();
+            return allTimestamps.Where(stamp => stamp.PersonID == id);
+        }
+
+        public IEnumerable<Timestamp> GetByPlateID(int id)
+        {
+            IEnumerable<Timestamp> allTimestamps = GetAll();
+            return allTimestamps.Where(stamp => stamp.PlateID == id);
+        }
+
+        public Timestamp GetLatestPersonTimestamp(int id)
+        {
+            IEnumerable<Timestamp> timestamps = GetByPersonID(id);
+            return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
+        }
+
+        public Timestamp GetLatestPlateTimestamp(int id)
+        {
+            IEnumerable<Timestamp> timestamps = GetByPlateID(id);
+            return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
         }
     }
 }

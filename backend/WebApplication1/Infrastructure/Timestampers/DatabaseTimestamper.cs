@@ -1,4 +1,5 @@
 ﻿using System;
+using WebApplication1.Infrastructure.Extensions;
 using WebApplication1.Infrastructure.Timestampers.Abstract;
 using WebApplication1.Infrastructure.Utils;
 using WebApplication1.Models;
@@ -16,10 +17,13 @@ namespace WebApplication1.Infrastructure.Timestampers
             _timestampRepository = timestampRepository;
         }
 
-        public void Save(T entity)
+        public void Save(T entity, DateTime dateTime)
         {
-            string dateAndTime = DateAndTimeFormatter.GetFormattedDateAndTime(DateTime.Now);
-            _timestampRepository.Add(new Timestamp(typeof(T), entity.ID, dateAndTime));
+            string dateAndTime = dateTime.GetFormattedDateAndTime();
+            if (typeof(T) == typeof(Person))
+                _timestampRepository.Add(new Timestamp(entity.ID, null, dateAndTime));
+            else
+                _timestampRepository.Add(new Timestamp(null, entity.ID, dateAndTime));
         }
     }
 }
