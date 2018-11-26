@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Infrastructure.Debug.Abstract;
+using WebApplication1.Infrastructure.Debugging.Abstract;
 using WebApplication1.Infrastructure.Exceptions;
 using WebApplication1.Models.Responses;
 using WebApplication1.Services;
