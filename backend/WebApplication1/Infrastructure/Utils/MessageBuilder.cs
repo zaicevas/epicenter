@@ -12,6 +12,5 @@ namespace WebApplication1.Infrastructure.Utils
                 message += Environment.NewLine + response.ToString();
             return message;
         }
-
     }
 }
