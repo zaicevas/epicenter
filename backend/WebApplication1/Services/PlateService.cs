@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WebApplication1.Infrastructure.Timestampers.Abstract;
 using System.Threading.Tasks;
+using System;
 
 namespace WebApplication1.Services
 {
@@ -44,7 +45,7 @@ namespace WebApplication1.Services
                 Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
                 if (plate != null)
                 {
-                    _timestamper.Save(plate);
+                    _timestamper.Save(plate, DateTime.Now);
                     identifiedPlates.Add(plate);
                 }
             });

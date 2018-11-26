@@ -11,7 +11,7 @@ namespace WebApplication1.Infrastructure.Utils
         public static Dictionary<SearchReason, string> reasonDictionary = 
             new Dictionary<SearchReason, string> {
                 { SearchReason.NotSearched, "Not searched" },
-                { SearchReason.Missing , "Mising"},
+                { SearchReason.Missing , "Missing"},
                 { SearchReason.Criminal, "Criminal" },
                 { SearchReason.Other, "Other" }
         };
