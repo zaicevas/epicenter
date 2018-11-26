@@ -16,7 +16,7 @@ namespace WebApplication1.Models
         public string AlprKey { get; set; }
         public string FaceKey { get; set; }
         public string FaceAPIEndpoint { get; set; }
-        public string MainFileLogName { get; set; }
+        public string MainLogFileName { get; set; }
 
         public AppSettings()
         {
