@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApplication1.Models;
@@ -11,10 +11,14 @@ using WebApplication1.Models.Abstract;
 
 namespace WebApplication1.Mappers
 {
-    public class Mapper<T> where T : Model
+    public class Mapper<T> : IDisposable where T : Model
     {
         private static string _connectionString = AppSettings.Configuration.ConnectionString;
-        private static IDbConnection _sqliteConnect = new SQLiteConnection(_connectionString);
+        private static Lazy<IDbConnection> _sqliteConnect = new Lazy<IDbConnection>( () => new SQLiteConnection(_connectionString)  );
+        private static IDbConnection SqliteConnect
+        {
+            get { return _sqliteConnect.Value; }
+        }
 
         readonly private static Type _typeParameter = typeof(T);
         readonly private static string _tableName = _typeParameter.Name;
@@ -56,7 +60,7 @@ namespace WebApplication1.Mappers
                 tmpQuery = BuildPropertyQueryString(true);
                 finalQuery += tmpQuery + ")";
                 System.Diagnostics.Debug.WriteLine("finalQuery: " + finalQuery);
-                _sqliteConnect.Execute(finalQuery, entity);
+                SqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
             {
@@ -68,7 +72,7 @@ namespace WebApplication1.Mappers
         {
             try
             {
-                return _sqliteConnect.Query<T>($"SELECT * FROM {_tableName}", new DynamicParameters());
+                return SqliteConnect.Query<T>($"SELECT * FROM {_tableName}", new DynamicParameters());
             }
             catch (SQLiteException)
             {
@@ -89,7 +93,7 @@ namespace WebApplication1.Mappers
                 finalQuery = finalQuery.Substring(0, finalQuery.Length - 2);
                 string idProperty = GetPropertyNames<IDAttribute>(false).First();
                 finalQuery += $" WHERE {idProperty} = @{idProperty}";
-                _sqliteConnect.Execute(finalQuery, entity);
+                SqliteConnect.Execute(finalQuery, entity);
             }
             catch (SQLiteException)
             {
@@ -102,7 +106,7 @@ namespace WebApplication1.Mappers
             try
             {
                 string idProperty = GetPropertyNames<IDAttribute>(false).First();
-                _sqliteConnect.Execute($"DELETE FROM {_tableName} WHERE {idProperty} = @{idProperty}", entity);
+                SqliteConnect.Execute($"DELETE FROM {_tableName} WHERE {idProperty} = @{idProperty}", entity);
             }
             catch (SQLiteException)
             {
@@ -114,7 +118,7 @@ namespace WebApplication1.Mappers
         {
             try
             {
-                _sqliteConnect.Execute($"DELETE FROM {_tableName}");
+                SqliteConnect.Execute($"DELETE FROM {_tableName}");
             }
             catch (SQLiteException)
             {
@@ -129,7 +133,7 @@ namespace WebApplication1.Mappers
             finalQuery += $"{idProperty} = {id}";
             try
             {
-                var list = _sqliteConnect.Query<T>(finalQuery, new DynamicParameters());
+                var list = SqliteConnect.Query<T>(finalQuery, new DynamicParameters());
                 if (list.Count() > 0)
                     return list.First();
                 return default(T);
@@ -155,7 +159,7 @@ namespace WebApplication1.Mappers
                 finalQuery = finalQuery.Substring(0, finalQuery.Length - " AND ".Length);
 
                 System.Diagnostics.Debug.WriteLine(finalQuery);
-                var list = _sqliteConnect.Query<T>(finalQuery, entity);
+                var list = SqliteConnect.Query<T>(finalQuery, entity);
                 if (list.Count() > 0)
                     return list.First();
                 return default(T);
@@ -166,7 +170,8 @@ namespace WebApplication1.Mappers
                 return default(T);
             }
         }
-
-
+        public void Dispose(){
+            SqliteConnect.Dispose();
+        }
     }
 }
