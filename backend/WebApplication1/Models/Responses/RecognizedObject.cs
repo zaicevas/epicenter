@@ -9,7 +9,7 @@ namespace WebApplication1.Models.Responses
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public SearchReason Reason { get; set; }
-        public string Type { get; set; }
+        public ModelType Type { get; set; }
         public string Message { get; set; }
         public DateTime LastSeen { get; set; }
 

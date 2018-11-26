@@ -8,7 +8,6 @@ using WebApplication1.Repositories;
 using WebApplication1.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WebApplication1.Infrastructure.Timestampers.Abstract;
 using System.Threading.Tasks;
 using System;
 using WebApplication1.Infrastructure.Extensions;
@@ -20,13 +19,11 @@ namespace WebApplication1.Services
         private readonly string _shKey = AppSettings.Configuration.AlprKey;
         private PlateRepository _plateRepository;
         private TimestampRepository _timestampRepository;
-        private readonly ITimestamper<Plate> _timestamper;
 
-        public PlateService(PlateRepository plateRepository, TimestampRepository timestampRepository, ITimestamper<Plate> timestamper)
+        public PlateService(PlateRepository plateRepository, TimestampRepository timestampRepository)
         {
             _plateRepository = plateRepository;
             _timestampRepository = timestampRepository;
-            _timestamper = timestamper;
         }
 
         public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
@@ -60,11 +57,15 @@ namespace WebApplication1.Services
                         FirstName = plate.FirstName,
                         LastName = plate.LastName,
                         Reason = plate.Reason,
-                        Type = "Plate",
+                        Type = ModelType.Plate,
                         Message = plate.NumberPlate,
                         LastSeen = timestamp.DateTime
                     });
-                    _timestamper.Save(plate, DateTime.Now);
+                    _timestampRepository.Add(new Timestamp()
+                    {
+                        DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                        PlateID = plate.ID
+                    });
                 }
             });
             return identifiedPlates;

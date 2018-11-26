@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApplication1.Infrastructure.Extensions;
-using WebApplication1.Infrastructure.Timestampers.Abstract;
 using WebApplication1.Models;
 using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.Responses;
@@ -16,14 +15,12 @@ namespace WebApplication1.Services
         private readonly PersonRepository _personRepository;
         private readonly TimestampRepository _timestampRepository;
         private readonly FaceAPIService _faceAPIService;
-        private readonly ITimestamper<Person> _timestamper;
 
-        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, TimestampRepository timestampRepository, ITimestamper<Person> timestamper)
+        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, TimestampRepository timestampRepository)
         {
             _faceAPIService = faceAPIService;
             _personRepository = personRepository;
             _timestampRepository = timestampRepository;
-            _timestamper = timestamper;
         }
 
         public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
@@ -46,11 +43,15 @@ namespace WebApplication1.Services
                     FirstName = person.FirstName,
                     LastName = person.LastName,
                     Reason = person.Reason,
-                    Type = "Person",
+                    Type = ModelType.Person,
                     Message = "no description",
                     LastSeen = timestamp.DateTime
                 });
-                _timestamper.Save(person, DateTime.Now);
+                _timestampRepository.Add(new Timestamp()
+                {
+                    DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                    PersonID = person.ID
+                });
             });
             return recognizedPersons;
         }
