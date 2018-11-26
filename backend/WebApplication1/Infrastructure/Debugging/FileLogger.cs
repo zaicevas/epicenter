@@ -33,9 +33,7 @@ namespace WebApplication1.Infrastructure.Debugging
                     _writer = new StreamWriter(_mainLogFileName);
                     _writer.WriteLine($"[{messageType}][{time}]: {message}");
                 }
-                catch(Exception e) {
-                    var a = e;
-                }
+                catch{ }
                 finally
                 {
                     _writer.Dispose();
@@ -52,6 +50,7 @@ namespace WebApplication1.Infrastructure.Debugging
             }
             catch (IOException e)
             {
+                Writer = StreamWriter.Null;
                 MainLogger.Log(LogType.ERROR, e.Message);
             }
         }
@@ -60,8 +59,7 @@ namespace WebApplication1.Infrastructure.Debugging
         {
             string messageType = Enum.GetName(typeof(LogType), type);
             string time = DateTime.Now.GetFormattedDateAndTime();
-            if (Writer != null)
-                Writer.WriteLine($"[{messageType}][{time}]: {message}");
+            Writer.WriteLine($"[{messageType}][{time}]: {message}");
         }
 
         public void Dispose()
