@@ -25,12 +25,12 @@ namespace WebApplication1.Controllers
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> PostAsync([FromBody] string value)
+        public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
         {
             try
             {
-                Task<PlateResponse> getPlateResponseTask = _plateService.RecognizeAsync(value);
-                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(value);
+                Task<PlateResponse> getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
+                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
                 PlateResponse plateResponse = await getPlateResponseTask;
                 PersonResponse personResponse = await getPersonResponseTask;
                 if (plateResponse.Recognized || personResponse.Recognized)
