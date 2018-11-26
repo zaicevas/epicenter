@@ -1,18 +1,16 @@
 ﻿using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
-using WebApplication1.Infrastructure.Utils;
 using WebApplication1.Models;
 using WebApplication1.Models.OpenALPR.Responses;
 using WebApplication1.Models.Responses;
 using WebApplication1.Repositories;
-using static WebApplication1.Models.Abstract.MissingModel;
 using WebApplication1.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WebApplication1.Infrastructure.Timestampers.Abstract;
 using System.Threading.Tasks;
 using System;
+using WebApplication1.Infrastructure.Extensions;
 
 namespace WebApplication1.Services
 {
@@ -20,56 +18,57 @@ namespace WebApplication1.Services
     {
         private readonly string _shKey = AppSettings.Configuration.AlprKey;
         private PlateRepository _plateRepository;
-        private readonly ITimestamper<Plate> _timestamper;
+        private TimestampRepository _timestampRepository;
 
-        public PlateService(PlateRepository plateRepository, ITimestamper<Plate> timestamper)
+        public PlateService(PlateRepository plateRepository, TimestampRepository timestampRepository)
         {
             _plateRepository = plateRepository;
-            _timestamper = timestamper;
+            _timestampRepository = timestampRepository;
         }
 
-        public async Task<PlateResponse> RecognizeAsync(string base64)
+        public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
         {
-            List<Plate> identifiedPlates = await GetIdentifiedPlatesAsync(base64);
-            return GetPlateResponse(identifiedPlates);
+            List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64);
+            return identifiedPlates;
         }
 
-        private async Task<List<Plate>> GetIdentifiedPlatesAsync(string base64)
+        private async Task<List<RecognizedObject>> GetIdentifiedPlatesAsync(string base64)
         {
             PlateAPIResponse cloudResponse = await GetPlateAPIResponseAsync(base64);
             cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
             List<PlateAPIResult> matchingResults = cloudResponse.Results.Where(result => result.MatchesPattern).ToList();
-            List<Plate> identifiedPlates = new List<Plate>();
-            matchingResults.ForEach(result =>
+            List<RecognizedObject> identifiedPlates = new List<RecognizedObject>();
+            matchingResults.ForEach(matching =>
             {
-                Plate plate = _plateRepository.GetByPlateNumber(result.Plate);
+                Plate plate = _plateRepository.GetByPlateNumber(matching.Plate);
                 if (plate != null)
                 {
-                    _timestamper.Save(plate, DateTime.Now);
-                    identifiedPlates.Add(plate);
+                    Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Plate>(plate.ID);
+                    if (timestamp == null || timestamp.DateAndTime == null)
+                    {
+                        timestamp = new Timestamp()
+                        {
+                            DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                            PlateID = plate.ID
+                        };
+                    }
+                    identifiedPlates.Add(new RecognizedObject()
+                    {
+                        FirstName = plate.FirstName,
+                        LastName = plate.LastName,
+                        Reason = plate.Reason,
+                        Type = ModelType.Plate,
+                        Message = plate.NumberPlate,
+                        LastSeen = timestamp.DateTime
+                    });
+                    _timestampRepository.Add(new Timestamp()
+                    {
+                        DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                        PlateID = plate.ID
+                    });
                 }
             });
             return identifiedPlates;
-        }
-
-        private PlateResponse GetPlateResponse(List<Plate> identifiedPlates)
-        {
-            string message = "";
-            Dictionary<SearchReason, string> dictionary = SearchReasonMap.reasonDictionary;
-            if (identifiedPlates.Count == 0)
-            {
-                return new PlateResponse()
-                {
-                    Recognized = false,
-                    Message = "No plate has been recognized"
-                };
-            }
-            identifiedPlates.ForEach(plate => message += $"{plate.NumberPlate} is {dictionary[plate.Reason]}\n");
-            return new PlateResponse()
-            {
-                Recognized = true,
-                Message = message
-            };
         }
 
         private async Task<PlateAPIResponse> GetPlateAPIResponseAsync(string base64)
@@ -84,9 +83,7 @@ namespace WebApplication1.Services
             request.AddParameter("topn", 10, queryString);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(base64);
-
             IRestResponse<PlateAPIResponse> response = await client.ExecuteTaskAsync<PlateAPIResponse>(request);
-
             if (!response.IsSuccessful)
             {
                 ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response.Content, new JsonSerializerSettings()

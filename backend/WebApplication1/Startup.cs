@@ -6,8 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using WebApplication1.Infrastructure.Debugging;
 using WebApplication1.Infrastructure.Debugging.Abstract;
-using WebApplication1.Infrastructure.Timestampers;
-using WebApplication1.Infrastructure.Timestampers.Abstract;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
@@ -43,8 +41,6 @@ namespace WebApplication1
             services.AddScoped<Mapper<Person>>();
             services.AddScoped<Mapper<Plate>>();
             services.AddScoped<Mapper<Timestamp>>();
-            services.AddScoped<ITimestamper<Plate>, DatabaseTimestamper<Plate>>();
-            services.AddScoped<ITimestamper<Person>, DatabaseTimestamper<Person>>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
         }
 
