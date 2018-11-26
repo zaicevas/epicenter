@@ -13,9 +13,9 @@ namespace WebApplication1.Mappers
 {
     public class Mapper<T> : IDisposable where T : Model
     {
-        private static string _connectionString = AppSettings.Configuration.ConnectionString;
-        private static Lazy<IDbConnection> _sqliteConnect = new Lazy<IDbConnection>( () => new SQLiteConnection(_connectionString)  );
-        private static IDbConnection SqliteConnect
+        private static readonly string _connectionString = AppSettings.Configuration.ConnectionString;
+        private Lazy<IDbConnection> _sqliteConnect = new Lazy<IDbConnection>(() => new SQLiteConnection(_connectionString));
+        private IDbConnection SqliteConnect
         {
             get { return _sqliteConnect.Value; }
         }
