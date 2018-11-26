@@ -2,13 +2,15 @@ using System;
 using System.IO;
 using WebApplication1.Infrastructure.Extensions;
 using WebApplication1.Infrastructure.Debugging.Abstract;
+using WebApplication1.Models;
 
 namespace WebApplication1.Infrastructure.Debugging
 {
     public class FileLogger : ILogger, IDisposable
     {
-        private static Lazy<FileLogger> _mainLogger = new Lazy<FileLogger>(() => new FileLogger("main_log.log"));
-        public static FileLogger MainLogger
+        private static readonly string _mainLogFileName = AppSettings.Configuration.MainLogFileName;
+        private Lazy<FileLogger> _mainLogger = new Lazy<FileLogger>(() => new FileLogger(_mainLogFileName));
+        public FileLogger MainLogger
         {
             get
             {
@@ -42,10 +44,10 @@ namespace WebApplication1.Infrastructure.Debugging
 
         public void Log(LogType type, string message)
         {
-            string messageType = nameof(type);
+            string messageType = Enum.GetName(typeof(LogType), type);
             string time = DateTime.Now.GetFormattedDateAndTime();
             if (Writer != null)
-                Writer.WriteLine($"[{messageType}] [{time}]: {message}");
+                Writer.WriteLine($"[{messageType}][{time}]: {message}");
         }
 
         public void Dispose()
