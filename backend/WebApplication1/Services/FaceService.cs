@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication1.Infrastructure.Timestampers.Abstract;
+using WebApplication1.Infrastructure.Extensions;
 using WebApplication1.Models;
 using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.Responses;
@@ -13,33 +13,47 @@ namespace WebApplication1.Services
     {
         private readonly string _groupID = AppSettings.Configuration.GroupID;
         private readonly PersonRepository _personRepository;
+        private readonly TimestampRepository _timestampRepository;
         private readonly FaceAPIService _faceAPIService;
-        private readonly ITimestamper<Person> _timestamper;
 
-        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, ITimestamper<Person> timestamper)
+        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, TimestampRepository timestampRepository)
         {
             _faceAPIService = faceAPIService;
             _personRepository = personRepository;
-            _timestamper = timestamper;
+            _timestampRepository = timestampRepository;
         }
 
-        public async Task<PersonResponse> RecognizeAsync(string base64)
+        public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
         {
-            List<Person> recognizedPersons = await CallFaceAPIAsync(Convert.FromBase64String(base64));
-            string message = string.Empty;
-            bool recognized = recognizedPersons != null && recognizedPersons.Count > 0;
-            if (recognized)
+            List<Person> result = await CallFaceAPIAsync(Convert.FromBase64String(base64));
+            List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
+            result.ForEach(person =>
             {
-                message = "Found: ";
-                recognizedPersons.ForEach(x =>
+                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Person>(person.ID);
+                if (timestamp == null || timestamp.DateAndTime == null)
                 {
-                    message += x.FullName + " (" + x.Reason + "), ";
+                    timestamp = new Timestamp()
+                    {
+                        DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                        PersonID = person.ID
+                    };
+                }
+                recognizedPersons.Add(new RecognizedObject()
+                {
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Reason = person.Reason,
+                    Type = ModelType.Person,
+                    Message = "no description",
+                    LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                 });
-                message = message.Substring(0, message.Length - 2);
-            }
-            else
-                message = "No people were recognized.";
-            return new PersonResponse { Recognized = recognized, Message = message };
+                _timestampRepository.Add(new Timestamp()
+                {
+                    DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                    PersonID = person.ID
+                });
+            });
+            return recognizedPersons;
         }
 
         private async Task<List<Person>> CallFaceAPIAsync(byte[] image)
@@ -48,18 +62,16 @@ namespace WebApplication1.Services
             List<FaceDetectResponse> detectResult = await _faceAPIService.DetectFacesAsync(image);
             if (detectResult != null && detectResult.Count > 0)
             {
-                foreach(FaceDetectResponse x in detectResult)
+                foreach (FaceDetectResponse face in detectResult)
                 {
-                    string faceID = x.FaceId;
+                    string faceID = face.FaceId;
                     if (!string.IsNullOrEmpty(faceID))
                     {
                         List<FaceIdentifyResponse> identifyResult = await _faceAPIService.IdentifyAsync(faceID, _groupID, 1);
                         if (identifyResult != null && identifyResult.Count > 0 && identifyResult[0].Candidates.Count > 0)
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;
-                            double confidence = identifyResult[0].Candidates[0].Confidence;
                             Person person = _personRepository.GetByFaceAPIID(personId);
-                            _timestamper.Save(person, DateTime.Now);
                             recognizedPersons.Add(person);
                         }
                     }
