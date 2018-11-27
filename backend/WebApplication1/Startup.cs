@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebApplication1.Infrastructure.Timestampers;
-using WebApplication1.Infrastructure.Timestampers.Abstract;
+using System;
+using WebApplication1.Infrastructure.Debugging;
+using WebApplication1.Infrastructure.Debugging.Abstract;
 using WebApplication1.Mappers;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
@@ -40,8 +41,7 @@ namespace WebApplication1
             services.AddScoped<Mapper<Person>>();
             services.AddScoped<Mapper<Plate>>();
             services.AddScoped<Mapper<Timestamp>>();
-            services.AddScoped<ITimestamper<Plate>, DatabaseTimestamper<Plate>>();
-            services.AddScoped<ITimestamper<Person>, DatabaseTimestamper<Person>>();
+            services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

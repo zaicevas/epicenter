@@ -1,9 +1,11 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Infrastructure.Debugging.Abstract;
 using WebApplication1.Infrastructure.Exceptions;
+using WebApplication1.Infrastructure.Utils;
 using WebApplication1.Models.Responses;
-using WebApplication1.Repositories;
 using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
@@ -14,32 +16,48 @@ namespace WebApplication1.Controllers
     {
         private readonly PlateService _plateService;
         private readonly FaceService _faceService;
+        private readonly ILogger _logger;
 
-        public DefaultController(PlateService plateService, FaceService faceService)
+        public DefaultController(PlateService plateService, FaceService faceService, ILogger logger)
         {
             _plateService = plateService;
             _faceService = faceService;
+            _logger = logger;
         }
 
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> PostAsync([FromBody] string value)
+        public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
         {
+            _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()");
+            Task<List<RecognizedObject>> getPlateResponseTask;
+            Task<List<RecognizedObject>> getPersonResponseTask;
             try
             {
-                Task<PlateResponse> getPlateResponseTask = _plateService.RecognizeAsync(value);
-                Task<PersonResponse> getPersonResponseTask = _faceService.RecognizeAsync(value);
-                PlateResponse plateResponse = await getPlateResponseTask;
-                PersonResponse personResponse = await getPersonResponseTask;
-                if (plateResponse.Recognized || personResponse.Recognized)
-                    return Ok(plateResponse.Message + "\n" + personResponse.Message);
-                return NotFound("Didn't find anything.");
+                getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
+                getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
             }
             catch(HttpException ex)
             {
+                _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
+            }
+            List<RecognizedObject> plateResponse = await getPlateResponseTask;
+            List<RecognizedObject> personResponse = await getPersonResponseTask;
+            RecognizedObject[] responses = plateResponse.Concat(personResponse).ToArray();
+            if (responses.Length > 0)
+            {
+                _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
+                _logger.Log(LogType.NORMAL, "Request finished successfully");
+                return Ok(responses);
+            }
+            else
+            {
+                _logger.Log(LogType.NORMAL, "Found: None");
+                _logger.Log(LogType.NORMAL, "Request finished successfully");
+                return NotFound("Didn't find anything.");
             }
         }
     }

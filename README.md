@@ -1,2 +1,2 @@
 # epicenter
-Face/car recognition (Applied OOP assignment in Vilnius University)
+Face/car recognition API (.NET core)
