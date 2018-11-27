@@ -11,5 +11,11 @@ namespace WebApplication1.Infrastructure.Extensions
         {
             return timestamp.ToString("yyyy-MM-dd HH:mm:ss");
         }
+
+        public static DateTime ToUTC2(this DateTime timestamp)
+        {
+            TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("E. Europe Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(timestamp, timeZoneInfo);
+        }
     }
 }
