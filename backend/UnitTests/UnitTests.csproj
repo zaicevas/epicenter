@@ -13,4 +13,10 @@
     <ProjectReference Include="..\WebApplication1\WebApplication1.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="trump_base64.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

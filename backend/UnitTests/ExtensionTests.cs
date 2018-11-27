@@ -4,7 +4,7 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class ExtentionsTest
+    public class ExtensionTests
     {
         [Fact]
         public void StringToDateTimeConversionTest()
