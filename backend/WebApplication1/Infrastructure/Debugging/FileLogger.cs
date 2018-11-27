@@ -27,7 +27,7 @@ namespace WebApplication1.Infrastructure.Debugging
             public void Log(LogType type, string message)
             {
                 string messageType = Enum.GetName(typeof(LogType), type);
-                string time = DateTime.Now.GetFormattedDateAndTime();
+                string time = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
                 try
                 {
                     _writer = new StreamWriter(_mainLogFileName);
@@ -58,7 +58,7 @@ namespace WebApplication1.Infrastructure.Debugging
         public void Log(LogType type, string message)
         {
             string messageType = Enum.GetName(typeof(LogType), type);
-            string time = DateTime.Now.GetFormattedDateAndTime();
+            string time = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
             Writer.WriteLine($"[{messageType}][{time}]: {message}");
         }
 

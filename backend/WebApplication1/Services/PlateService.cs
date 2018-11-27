@@ -48,7 +48,7 @@ namespace WebApplication1.Services
                     {
                         timestamp = new Timestamp()
                         {
-                            DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                            DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
                             PlateID = plate.ID
                         };
                     }
@@ -63,7 +63,7 @@ namespace WebApplication1.Services
                     });
                     _timestampRepository.Add(new Timestamp()
                     {
-                        DateAndTime = DateTime.Now.GetFormattedDateAndTime(),
+                        DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
                         PlateID = plate.ID
                     });
                 }
