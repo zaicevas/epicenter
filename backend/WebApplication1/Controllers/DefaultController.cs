@@ -32,11 +32,11 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
         {
             _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()");
-            Task<List<RecognizedObject>> getPlateResponseTask;
+            //Task<List<RecognizedObject>> getPlateResponseTask;
             Task<List<RecognizedObject>> getPersonResponseTask;
             try
             {
-                getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
+                //getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
                 getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
             }
             catch(HttpException ex)
@@ -44,9 +44,10 @@ namespace WebApplication1.Controllers
                 _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
             }
-            List<RecognizedObject> plateResponse = await getPlateResponseTask;
+            //List<RecognizedObject> plateResponse = await getPlateResponseTask;
             List<RecognizedObject> personResponse = await getPersonResponseTask;
-            RecognizedObject[] responses = plateResponse.Concat(personResponse).ToArray();
+            //RecognizedObject[] responses = plateResponse.Concat(personResponse).ToArray();
+            RecognizedObject[] responses = personResponse.ToArray();
             if (responses.Length > 0)
             {
                 _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
