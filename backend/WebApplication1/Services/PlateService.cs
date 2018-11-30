@@ -28,6 +28,7 @@ namespace WebApplication1.Services
 
         public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
         {
+            return new List<RecognizedObject>();
             List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64);
             return identifiedPlates;
         }
