@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Models.FaceAPI.Requests
+﻿namespace WebApplication1.DTO.Face.Requests
 {
-    public class PersonCreateRequest
+    public struct PersonCreateRequest
     {
         public string Name { get; set; }
         public string UserData { get; set; }

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\OpenALPR\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

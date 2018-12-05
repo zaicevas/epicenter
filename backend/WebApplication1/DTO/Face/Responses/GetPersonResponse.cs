@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApplication1.Models.FaceAPI.Responses
+namespace WebApplication1.DTO.Face.Responses
 {
-    public class FaceAPIPersonResponse
+    public class GetPersonResponse
     {
         public string PersonId { get; set; }
         public string Name { get; set; }

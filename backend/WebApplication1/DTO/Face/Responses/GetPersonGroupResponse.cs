@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Models.FaceAPI.Responses
+﻿namespace WebApplication1.DTO.Face.Responses
 {
-    public class PersonGroupGetResponse
+    public struct GetPersonGroupResponse
     {
         public string PersonGroupId { get; set; }
         public string Name { get; set; }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApplication1.DTO.Face.Responses;
 using WebApplication1.Infrastructure.Extensions;
 using WebApplication1.Models;
-using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.Responses;
 using WebApplication1.Repositories;
 
@@ -59,15 +59,15 @@ namespace WebApplication1.Services
         private async Task<List<Person>> CallFaceAPIAsync(byte[] image)
         {
             List<Person> recognizedPersons = new List<Person>();
-            List<FaceDetectResponse> detectResult = await _faceAPIService.DetectFacesAsync(image);
+            List<DetectResponse> detectResult = await _faceAPIService.DetectFacesAsync(image);
             if (detectResult != null && detectResult.Count > 0)
             {
-                foreach (FaceDetectResponse face in detectResult)
+                foreach (DetectResponse face in detectResult)
                 {
                     string faceID = face.FaceId;
                     if (!string.IsNullOrEmpty(faceID))
                     {
-                        List<FaceIdentifyResponse> identifyResult = await _faceAPIService.IdentifyAsync(faceID, _groupID, 1);
+                        List<IdentifyResponse> identifyResult = await _faceAPIService.IdentifyAsync(faceID, _groupID, 1);
                         if (identifyResult != null && identifyResult.Count > 0 && identifyResult[0].Candidates.Count > 0)
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;

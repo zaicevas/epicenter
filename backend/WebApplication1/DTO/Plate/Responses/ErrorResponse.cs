@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebApplication1.Models.OpenALPR.Responses
+﻿namespace WebApplication1.DTO.Plate.Responses
 {
     public struct ErrorResponse
     {

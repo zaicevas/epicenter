@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApplication1.Models.FaceAPI.Requests
+namespace WebApplication1.DTO.Face.Requests
 {
-    public class FaceIdentifyRequest
+    public struct IdentifyRequest
     {
         public List<string> FaceIds { get; set;}
         public string PersonGroupId { get; set; }

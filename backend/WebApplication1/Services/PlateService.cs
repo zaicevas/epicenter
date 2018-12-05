@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using WebApplication1.Models;
-using WebApplication1.Models.OpenALPR.Responses;
 using WebApplication1.Models.Responses;
 using WebApplication1.Repositories;
 using WebApplication1.Infrastructure.Exceptions;
@@ -11,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using System;
 using WebApplication1.Infrastructure.Extensions;
+using WebApplication1.DTO.Plate.Responses;
 
 namespace WebApplication1.Services
 {

@@ -1,16 +1,8 @@
 ﻿using System;
 
-namespace WebApplication1.Models.FaceAPI.Responses
+namespace WebApplication1.DTO.Face.Responses
 {
-    public enum PersonGroupTrainingStatus
-    {
-        notstarted,
-        running,
-        succeeded,
-        failed
-    }
-
-    public class PersonGroupTrainingStatusResponse
+    public struct TrainingStatusResponse
     {
         public string Status { get; set; }
         public string CreatedDateTime { get; set; }
@@ -34,5 +26,13 @@ namespace WebApplication1.Models.FaceAPI.Responses
             Enum.TryParse(Status, true, out PersonGroupTrainingStatus status);
             return status;
         }
+    }
+
+    public enum PersonGroupTrainingStatus
+    {
+        notstarted,
+        running,
+        succeeded,
+        failed
     }
 }

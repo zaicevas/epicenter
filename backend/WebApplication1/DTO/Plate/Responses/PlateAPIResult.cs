@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebApplication1.Models.OpenALPR.Responses
+﻿namespace WebApplication1.DTO.Plate.Responses
 {
-    public class PlateAPIResult
+    public struct PlateAPIResult
     {
         public string Plate { get; set; }
         public bool MatchesPattern { get; set; }        // not from cloud

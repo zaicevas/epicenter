@@ -4,10 +4,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using WebApplication1.Models.FaceAPI.Responses;
-using WebApplication1.Models.FaceAPI.Requests;
 using WebApplication1.Infrastructure.Exceptions;
 using WebApplication1.Models;
+using WebApplication1.DTO.Face.Requests;
+using WebApplication1.DTO.Face.Responses;
 
 namespace WebApplication1.Services
 {
@@ -17,7 +17,7 @@ namespace WebApplication1.Services
         private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
         private readonly string _uriBase = AppSettings.Configuration.FaceAPIEndpoint;
 
-        public async Task<List<PersonGroupGetResponse>> GetPersonGroupsAsync()
+        public async Task<List<GetPersonGroupResponse>> GetPersonGroupsAsync()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -27,14 +27,14 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    List<PersonGroupGetResponse> result = JsonConvert.DeserializeObject<List<PersonGroupGetResponse>>(content);
+                    List<GetPersonGroupResponse> result = JsonConvert.DeserializeObject<List<GetPersonGroupResponse>>(content);
                     return result;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async Task<PersonGroupGetResponse> GetPersonGroupAsync(string personGroupId)
+        public async Task<GetPersonGroupResponse> GetPersonGroupAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -44,7 +44,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    PersonGroupGetResponse list = JsonConvert.DeserializeObject<PersonGroupGetResponse>(responseBody);
+                    GetPersonGroupResponse list = JsonConvert.DeserializeObject<GetPersonGroupResponse>(responseBody);
                     return list;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
@@ -108,14 +108,14 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    PersonGroupTrainingStatusResponse result = JsonConvert.DeserializeObject<PersonGroupTrainingStatusResponse>(responseBody);
+                    TrainingStatusResponse result = JsonConvert.DeserializeObject<TrainingStatusResponse>(responseBody);
                     return result.GetPersonGroupTrainingStatus();
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async Task<List<FaceAPIPersonResponse>> GetPersonsInGroupAsync(string personGroupId)
+        public async Task<List<GetPersonResponse>> GetPersonsInGroupAsync(string personGroupId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -125,14 +125,14 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    List<FaceAPIPersonResponse> result = JsonConvert.DeserializeObject<List<FaceAPIPersonResponse>>(content);
+                    List<GetPersonResponse> result = JsonConvert.DeserializeObject<List<GetPersonResponse>>(content);
                     return result;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async Task<FaceAPIPersonResponse> GetPersonAsync(string personGroupId, string personId)
+        public async Task<GetPersonResponse> GetPersonAsync(string personGroupId, string personId)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -142,7 +142,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    FaceAPIPersonResponse result = JsonConvert.DeserializeObject<FaceAPIPersonResponse>(content);
+                    GetPersonResponse result = JsonConvert.DeserializeObject<GetPersonResponse>(content);
                     return result;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
@@ -166,7 +166,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
-                    PersonCreateResponse result = JsonConvert.DeserializeObject<PersonCreateResponse>(content);
+                    CreatePersonResponse result = JsonConvert.DeserializeObject<CreatePersonResponse>(content);
                     return result.PersonId;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
@@ -198,7 +198,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    FaceAddResponse result = JsonConvert.DeserializeObject<FaceAddResponse>(responseBody);
+                    AddFaceResponse result = JsonConvert.DeserializeObject<AddFaceResponse>(responseBody);
                     return result.PersistedFaceId;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
@@ -218,7 +218,7 @@ namespace WebApplication1.Services
             }
         }
 
-        public async Task<List<FaceDetectResponse>> DetectFacesAsync(byte[] image)
+        public async Task<List<DetectResponse>> DetectFacesAsync(byte[] image)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -230,20 +230,20 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    List<FaceDetectResponse> result = JsonConvert.DeserializeObject<List<FaceDetectResponse>>(responseBody);
+                    List<DetectResponse> result = JsonConvert.DeserializeObject<List<DetectResponse>>(responseBody);
                     return result;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
             }
         }
 
-        public async Task<List<FaceIdentifyResponse>> IdentifyAsync(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
+        public async Task<List<IdentifyResponse>> IdentifyAsync(string faceId, string personGroupId, int maxNumOfCandidatesReturned = 1)
         {
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
                 string uri = $"{_uriBase}/identify";
-                FaceIdentifyRequest body = new FaceIdentifyRequest()
+                IdentifyRequest body = new IdentifyRequest()
                 {
                     FaceIds = new List<string> { faceId },
                     PersonGroupId = personGroupId,
@@ -255,7 +255,7 @@ namespace WebApplication1.Services
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    List<FaceIdentifyResponse> result = JsonConvert.DeserializeObject<List<FaceIdentifyResponse>>(responseBody);
+                    List<IdentifyResponse> result = JsonConvert.DeserializeObject<List<IdentifyResponse>>(responseBody);
                     return result;
                 }
                 throw CreateHttpException(await response.Content.ReadAsStringAsync());
