@@ -57,7 +57,7 @@ namespace WebApplication1.Services
             {
                 client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
                 string uri = $"{_uriBase}/persongroups/{personGroupId}";
-                PersonGroupCreateRequest body = new PersonGroupCreateRequest()
+                CreatePersonGroupRequest body = new CreatePersonGroupRequest()
                 {
                     Name = name,
                     UserData = description
@@ -155,7 +155,7 @@ namespace WebApplication1.Services
             {
                 client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
                 string uri = $"{_uriBase}/persongroups/{personGroupId}/persons";
-                PersonCreateRequest body = new PersonCreateRequest()
+                CreatePersonRequest body = new CreatePersonRequest()
                 {
                     Name = personName,
                     UserData = personDescription
