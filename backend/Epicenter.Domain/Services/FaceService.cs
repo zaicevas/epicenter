@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Epicenter.Domain.Abstract;
 using Epicenter.Infrastructure;
 using Epicenter.Infrastructure.Extensions;
+using Epicenter.Infrastructure.Debugging.Abstract;
 
 namespace Epicenter.Domain.Services
 {
@@ -16,17 +17,28 @@ namespace Epicenter.Domain.Services
         private readonly IPersonRepository _personRepository;
         private readonly ITimestampRepository _timestampRepository;
         private readonly FaceAPIService _faceAPIService;
+        private readonly ILogger _logger;
 
-        public FaceService(FaceAPIService faceAPIService, IPersonRepository personRepository, ITimestampRepository timestampRepository)
+        public FaceService(FaceAPIService faceAPIService, IPersonRepository personRepository, ITimestampRepository timestampRepository, ILogger logger)
         {
             _faceAPIService = faceAPIService;
             _personRepository = personRepository;
             _timestampRepository = timestampRepository;
+            _logger = logger;
         }
 
         public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
         {
-            List<Person> result = await CallFaceAPIAsync(Convert.FromBase64String(base64));
+            byte[] imgBytes;
+            try
+            {
+                imgBytes = Convert.FromBase64String(base64);
+            }
+            catch
+            {
+                throw;
+            }
+            List<Person> result = await CallFaceAPIAsync(imgBytes);
             List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
             result.ForEach(person =>
             {

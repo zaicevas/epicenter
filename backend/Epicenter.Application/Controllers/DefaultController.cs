@@ -6,9 +6,9 @@ using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Domain.Services;
 using Epicenter.Domain.Models.Responses;
 using Epicenter.Infrastructure.Debugging.Abstract;
-using Epicenter.Infrastructure.Exceptions;
+using System;
 
-namespace Epicenter.Application.Controllers
+namespace WebApplication1.Controllers
 {
     [Route("api")]
     [ApiController]
@@ -43,7 +43,7 @@ namespace Epicenter.Application.Controllers
                 plateResponse = await getPlateResponseTask;
                 personResponse = await getPersonResponseTask;
             }
-            catch(HttpException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
@@ -59,7 +59,7 @@ namespace Epicenter.Application.Controllers
             {
                 _logger.Log(LogType.NORMAL, "Found: None");
                 _logger.Log(LogType.NORMAL, "Request finished successfully");
-                return NotFound("Didn't find anything.");
+                return NotFound("Found nothing.");
             }
         }
     }

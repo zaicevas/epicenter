@@ -8,6 +8,7 @@ using Epicenter.Domain.Services.DTO.Face.Responses;
 using Epicenter.Domain.Services.DTO.Face.Requests;
 using Epicenter.Infrastructure;
 using Epicenter.Infrastructure.Exceptions;
+using Epicenter.Infrastructure.Debugging.Abstract;
 
 namespace Epicenter.Domain.Services
 {
@@ -16,6 +17,12 @@ namespace Epicenter.Domain.Services
         private readonly string _subscriptionKey = AppSettings.Configuration.FaceKey;
         private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
         private readonly string _uriBase = AppSettings.Configuration.FaceAPIEndpoint;
+        private readonly ILogger _logger;
+
+        public FaceAPIService(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public async Task<List<GetPersonGroupResponse>> GetPersonGroupsAsync()
         {
@@ -265,6 +272,7 @@ namespace Epicenter.Domain.Services
         private HttpException CreateHttpException(string errorText)
         {
             ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+            _logger.Log(LogType.ERROR, $"{errorResponse.Error.Message} in FaceAPIService");
             return new HttpException(errorResponse.Error.Code, errorResponse.Error.Message);
         }
     }
