@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,7 @@ namespace WebApplication1.Controllers
                 plateResponse = await getPlateResponseTask;
                 personResponse = await getPersonResponseTask;
             }
-            catch(HttpException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
@@ -59,7 +60,7 @@ namespace WebApplication1.Controllers
             {
                 _logger.Log(LogType.NORMAL, "Found: None");
                 _logger.Log(LogType.NORMAL, "Request finished successfully");
-                return NotFound("Didn't find anything.");
+                return NotFound("Found nothing.");
             }
         }
     }

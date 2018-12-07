@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApplication1.Infrastructure.Debugging.Abstract;
+using WebApplication1.Infrastructure.Exceptions;
 using WebApplication1.Infrastructure.Extensions;
 using WebApplication1.Models;
 using WebApplication1.Models.FaceAPI.Responses;
@@ -15,17 +17,28 @@ namespace WebApplication1.Services
         private readonly PersonRepository _personRepository;
         private readonly TimestampRepository _timestampRepository;
         private readonly FaceAPIService _faceAPIService;
+        private readonly ILogger _logger;
 
-        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, TimestampRepository timestampRepository)
+        public FaceService(FaceAPIService faceAPIService, PersonRepository personRepository, TimestampRepository timestampRepository, ILogger logger)
         {
             _faceAPIService = faceAPIService;
             _personRepository = personRepository;
             _timestampRepository = timestampRepository;
+            _logger = logger;
         }
 
         public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
         {
-            List<Person> result = await CallFaceAPIAsync(Convert.FromBase64String(base64));
+            byte[] imgBytes;
+            try
+            {
+                imgBytes = Convert.FromBase64String(base64);
+            }
+            catch (Exception ex) {
+                _logger.Log(LogType.ERROR, $"{ex.Message} in FaceService.RecognizeAsync()");
+                throw;
+            }
+            List<Person> result = await CallFaceAPIAsync(imgBytes);
             List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
             result.ForEach(person =>
             {
