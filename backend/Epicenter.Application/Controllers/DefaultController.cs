@@ -8,7 +8,7 @@ using Epicenter.Domain.Models.Responses;
 using Epicenter.Infrastructure.Debugging.Abstract;
 using System;
 
-namespace WebApplication1.Controllers
+namespace Epicenter.Application.Controllers
 {
     [Route("api")]
     [ApiController]
