@@ -34,18 +34,20 @@ namespace WebApplication1.Controllers
             _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()");
             Task<List<RecognizedObject>> getPlateResponseTask;
             Task<List<RecognizedObject>> getPersonResponseTask;
+            List<RecognizedObject> plateResponse;
+            List<RecognizedObject> personResponse;
             try
             {
                 getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
                 getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
+                plateResponse = await getPlateResponseTask;
+                personResponse = await getPersonResponseTask;
             }
             catch(HttpException ex)
             {
                 _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
             }
-            List<RecognizedObject> plateResponse = await getPlateResponseTask;
-            List<RecognizedObject> personResponse = await getPersonResponseTask;
             RecognizedObject[] responses = plateResponse.Concat(personResponse).ToArray();
             if (responses.Length > 0)
             {
