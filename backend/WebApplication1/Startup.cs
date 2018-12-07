@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using WebApplication1.Infrastructure.Debugging;
-using WebApplication1.Infrastructure.Debugging.Abstract;
-using WebApplication1.Mappers;
-using WebApplication1.Models;
-using WebApplication1.Repositories;
-using WebApplication1.Services;
 
-namespace WebApplication1
+using System;
+
+namespace Epicenter.Application
 {
     public class Startup
     {
@@ -29,7 +25,7 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            AppSettings config = new AppSettings();
+            /*AppSettings config = new AppSettings();
             Configuration.GetSection("AppSettings").Bind(config);
             services.AddSingleton(config);
             services.AddScoped<PlateService>();
@@ -42,6 +38,7 @@ namespace WebApplication1
             services.AddScoped<Mapper<Plate>>();
             services.AddScoped<Mapper<Timestamp>>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

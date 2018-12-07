@@ -1,7 +1,7 @@
 ﻿using System;
-using WebApplication1.Models.Responses;
+using Epicenter.Application.Models.Responses;
 
-namespace WebApplication1.Infrastructure.Utils
+namespace Epicenter.Application.Infrastructure.Utils
 {
     public static class MessageBuilder
     {

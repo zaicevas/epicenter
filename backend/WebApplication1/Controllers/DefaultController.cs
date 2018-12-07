@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Infrastructure.Debugging.Abstract;
-using WebApplication1.Infrastructure.Exceptions;
-using WebApplication1.Infrastructure.Utils;
-using WebApplication1.Models.Responses;
-using WebApplication1.Services;
 
-namespace WebApplication1.Controllers
+using Microsoft.AspNetCore.Mvc;
+
+using Epicenter.Application.Infrastructure.Utils;
+using Epicenter.Domain.Services;
+using Epicenter.Domain.Models.Responses;
+using Epicenter.Debugging.Abstract;
+using Epicenter.Exceptions;
+
+namespace Epicenter.Application.Controllers
 {
     [Route("api")]
     [ApiController]
@@ -24,6 +26,8 @@ namespace WebApplication1.Controllers
             _faceService = faceService;
             _logger = logger;
         }
+
+        public object LogType { get; private set; }
 
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace WebApplication1.Infrastructure.Utils
+namespace Epicenter.Application.Infrastructure.Utils
 {
     public static class ImageToBytes
     {
