@@ -2,12 +2,13 @@
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Abstract;
 using Epicenter.Persistence.Mappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Epicenter.Persistence.Repositories
 {
-    public class TimestampRepository : IRepository<Timestamp>
+    public class TimestampRepository : ITimestampRepository
     {
         private readonly Mapper<Timestamp> _mapper;
 
@@ -29,6 +30,12 @@ namespace Epicenter.Persistence.Repositories
         public void Edit(Timestamp entity)
         {
             _mapper.Update(entity);
+        }
+
+        public IEnumerable<Timestamp> Get(Func<Timestamp, bool> predicate)
+        {
+            // TODO: switch to EF and use Expression<<Timestamp, bool>> predicate
+            return GetAll().Where(predicate).AsEnumerable();
         }
 
         public IEnumerable<Timestamp> GetAll()

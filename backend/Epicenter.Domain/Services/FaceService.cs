@@ -13,11 +13,11 @@ namespace Epicenter.Domain.Services
     public class FaceService
     {
         private readonly string _groupID = AppSettings.Configuration.GroupID;
-        private readonly IRepository<Person> _personRepository;
-        private readonly IRepository<Timestamp> _timestampRepository;
+        private readonly IPersonRepository _personRepository;
+        private readonly ITimestampRepository _timestampRepository;
         private readonly FaceAPIService _faceAPIService;
 
-        public FaceService(FaceAPIService faceAPIService, IRepository<Person> personRepository, IRepository<Timestamp> timestampRepository)
+        public FaceService(FaceAPIService faceAPIService, IPersonRepository personRepository, ITimestampRepository timestampRepository)
         {
             _faceAPIService = faceAPIService;
             _personRepository = personRepository;

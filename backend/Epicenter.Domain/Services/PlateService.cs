@@ -18,10 +18,10 @@ namespace Epicenter.Domain.Services
     public class PlateService
     {
         private readonly string _shKey = AppSettings.Configuration.AlprKey;
-        private IRepository<Plate> _plateRepository;
-        private IRepository<Timestamp> _timestampRepository;
+        private IPlateRepository _plateRepository;
+        private ITimestampRepository _timestampRepository;
 
-        public PlateService(IRepository<Plate> plateRepository, IRepository<Timestamp> timestampRepository)
+        public PlateService(IPlateRepository plateRepository, ITimestampRepository timestampRepository)
         {
             _plateRepository = plateRepository;
             _timestampRepository = timestampRepository;

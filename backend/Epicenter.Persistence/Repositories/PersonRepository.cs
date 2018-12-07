@@ -2,11 +2,13 @@
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Attributes.Database;
 using Epicenter.Persistence.Mappers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Epicenter.Persistence.Repositories
 {
-    public class PersonRepository : IRepository<Person>
+    public class PersonRepository : IPersonRepository
     {
         private readonly Mapper<Person> _mapper;
 
@@ -33,6 +35,11 @@ namespace Epicenter.Persistence.Repositories
         public IEnumerable<Person> GetAll()
         {
             return _mapper.ReadRows();
+        }
+
+        public IEnumerable<Person> Get(Func<Person, bool> predicate)
+        {
+            return GetAll().Where(predicate).AsEnumerable();
         }
 
         public Person GetByID(int id)
