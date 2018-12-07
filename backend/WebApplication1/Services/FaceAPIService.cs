@@ -8,6 +8,7 @@ using WebApplication1.Models.FaceAPI.Responses;
 using WebApplication1.Models.FaceAPI.Requests;
 using WebApplication1.Infrastructure.Exceptions;
 using WebApplication1.Models;
+using WebApplication1.Infrastructure.Debugging.Abstract;
 
 namespace WebApplication1.Services
 {
@@ -16,6 +17,12 @@ namespace WebApplication1.Services
         private readonly string _subscriptionKey = AppSettings.Configuration.FaceKey;
         private const string _ocpApimSubscriptionKey = "Ocp-Apim-Subscription-Key";
         private readonly string _uriBase = AppSettings.Configuration.FaceAPIEndpoint;
+        private readonly ILogger _logger;
+
+        public FaceAPIService(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public async Task<List<PersonGroupGetResponse>> GetPersonGroupsAsync()
         {
@@ -33,6 +40,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.GetPersonGroupAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -55,6 +63,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.GetPersonGroupAsync(string)");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -78,6 +87,7 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.CreatePersonGroupAsync");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -95,6 +105,7 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.DeletePersonGroupAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -136,6 +147,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.GetPersonGroupTrainingStatusAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -158,6 +170,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.GetPersonsInGroupAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -180,6 +193,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.GetPersonAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -209,6 +223,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.CreatePersonAsync(string, string, string)");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -225,6 +240,7 @@ namespace WebApplication1.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.DeletePersonAsync(string,string)");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -250,6 +266,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.AddFaceToPersonAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -270,6 +287,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.DeleteFaceFromPersonAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -294,6 +312,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.DetectFacesAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }
@@ -324,6 +343,7 @@ namespace WebApplication1.Services
                 else
                 {
                     string errorText = await response.Content.ReadAsStringAsync();
+                    _logger.Log(LogType.ERROR, $"{errorText} in FaceAPIService.IdentifyAsync()");
                     ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
                     throw new HttpException(errorResponse.Code, errorResponse.Message);
                 }

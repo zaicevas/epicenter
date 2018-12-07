@@ -46,6 +46,7 @@ namespace WebApplication1.Infrastructure.Debugging
             _fileName = fileName;
             try
             {
+                new System.IO.DirectoryInfo("Logs").Create();
                 Writer = new StreamWriter(_fileName);
             }
             catch (IOException e)
