@@ -51,7 +51,7 @@ namespace Epicenter.Persistence.Repositories
         public IEnumerable<Timestamp> GetByModelID<T>(int id) where T : MissingModel
         {
             IEnumerable<Timestamp> allTimestamps = GetAll();
-            if(typeof(T) == typeof(Person))
+            if (typeof(T) == typeof(Person))
                 return allTimestamps.Where(stamp => stamp.PersonID == id);
             return allTimestamps.Where(stamp => stamp.PlateID == id);
         }

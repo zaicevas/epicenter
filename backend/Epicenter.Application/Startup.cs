@@ -37,9 +37,9 @@ namespace Epicenter.Application
             services.AddScoped<PlateService>();
             services.AddScoped<FaceService>();
             services.AddScoped<FaceAPIService>();
-            services.AddScoped<IRepository<Person>, PersonRepository>();
-            services.AddScoped<IRepository<Plate>, PlateRepository>();
-            services.AddScoped<IRepository<Timestamp>, TimestampRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IPlateRepository, PlateRepository>();
+            services.AddScoped<ITimestampRepository, TimestampRepository>();
             services.AddScoped<Mapper<Person>>();
             services.AddScoped<Mapper<Plate>>();
             services.AddScoped<Mapper<Timestamp>>();
