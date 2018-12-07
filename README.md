@@ -1,2 +1,2 @@
 # epicenter
-Face/car recognition API (.NET core)
+Face/car recognition API in .NET core using layered architecture with monolithic deployment model.
