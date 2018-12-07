@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Domain.Services;
-using Epicenter.Domain.Models.Responses;
+using Epicenter.Domain.Models.DTO;
 using Epicenter.Infrastructure.Debugging.Abstract;
 using System;
 

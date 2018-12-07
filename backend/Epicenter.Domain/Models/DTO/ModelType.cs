@@ -1,4 +1,4 @@
-﻿namespace Epicenter.Domain.Models.Responses
+﻿namespace Epicenter.Domain.Models.DTO
 {
     public enum ModelType
     {

@@ -7,7 +7,7 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
-using Epicenter.Domain.Models.Responses;
+using Epicenter.Domain.Models.DTO;
 using Epicenter.Domain.Services.DTO.Plate.Responses;
 using Epicenter.Infrastructure;
 using Epicenter.Infrastructure.Extensions;

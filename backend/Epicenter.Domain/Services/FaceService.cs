@@ -1,5 +1,5 @@
 ﻿using Epicenter.Domain.Models;
-using Epicenter.Domain.Models.Responses;
+using Epicenter.Domain.Models.DTO;
 using Epicenter.Domain.Services.DTO.Face.Responses;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using static Epicenter.Domain.Models.Abstract.MissingModel;
 
-namespace Epicenter.Domain.Models.Responses
+namespace Epicenter.Domain.Models.DTO
 {
     public struct RecognizedObject
     {
