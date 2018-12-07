@@ -34,8 +34,7 @@ namespace WebApplication1.Services
             {
                 imgBytes = Convert.FromBase64String(base64);
             }
-            catch (Exception ex) {
-                _logger.Log(LogType.ERROR, $"{ex.Message} in FaceService.RecognizeAsync()");
+            catch {
                 throw;
             }
             List<Person> result = await CallFaceAPIAsync(imgBytes);
