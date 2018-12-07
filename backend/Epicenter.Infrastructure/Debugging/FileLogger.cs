@@ -1,8 +1,9 @@
 using System;
 using System.IO;
-using Epicenter.Debugging.Abstract;
+using Epicenter.Infrastructure.Debugging.Abstract;
+using Epicenter.Infrastructure.Extensions;
 
-namespace Epicenter.Debugging
+namespace Epicenter.Infrastructure.Debugging
 {
     public class FileLogger : ILogger, IDisposable
     {

@@ -1,14 +1,13 @@
 ﻿using Newtonsoft.Json;
-
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
 using Epicenter.Domain.Services.DTO.Face.Responses;
 using Epicenter.Domain.Services.DTO.Face.Requests;
-using Epicenter.Exceptions;
+using Epicenter.Infrastructure;
+using Epicenter.Infrastructure.Exceptions;
 
 namespace Epicenter.Domain.Services
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
-namespace Epicenter.Extensions
+
+namespace Epicenter.Infrastructure.Extensions
 {
     public static class StringExtentions
     {

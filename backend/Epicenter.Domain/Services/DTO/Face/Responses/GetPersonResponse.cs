@@ -2,7 +2,7 @@
 
 namespace Epicenter.Domain.Services.DTO.Face.Responses
 {
-    public class GetPersonResponse
+    public struct GetPersonResponse
     {
         public string PersonId { get; set; }
         public string Name { get; set; }

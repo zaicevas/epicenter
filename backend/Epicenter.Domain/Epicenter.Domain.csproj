@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Epicenter\Epicenter.csproj" />
+    <ProjectReference Include="..\Epicenter.Infrastructure\Epicenter.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

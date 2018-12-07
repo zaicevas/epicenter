@@ -1,7 +1,7 @@
 ﻿using System;
 using Epicenter.Domain.Models.Abstract;
 using Epicenter.Domain.Models.Attributes.Database;
-using Epicenter.Extensions;
+using Epicenter.Infrastructure.Extensions;
 
 namespace Epicenter.Domain.Models
 {

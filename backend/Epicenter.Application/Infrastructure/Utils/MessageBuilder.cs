@@ -1,5 +1,5 @@
 ﻿using System;
-using Epicenter.Application.Models.Responses;
+using Epicenter.Domain.Models.Responses;
 
 namespace Epicenter.Application.Infrastructure.Utils
 {

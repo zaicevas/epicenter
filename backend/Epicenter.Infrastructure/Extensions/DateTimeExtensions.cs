@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Epicenter.Extensions
+namespace Epicenter.Infrastructure.Extensions
 {
     public static class DateTimeExtentions
     {

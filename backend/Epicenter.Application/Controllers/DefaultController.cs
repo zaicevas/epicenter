@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Mvc;
-
 using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Domain.Services;
 using Epicenter.Domain.Models.Responses;
-using Epicenter.Debugging.Abstract;
-using Epicenter.Exceptions;
+using Epicenter.Infrastructure.Debugging.Abstract;
+using Epicenter.Infrastructure.Exceptions;
 
 namespace Epicenter.Application.Controllers
 {
@@ -26,8 +24,6 @@ namespace Epicenter.Application.Controllers
             _faceService = faceService;
             _logger = logger;
         }
-
-        public object LogType { get; private set; }
 
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(string))]

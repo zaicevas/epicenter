@@ -1,18 +1,17 @@
 ﻿using RestSharp;
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
-
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Responses;
 using Epicenter.Domain.Services.DTO.Plate.Responses;
-using Epicenter.Extensions;
-using Epicenter.Exceptions;
+using Epicenter.Infrastructure;
+using Epicenter.Infrastructure.Extensions;
+using Epicenter.Infrastructure.Exceptions;
 
 namespace Epicenter.Domain.Services
 {

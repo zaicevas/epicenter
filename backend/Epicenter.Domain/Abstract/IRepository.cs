@@ -1,5 +1,4 @@
-﻿using Epicenter.Domain.Models;
-using Epicenter.Domain.Models.Abstract;
+﻿using Epicenter.Domain.Models.Abstract;
 using System.Collections.Generic;
 
 namespace Epicenter.Domain.Abstract

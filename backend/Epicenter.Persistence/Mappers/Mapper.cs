@@ -7,8 +7,9 @@ using System.Data;
 using System.Data.SQLite;
 using Epicenter.Domain.Models.Attributes.Database;
 using Epicenter.Domain.Models.Abstract;
+using Epicenter.Infrastructure;
 
-namespace Epicenter.Data.Mappers
+namespace Epicenter.Persistence.Mappers
 {
     public class Mapper<T> : IDisposable where T : Model
     {

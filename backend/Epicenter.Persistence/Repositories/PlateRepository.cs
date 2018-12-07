@@ -1,12 +1,12 @@
-﻿using Epicenter.Data.Mappers;
-
+﻿using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Attributes.Database;
+using Epicenter.Persistence.Mappers;
 using System.Collections.Generic;
 
-namespace Epicenter.Data.Repositories
+namespace Epicenter.Persistence.Repositories
 {
-    public class PlateRepository
+    public class PlateRepository : IRepository<Plate>
     {
         private readonly Mapper<Plate> _mapper;
 

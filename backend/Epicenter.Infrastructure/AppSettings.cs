@@ -1,4 +1,4 @@
-﻿namespace Epicenter
+﻿namespace Epicenter.Infrastructure
 {
     public class AppSettings
     {

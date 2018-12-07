@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Epicenter.Exceptions
+namespace Epicenter.Infrastructure.Exceptions
 {
     public class HttpException : Exception
     {

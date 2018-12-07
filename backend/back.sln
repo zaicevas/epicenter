@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{B489A877-B7EA-4DD3-BE51-B3AB94EFCC62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epicenter.Application", "Epicenter.Application\Epicenter.Application.csproj", "{B489A877-B7EA-4DD3-BE51-B3AB94EFCC62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicenter", "Epicenter\Epicenter.csproj", "{1F2D0AAC-B093-4C3E-A093-01D5C66924BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicenter.Infrastructure", "Epicenter.Infrastructure\Epicenter.Infrastructure.csproj", "{1F2D0AAC-B093-4C3E-A093-01D5C66924BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicenter.Domain", "Epicenter.Domain\Epicenter.Domain.csproj", "{2C517608-739A-45B0-846A-D16A594BDEC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicenter.Data", "Epicenter.Data\Epicenter.Data.csproj", "{56B4878A-5509-4E91-923F-45E6FCCEBE87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicenter.Persistence", "Epicenter.Persistence\Epicenter.Persistence.csproj", "{56B4878A-5509-4E91-923F-45E6FCCEBE87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-namespace Epicenter.Debugging.Abstract
+namespace Epicenter.Infrastructure.Debugging.Abstract
 {
     public interface ILogger
     {

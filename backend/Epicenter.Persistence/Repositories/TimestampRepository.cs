@@ -1,13 +1,11 @@
-﻿using Epicenter.Data.Mappers;
-
-using Epicenter.Domain.Abstract;
+﻿using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Abstract;
+using Epicenter.Persistence.Mappers;
 using System.Collections.Generic;
-
 using System.Linq;
 
-namespace Epicenter.Data.Repositories
+namespace Epicenter.Persistence.Repositories
 {
     public class TimestampRepository : IRepository<Timestamp>
     {

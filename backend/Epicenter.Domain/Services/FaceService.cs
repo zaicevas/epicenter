@@ -1,11 +1,12 @@
-﻿using Epicenter.Domain.Abstract;
-using Epicenter.Domain.Models;
+﻿using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Responses;
 using Epicenter.Domain.Services.DTO.Face.Responses;
-using Epicenter.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Epicenter.Domain.Abstract;
+using Epicenter.Infrastructure;
+using Epicenter.Infrastructure.Extensions;
 
 namespace Epicenter.Domain.Services
 {
