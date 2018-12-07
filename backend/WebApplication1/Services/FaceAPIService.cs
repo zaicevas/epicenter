@@ -272,6 +272,7 @@ namespace WebApplication1.Services
         private HttpException CreateHttpException(string errorText)
         {
             ErrorResponse errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorText);
+            _logger.Log(LogType.ERROR, $"{errorResponse.Error.Message} in FaceAPIService");
             return new HttpException(errorResponse.Error.Code, errorResponse.Error.Message);
         }
     }
