@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Epicenter.Application.Infrastructure.Utils;
-using Epicenter.Domain.Services;
 using Epicenter.Domain.Models.DTO;
 using Epicenter.Infrastructure.Debugging.Abstract;
 using System;
@@ -14,15 +12,13 @@ namespace Epicenter.Application.Controllers
     [ApiController]
     public class DefaultController : ControllerBase
     {
-        private readonly PlateService _plateService;
-        private readonly FaceService _faceService;
         private readonly ILogger _logger;
+        private readonly RecognitionDelegate _recognizer;
 
-        public DefaultController(PlateService plateService, FaceService faceService, ILogger logger)
+        public DefaultController(RecognitionDelegate recognizer, ILogger logger)
         {
-            _plateService = plateService;
-            _faceService = faceService;
             _logger = logger;
+            _recognizer = recognizer;
         }
 
         [HttpPost]
@@ -32,23 +28,17 @@ namespace Epicenter.Application.Controllers
         public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
         {
             _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()");
-            Task<List<RecognizedObject>> getPlateResponseTask;
-            Task<List<RecognizedObject>> getPersonResponseTask;
-            List<RecognizedObject> plateResponse;
-            List<RecognizedObject> personResponse;
+            List<RecognizedObject> recognizedObjects;
             try
             {
-                getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
-                getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
-                plateResponse = await getPlateResponseTask;
-                personResponse = await getPersonResponseTask;
+                recognizedObjects = await _recognizer.GetRecognitionResultsAsync(imageBase64);
             }
             catch (Exception ex)
             {
                 _logger.Log(LogType.ERROR, ex.Message);
                 return BadRequest(ex.Message);
             }
-            RecognizedObject[] responses = plateResponse.Concat(personResponse).ToArray();
+            RecognizedObject[] responses = recognizedObjects.ToArray();
             if (responses.Length > 0)
             {
                 _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
