@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
+
 using Microsoft.AspNetCore.Mvc;
+
+using Epicenter.Infrastructure.Debugging.Abstract;
 using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Domain.Models.DTO;
-using Epicenter.Infrastructure.Debugging.Abstract;
-using System;
+
 
 namespace Epicenter.Application.Controllers
 {

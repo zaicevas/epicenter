@@ -1,4 +1,5 @@
-﻿using Epicenter.Domain.Abstract;
+﻿using Epicenter.Application.Controllers;
+using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Services;
 using Epicenter.Infrastructure;
@@ -37,6 +38,7 @@ namespace Epicenter.Application
             services.AddScoped<PlateService>();
             services.AddScoped<FaceService>();
             services.AddScoped<FaceAPIService>();
+            services.AddScoped<RecognitionDelegate>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();

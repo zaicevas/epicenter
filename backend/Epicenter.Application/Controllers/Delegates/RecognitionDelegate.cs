@@ -1,10 +1,10 @@
 ﻿using Epicenter.Domain.Models.DTO;
 using Epicenter.Domain.Services;
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace Epicenter.Application.Controllers
 {
