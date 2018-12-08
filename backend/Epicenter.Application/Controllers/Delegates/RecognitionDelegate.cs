@@ -36,14 +36,14 @@ namespace Epicenter.Application.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Log(LogType.ERROR, ex.Message);
+                _logger.Log(LogType.ERROR, $"Recognition failed: {ex.Message}");
                 throw;
             }
             RecognizedObject[] responses = plateResponse
                 .Concat(personResponse)
                 .ToArray();
             _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
-            _logger.Log(LogType.NORMAL, "Recognition finished");
+            _logger.Log(LogType.NORMAL, "Recognition finished successfully");
             return responses;
         }
     }
