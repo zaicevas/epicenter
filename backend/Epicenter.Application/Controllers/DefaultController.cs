@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 
 using Microsoft.AspNetCore.Mvc;
@@ -25,35 +24,23 @@ namespace Epicenter.Application.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
         {
-            _logger.Log(LogType.NORMAL, "POST Request started in PostAsync()");
-            List<RecognizedObject> recognizedObjects;
+            _logger.Log(LogType.NORMAL, "PostAsync request started");
+            RecognizedObject[] responses;
             try
             {
-                recognizedObjects = await _recognizer.GetRecognitionResultsAsync(imageBase64);
+                responses = await _recognizer.GetRecognitionResultsAsync(imageBase64);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogType.ERROR, ex.Message);
-                return BadRequest(ex.Message);
+                _logger.Log(LogType.NORMAL, "PostAsync returned NotFound");
+                return NotFound(ex.Message);
             }
-            RecognizedObject[] responses = recognizedObjects.ToArray();
-            if (responses.Length > 0)
-            {
-                _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
-                _logger.Log(LogType.NORMAL, "Request finished successfully");
-                return Ok(responses);
-            }
-            else
-            {
-                _logger.Log(LogType.NORMAL, "Found: None");
-                _logger.Log(LogType.NORMAL, "Request finished successfully");
-                return NotFound("Found nothing.");
-            }
+            _logger.Log(LogType.NORMAL, "PostAsync returned Ok");
+            return Ok(responses);
         }
     }
 }

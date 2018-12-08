@@ -11,9 +11,6 @@ namespace Epicenter.Domain.Models.DTO
         public string Message { get; set; }
         public string LastSeen { get; set; }
 
-        public override string ToString()
-        {
-            return $"{FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen}";
-        }
+        public override string ToString() => $"{FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen}";
     }
 }
