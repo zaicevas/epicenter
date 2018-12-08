@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using Epicenter.Infrastructure.Debugging.Abstract;
+using Epicenter.Application.Infrastructure.Utils;
 
 namespace Epicenter.Application.Controllers
 {
@@ -12,14 +14,17 @@ namespace Epicenter.Application.Controllers
     {
         private readonly PlateService _plateService;
         private readonly FaceService _faceService;
+        private readonly ILogger _logger;
 
-        public RecognitionDelegate(PlateService plateService, FaceService faceService)
+        public RecognitionDelegate(PlateService plateService, FaceService faceService, ILogger logger)
         {
             _plateService = plateService;
             _faceService = faceService;
+            _logger = logger;
         }
-        public async Task<List<RecognizedObject>> GetRecognitionResultsAsync(string imageBase64)
+        public async Task<RecognizedObject[]> GetRecognitionResultsAsync(string imageBase64)
         {
+            _logger.Log(LogType.NORMAL, "Recognition started");
             List<RecognizedObject> plateResponse;
             List<RecognizedObject> personResponse;
             try
@@ -31,11 +36,14 @@ namespace Epicenter.Application.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.Log(LogType.ERROR, ex.Message);
+                throw;
             }
-            List<RecognizedObject> responses = plateResponse
+            RecognizedObject[] responses = plateResponse
                 .Concat(personResponse)
-                .ToList();
+                .ToArray();
+            _logger.Log(LogType.NORMAL, MessageBuilder.BuildResponseMessage(responses));
+            _logger.Log(LogType.NORMAL, "Recognition finished");
             return responses;
         }
     }
