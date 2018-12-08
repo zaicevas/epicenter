@@ -37,7 +37,7 @@ namespace Epicenter.Application.Controllers
             catch (Exception ex)
             {
                 _logger.Log(LogType.NORMAL, "PostAsync returned NotFound");
-                return NotFound(ex.Message);
+                return NotFound(new { Error = ex.Message });
             }
             _logger.Log(LogType.NORMAL, "PostAsync returned Ok");
             return Ok(responses);
