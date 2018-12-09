@@ -1,15 +1,15 @@
-﻿using Epicenter.Application.Controllers;
+﻿using Epicenter.Persistence.DbContexts;
+using Epicenter.Application.Controllers;
 using Epicenter.Domain.Abstract;
-using Epicenter.Domain.Models;
 using Epicenter.Domain.Services;
 using Epicenter.Infrastructure;
 using Epicenter.Infrastructure.Debugging;
 using Epicenter.Infrastructure.Debugging.Abstract;
-using Epicenter.Persistence.Mappers;
 using Epicenter.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -42,11 +42,8 @@ namespace Epicenter.Application
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();
-            services.AddScoped<Mapper<Person>>();
-            services.AddScoped<Mapper<Plate>>();
-            services.AddScoped<Mapper<Timestamp>>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
-            
+            services.AddDbContext<EpicenterDbContext>(options => options.UseSqlServer(AppSettings.Configuration.ConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

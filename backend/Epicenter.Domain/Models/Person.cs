@@ -1,11 +1,15 @@
 ﻿using Epicenter.Domain.Models.Abstract;
-using Epicenter.Domain.Models.Attributes.Database;
 
 namespace Epicenter.Domain.Models
 {
     public class Person : MissingModel
     {
-        [PrimaryKey]
-        public string FaceAPIID { get; set; }
+        public string FaceAPIId { get; set; }
+
+        public Person(string faceAPIId) => FaceAPIId = faceAPIId;
+
+        public Person()
+        {
+        }
     }
 }

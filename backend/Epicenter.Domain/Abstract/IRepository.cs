@@ -7,7 +7,7 @@ namespace Epicenter.Domain.Abstract
 {
     public interface IRepository<T> where T : Model
     {
-        T GetByID(int id);
+        T GetById(int id);
         IEnumerable<T> GetAll();
         IEnumerable<T> Get(Func<T, bool> predicate);
         // TODO: Introduce EF and use Expression<Func<T, bool>> predicate

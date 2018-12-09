@@ -13,7 +13,7 @@ namespace Epicenter.Domain.Services
 {
     public class FaceService
     {
-        private readonly string _groupID = AppSettings.Configuration.GroupID;
+        private readonly string _groupId = AppSettings.Configuration.GroupId;
         private readonly IPersonRepository _personRepository;
         private readonly ITimestampRepository _timestampRepository;
         private readonly FaceAPIService _faceAPIService;
@@ -42,13 +42,13 @@ namespace Epicenter.Domain.Services
             List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
             result.ForEach(person =>
             {
-                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Person>(person.ID);
+                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(person.Id);
                 if (timestamp == null || timestamp.DateAndTime == null)
                 {
                     timestamp = new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        PersonID = person.ID
+                        MissingModelId = person.Id
                     };
                 }
                 recognizedPersons.Add(new RecognizedObject()
@@ -63,7 +63,7 @@ namespace Epicenter.Domain.Services
                 _timestampRepository.Add(new Timestamp()
                 {
                     DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                    PersonID = person.ID
+                    MissingModelId = person.Id
                 });
             });
             return recognizedPersons;
@@ -77,14 +77,14 @@ namespace Epicenter.Domain.Services
             {
                 foreach (DetectResponse face in detectResult)
                 {
-                    string faceID = face.FaceId;
-                    if (!string.IsNullOrEmpty(faceID))
+                    string faceId = face.FaceId;
+                    if (!string.IsNullOrEmpty(faceId))
                     {
-                        List<IdentifyResponse> identifyResult = await _faceAPIService.IdentifyAsync(faceID, _groupID, 1);
+                        List<IdentifyResponse> identifyResult = await _faceAPIService.IdentifyAsync(faceId, _groupId, 1);
                         if (identifyResult != null && identifyResult.Count > 0 && identifyResult[0].Candidates.Count > 0)
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;
-                            Person person = _personRepository.GetByFaceAPIID(personId);
+                            Person person = _personRepository.GetByFaceAPIId(personId);
                             recognizedPersons.Add(person);
                         }
                     }

@@ -1,22 +1,23 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Epicenter.Domain.Models.Abstract;
-using Epicenter.Domain.Models.Attributes.Database;
 using Epicenter.Infrastructure.Extensions;
 
 namespace Epicenter.Domain.Models
 {
     public class Timestamp : Model
     {
-        public int? PersonID { get; set; }
-        public int? PlateID { get; set; }
         public string DateAndTime { get; set; }
-        [NonDatabase]
+
+        public int MissingModelId { get; set; }
+        public MissingModel MissingModel { get; set; }
+
+        [NotMapped]
         public DateTime DateTime => DateAndTime.ParseToDateTime();
 
-        public Timestamp(int? personID, int? plateID, string dateAndTime)
+        public Timestamp(int missingModelId, string dateAndTime)
         {
-            PersonID = personID;
-            PlateID = plateID;
+            MissingModelId = missingModelId;
             DateAndTime = dateAndTime;
         }
 

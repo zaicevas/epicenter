@@ -1,7 +1,7 @@
 ﻿using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Abstract;
-using Epicenter.Persistence.Mappers;
+using Epicenter.Persistence.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,26 +10,29 @@ namespace Epicenter.Persistence.Repositories
 {
     public class TimestampRepository : ITimestampRepository
     {
-        private readonly Mapper<Timestamp> _mapper;
+        private readonly EpicenterDbContext _dbContext;
 
-        public TimestampRepository(Mapper<Timestamp> mapper)
+        public TimestampRepository(EpicenterDbContext context)
         {
-            _mapper = mapper;
+            _dbContext = context;
         }
 
         public void Add(Timestamp entity)
         {
-            _mapper.CreateRow(entity);
+            _dbContext.Timestamps.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(Timestamp entity)
         {
-            _mapper.DeleteRow(entity);
+            _dbContext.Timestamps.Remove(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Edit(Timestamp entity)
         {
-            _mapper.Update(entity);
+            _dbContext.Timestamps.Update(entity);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<Timestamp> Get(Func<Timestamp, bool> predicate)
@@ -40,25 +43,22 @@ namespace Epicenter.Persistence.Repositories
 
         public IEnumerable<Timestamp> GetAll()
         {
-            return _mapper.ReadRows();
+            return _dbContext.Timestamps.AsEnumerable();
         }
 
-        public Timestamp GetByID(int id)
+        public Timestamp GetById(int id)
         {
-            return _mapper.ReadByID(id);
+            return _dbContext.Timestamps.Single(x => x.Id == id);
         }
 
-        public IEnumerable<Timestamp> GetByModelID<T>(int id) where T : MissingModel
+        public IEnumerable<Timestamp> GetByModelId(int id)
         {
-            IEnumerable<Timestamp> allTimestamps = GetAll();
-            if (typeof(T) == typeof(Person))
-                return allTimestamps.Where(stamp => stamp.PersonID == id);
-            return allTimestamps.Where(stamp => stamp.PlateID == id);
+            return _dbContext.Timestamps.Where(x => x.MissingModelId == id);
         }
 
-        public Timestamp GetLatestModelTimestamp<T>(int id) where T : MissingModel
+        public Timestamp GetLatestModelTimestamp(int id)
         {
-            IEnumerable<Timestamp> timestamps = GetByModelID<T>(id);
+            IEnumerable<Timestamp> timestamps = GetByModelId(id);
             return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
         }
     }
