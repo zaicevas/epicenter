@@ -43,9 +43,7 @@ namespace Epicenter.Application
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
-
-            string connection = @"Server=(localdb)\mssqllocaldb;Database=mssqllocaldb;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<EpicenterContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<EpicenterContext>(options => options.UseSqlServer(AppSettings.Configuration.ConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
