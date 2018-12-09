@@ -34,9 +34,9 @@ namespace Epicenter.Application.Controllers
             Task<List<RecognizedObject>> getPersonResponseTask = Task.FromResult(new List<RecognizedObject>());
             try
             {
-                if (request.FoundPlate)
+                if (request.FindPlate)
                     getPlateResponseTask = _plateService.RecognizeAsync(request.ImageBase64);
-                if (request.FoundFace)
+                if (request.FindFace)
                     getPersonResponseTask = _faceService.RecognizeAsync(request.ImageBase64);
 
                 plateResponse = await getPlateResponseTask;

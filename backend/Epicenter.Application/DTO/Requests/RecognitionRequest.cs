@@ -10,7 +10,7 @@ namespace Epicenter.Application.DTO.Requests
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string ImageBase64 { get; set; }
-        public bool FoundPlate { get; set; }
-        public bool FoundFace { get; set; }
+        public bool FindPlate { get; set; }
+        public bool FindFace { get; set; }
     }
 }
