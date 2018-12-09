@@ -1,12 +1,15 @@
-﻿using Epicenter.Domain.Models.DTO;
-using Epicenter.Domain.Services;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+
+using Epicenter.Domain.Models.DTO;
+using Epicenter.Domain.Services;
+
 using Epicenter.Infrastructure.Debugging.Abstract;
+
 using Epicenter.Application.Infrastructure.Utils;
+using Epicenter.Application.Model.DTO.Requests;
 
 namespace Epicenter.Application.Controllers
 {
@@ -22,15 +25,20 @@ namespace Epicenter.Application.Controllers
             _faceService = faceService;
             _logger = logger;
         }
-        public async Task<RecognizedObject[]> GetRecognitionResultsAsync(string imageBase64)
+        public async Task<RecognizedObject[]> GetRecognitionResultsAsync(RecognitionRequest request)
         {
             _logger.Log(LogType.NORMAL, "Recognition started");
             List<RecognizedObject> plateResponse;
             List<RecognizedObject> personResponse;
+            Task<List<RecognizedObject>> getPlateResponseTask = Task.FromResult(new List<RecognizedObject>());
+            Task<List<RecognizedObject>> getPersonResponseTask = Task.FromResult(new List<RecognizedObject>());
             try
             {
-                Task<List<RecognizedObject>> getPlateResponseTask = _plateService.RecognizeAsync(imageBase64);
-                Task<List<RecognizedObject>> getPersonResponseTask = _faceService.RecognizeAsync(imageBase64);
+                if (request.FindPlate)
+                    getPlateResponseTask = _plateService.RecognizeAsync(request.ImageBase64);
+                if (request.FindFace)
+                    getPersonResponseTask = _faceService.RecognizeAsync(request.ImageBase64);
+
                 plateResponse = await getPlateResponseTask;
                 personResponse = await getPersonResponseTask;
             }

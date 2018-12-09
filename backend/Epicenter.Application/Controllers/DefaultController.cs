@@ -4,9 +4,8 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 
 using Epicenter.Infrastructure.Debugging.Abstract;
-using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Domain.Models.DTO;
-
+using Epicenter.Application.Model.DTO.Requests;
 
 namespace Epicenter.Application.Controllers
 {
@@ -26,13 +25,13 @@ namespace Epicenter.Application.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> PostAsync([FromBody] string imageBase64)
+        public async Task<IActionResult> PostAsync([FromBody] RecognitionRequest request)
         {
             _logger.Log(LogType.NORMAL, "PostAsync request started");
             RecognizedObject[] responses;
             try
             {
-                responses = await _recognizer.GetRecognitionResultsAsync(imageBase64);
+                responses = await _recognizer.GetRecognitionResultsAsync(request);
             }
             catch (Exception ex)
             {
