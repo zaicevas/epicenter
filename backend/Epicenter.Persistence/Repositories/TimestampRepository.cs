@@ -51,14 +51,14 @@ namespace Epicenter.Persistence.Repositories
             return _context.Timestamps.Single(x => x.Id == id);
         }
 
-        public IEnumerable<Timestamp> GetByModelID<T>(int id) where T : MissingModel
+        public IEnumerable<Timestamp> GetByModelID(int id)
         {
             return _context.Timestamps.Where(x => x.MissingModelId == id);
         }
 
-        public Timestamp GetLatestModelTimestamp<T>(int id) where T : MissingModel
+        public Timestamp GetLatestModelTimestamp(int id)
         {
-            IEnumerable<Timestamp> timestamps = GetByModelID<T>(id);
+            IEnumerable<Timestamp> timestamps = GetByModelID(id);
             return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
         }
     }

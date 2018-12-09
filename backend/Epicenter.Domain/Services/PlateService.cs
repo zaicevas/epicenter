@@ -45,7 +45,7 @@ namespace Epicenter.Domain.Services
                 Plate plate = _plateRepository.GetByPlateNumber(matching.Plate);
                 if (plate != null)
                 {
-                    Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Plate>(plate.Id);
+                    Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(plate.Id);
                     if (timestamp == null || timestamp.DateAndTime == null)
                     {
                         timestamp = new Timestamp()

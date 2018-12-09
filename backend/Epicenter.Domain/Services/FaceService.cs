@@ -42,7 +42,7 @@ namespace Epicenter.Domain.Services
             List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
             result.ForEach(person =>
             {
-                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Person>(person.Id);
+                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(person.Id);
                 if (timestamp == null || timestamp.DateAndTime == null)
                 {
                     timestamp = new Timestamp()
