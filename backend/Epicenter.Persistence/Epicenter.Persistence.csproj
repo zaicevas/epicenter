@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20181208203005_InitialCreate.cs" />
+    <Compile Remove="Migrations\20181209100650_InitialCreate.cs" />
   </ItemGroup>
   
   <ItemGroup>

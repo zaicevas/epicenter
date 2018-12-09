@@ -45,13 +45,13 @@ namespace Epicenter.Domain.Services
                 Plate plate = _plateRepository.GetByPlateNumber(matching.Plate);
                 if (plate != null)
                 {
-                    Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Plate>(plate.ID);
+                    Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Plate>(plate.Id);
                     if (timestamp == null || timestamp.DateAndTime == null)
                     {
                         timestamp = new Timestamp()
                         {
                             DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                            PlateID = plate.ID
+                            MissingModelId = plate.Id
                         };
                     }
                     identifiedPlates.Add(new RecognizedObject()
@@ -66,7 +66,7 @@ namespace Epicenter.Domain.Services
                     _timestampRepository.Add(new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        PlateID = plate.ID
+                        MissingModelId = plate.Id
                     });
                 }
             });

@@ -1,7 +1,6 @@
 ﻿using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
-using Epicenter.Domain.Models.Attributes.Database;
-using Epicenter.Persistence.Mappers;
+using Epicenter.Persistence.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +9,34 @@ namespace Epicenter.Persistence.Repositories
 {
     public class PlateRepository : IPlateRepository
     {
-        private readonly Mapper<Plate> _mapper;
+        private readonly EpicenterContext _context;
 
-        public PlateRepository(Mapper<Plate> mapper)
+        public PlateRepository(EpicenterContext context)
         {
-            _mapper = mapper;
+            _context = context;
         }
 
         public void Add(Plate entity)
         {
-            _mapper.CreateRow(entity);
+            _context.Plates.Add(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(Plate entity)
         {
-            _mapper.DeleteRow(entity);
+            _context.Plates.Remove(entity);
+            _context.SaveChanges();
         }
 
         public void Edit(Plate entity)
         {
-            _mapper.Update(entity);
+            _context.Plates.Update(entity);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Plate> GetAll()
         {
-            return _mapper.ReadRows();
+            return _context.Plates.AsEnumerable();
         }
 
         public IEnumerable<Plate> Get(Func<Plate, bool> predicate)
@@ -44,12 +46,12 @@ namespace Epicenter.Persistence.Repositories
 
         public Plate GetByID(int id)
         {
-            return _mapper.ReadByID(id);
+            return _context.Plates.Single(x => x.Id == id);
         }
 
         public Plate GetByPlateNumber(string number)
         {
-            return _mapper.ReadByKey<PrimaryKeyAttribute>(new Plate(number));
+            return _context.Plates.Single(x => x.NumberPlate == number);
         }
     }
 }

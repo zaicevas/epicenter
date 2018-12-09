@@ -11,44 +11,44 @@ namespace Epicenter.Persistence.Migrations
                 name: "MissingModels",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Reason = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    FaceAPIID = table.Column<string>(nullable: true),
+                    FaceAPIId = table.Column<string>(nullable: true),
                     NumberPlate = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MissingModels", x => x.ID);
+                    table.PrimaryKey("PK_MissingModels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Timestamps",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateAndTime = table.Column<string>(nullable: true),
-                    MissingModelID = table.Column<int>(nullable: false)
+                    MissingModelId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Timestamps", x => x.ID);
+                    table.PrimaryKey("PK_Timestamps", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Timestamps_MissingModels_MissingModelID",
-                        column: x => x.MissingModelID,
+                        name: "FK_Timestamps_MissingModels_MissingModelId",
+                        column: x => x.MissingModelId,
                         principalTable: "MissingModels",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Timestamps_MissingModelID",
+                name: "IX_Timestamps_MissingModelId",
                 table: "Timestamps",
-                column: "MissingModelID");
+                column: "MissingModelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -42,13 +42,13 @@ namespace Epicenter.Domain.Services
             List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
             result.ForEach(person =>
             {
-                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Person>(person.ID);
+                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp<Person>(person.Id);
                 if (timestamp == null || timestamp.DateAndTime == null)
                 {
                     timestamp = new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        PersonID = person.ID
+                        MissingModelId = person.Id
                     };
                 }
                 recognizedPersons.Add(new RecognizedObject()
@@ -63,7 +63,7 @@ namespace Epicenter.Domain.Services
                 _timestampRepository.Add(new Timestamp()
                 {
                     DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                    PersonID = person.ID
+                    MissingModelId = person.Id
                 });
             });
             return recognizedPersons;

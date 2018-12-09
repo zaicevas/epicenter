@@ -1,7 +1,6 @@
 ﻿using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
-using Epicenter.Domain.Models.Attributes.Database;
-using Epicenter.Persistence.Mappers;
+using Epicenter.Persistence.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +9,34 @@ namespace Epicenter.Persistence.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
-        private readonly Mapper<Person> _mapper;
+        private readonly EpicenterContext _context;
 
-        public PersonRepository(Mapper<Person> mapper)
+        public PersonRepository(EpicenterContext context)
         {
-            _mapper = mapper;
+            _context = context;
         }
 
         public void Add(Person entity)
         {
-            _mapper.CreateRow(entity);
+            _context.People.Add(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(Person entity)
         {
-            _mapper.DeleteRow(entity);
+            _context.People.Remove(entity);
+            _context.SaveChanges();
         }
 
         public void Edit(Person entity)
         {
-            _mapper.Update(entity);
+            _context.People.Update(entity);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Person> GetAll()
         {
-            return _mapper.ReadRows();
+            return _context.People.AsEnumerable();
         }
 
         public IEnumerable<Person> Get(Func<Person, bool> predicate)
@@ -44,12 +46,12 @@ namespace Epicenter.Persistence.Repositories
 
         public Person GetByID(int id)
         {
-            return _mapper.ReadByID(id);
+            return _context.People.Single(x => x.Id == id);
         }
 
         public Person GetByFaceAPIID(string id)
         {
-            return _mapper.ReadByKey<PrimaryKeyAttribute>(new Person { FaceAPIID = id });
+            return _context.People.Single(x => x.FaceAPIId == id);
         }
     }
 }
