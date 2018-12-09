@@ -44,7 +44,7 @@ namespace Epicenter.Application
             services.AddScoped<ITimestampRepository, TimestampRepository>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
 
-            string connection = @"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;ConnectRetryCount=0";
+            string connection = @"Server=(localdb)\mssqllocaldb;Database=mssqllocaldb;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<EpicenterContext>(options => options.UseSqlServer(connection));
         }
 
