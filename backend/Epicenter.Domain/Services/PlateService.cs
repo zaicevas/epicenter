@@ -46,8 +46,10 @@ namespace Epicenter.Domain.Services
                 if (plate != null)
                 {
                     Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(plate.Id);
+                    bool seenBefore = true;
                     if (timestamp == null || timestamp.DateAndTime == null)
                     {
+                        seenBefore = false;
                         timestamp = new Timestamp()
                         {
                             DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
@@ -63,11 +65,19 @@ namespace Epicenter.Domain.Services
                         Message = plate.NumberPlate,
                         LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                     });
-                    _timestampRepository.Add(new Timestamp()
+                    if (seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                     {
-                        DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        MissingModelId = plate.Id
-                    });
+                        timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
+                        _timestampRepository.Edit(timestamp);
+                    }
+                    else
+                    {
+                        _timestampRepository.Add(new Timestamp()
+                        {
+                            DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
+                            MissingModelId = plate.Id
+                        });
+                    }
                 }
             });
             return identifiedPlates;

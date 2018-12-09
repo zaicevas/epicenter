@@ -43,8 +43,10 @@ namespace Epicenter.Domain.Services
             result.ForEach(person =>
             {
                 Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(person.Id);
+                bool seenBefore = true;
                 if (timestamp == null || timestamp.DateAndTime == null)
                 {
+                    seenBefore = false;
                     timestamp = new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
@@ -60,11 +62,19 @@ namespace Epicenter.Domain.Services
                     Message = "no description",
                     LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                 });
-                _timestampRepository.Add(new Timestamp()
+                if(seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                 {
-                    DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                    MissingModelId = person.Id
-                });
+                    timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
+                    _timestampRepository.Edit(timestamp);
+                }
+                else
+                {
+                    _timestampRepository.Add(new Timestamp()
+                    {
+                        DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
+                        MissingModelId = person.Id
+                    });
+                }
             });
             return recognizedPersons;
         }
