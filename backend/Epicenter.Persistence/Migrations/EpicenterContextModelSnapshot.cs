@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Epicenter.Persistence.Migrations
 {
-    [DbContext(typeof(EpicenterContext))]
+    [DbContext(typeof(EpicenterDbContext))]
     partial class EpicenterContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

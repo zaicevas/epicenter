@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Epicenter.Persistence.DbContexts
 {
-    public class EpicenterContext : DbContext
+    public class EpicenterDbContext : DbContext
     {
-        public EpicenterContext(DbContextOptions<EpicenterContext> options)
+        public EpicenterDbContext(DbContextOptions<EpicenterDbContext> options)
             : base(options)
         { }
 

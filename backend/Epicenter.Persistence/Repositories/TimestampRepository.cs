@@ -10,29 +10,29 @@ namespace Epicenter.Persistence.Repositories
 {
     public class TimestampRepository : ITimestampRepository
     {
-        private readonly EpicenterContext _context;
+        private readonly EpicenterDbContext _dbContext;
 
-        public TimestampRepository(EpicenterContext context)
+        public TimestampRepository(EpicenterDbContext context)
         {
-            _context = context;
+            _dbContext = context;
         }
 
         public void Add(Timestamp entity)
         {
-            _context.Timestamps.Add(entity);
-            _context.SaveChanges();
+            _dbContext.Timestamps.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(Timestamp entity)
         {
-            _context.Timestamps.Remove(entity);
-            _context.SaveChanges();
+            _dbContext.Timestamps.Remove(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Edit(Timestamp entity)
         {
-            _context.Timestamps.Update(entity);
-            _context.SaveChanges();
+            _dbContext.Timestamps.Update(entity);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<Timestamp> Get(Func<Timestamp, bool> predicate)
@@ -43,17 +43,17 @@ namespace Epicenter.Persistence.Repositories
 
         public IEnumerable<Timestamp> GetAll()
         {
-            return _context.Timestamps.AsEnumerable();
+            return _dbContext.Timestamps.AsEnumerable();
         }
 
         public Timestamp GetById(int id)
         {
-            return _context.Timestamps.Single(x => x.Id == id);
+            return _dbContext.Timestamps.Single(x => x.Id == id);
         }
 
         public IEnumerable<Timestamp> GetByModelId(int id)
         {
-            return _context.Timestamps.Where(x => x.MissingModelId == id);
+            return _dbContext.Timestamps.Where(x => x.MissingModelId == id);
         }
 
         public Timestamp GetLatestModelTimestamp(int id)

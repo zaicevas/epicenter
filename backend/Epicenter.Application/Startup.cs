@@ -43,7 +43,7 @@ namespace Epicenter.Application
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
-            services.AddDbContext<EpicenterContext>(options => options.UseSqlServer(AppSettings.Configuration.ConnectionString));
+            services.AddDbContext<EpicenterDbContext>(options => options.UseSqlServer(AppSettings.Configuration.ConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

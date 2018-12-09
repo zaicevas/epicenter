@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Epicenter.Persistence.Migrations
 {
-    [DbContext(typeof(EpicenterContext))]
+    [DbContext(typeof(EpicenterDbContext))]
     [Migration("20181209103836_InitialCreate")]
     partial class InitialCreate
     {

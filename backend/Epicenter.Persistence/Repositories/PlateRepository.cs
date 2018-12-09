@@ -9,34 +9,34 @@ namespace Epicenter.Persistence.Repositories
 {
     public class PlateRepository : IPlateRepository
     {
-        private readonly EpicenterContext _context;
+        private readonly EpicenterDbContext _dbContext;
 
-        public PlateRepository(EpicenterContext context)
+        public PlateRepository(EpicenterDbContext context)
         {
-            _context = context;
+            _dbContext = context;
         }
 
         public void Add(Plate entity)
         {
-            _context.Plates.Add(entity);
-            _context.SaveChanges();
+            _dbContext.Plates.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(Plate entity)
         {
-            _context.Plates.Remove(entity);
-            _context.SaveChanges();
+            _dbContext.Plates.Remove(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Edit(Plate entity)
         {
-            _context.Plates.Update(entity);
-            _context.SaveChanges();
+            _dbContext.Plates.Update(entity);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<Plate> GetAll()
         {
-            return _context.Plates.AsEnumerable();
+            return _dbContext.Plates.AsEnumerable();
         }
 
         public IEnumerable<Plate> Get(Func<Plate, bool> predicate)
@@ -46,12 +46,12 @@ namespace Epicenter.Persistence.Repositories
 
         public Plate GetById(int id)
         {
-            return _context.Plates.Single(x => x.Id == id);
+            return _dbContext.Plates.Single(x => x.Id == id);
         }
 
         public Plate GetByPlateNumber(string number)
         {
-            return _context.Plates.Single(x => x.NumberPlate == number);
+            return _dbContext.Plates.Single(x => x.NumberPlate == number);
         }
     }
 }

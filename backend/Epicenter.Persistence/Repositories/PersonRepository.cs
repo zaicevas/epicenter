@@ -9,34 +9,34 @@ namespace Epicenter.Persistence.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
-        private readonly EpicenterContext _context;
+        private readonly EpicenterDbContext _dbContext;
 
-        public PersonRepository(EpicenterContext context)
+        public PersonRepository(EpicenterDbContext context)
         {
-            _context = context;
+            _dbContext = context;
         }
 
         public void Add(Person entity)
         {
-            _context.People.Add(entity);
-            _context.SaveChanges();
+            _dbContext.People.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(Person entity)
         {
-            _context.People.Remove(entity);
-            _context.SaveChanges();
+            _dbContext.People.Remove(entity);
+            _dbContext.SaveChanges();
         }
 
         public void Edit(Person entity)
         {
-            _context.People.Update(entity);
-            _context.SaveChanges();
+            _dbContext.People.Update(entity);
+            _dbContext.SaveChanges();
         }
 
         public IEnumerable<Person> GetAll()
         {
-            return _context.People.AsEnumerable();
+            return _dbContext.People.AsEnumerable();
         }
 
         public IEnumerable<Person> Get(Func<Person, bool> predicate)
@@ -46,12 +46,12 @@ namespace Epicenter.Persistence.Repositories
 
         public Person GetById(int id)
         {
-            return _context.People.Single(x => x.Id == id);
+            return _dbContext.People.Single(x => x.Id == id);
         }
 
         public Person GetByFaceAPIId(string id)
         {
-            return _context.People.Single(x => x.FaceAPIId == id);
+            return _dbContext.People.Single(x => x.FaceAPIId == id);
         }
     }
 }
