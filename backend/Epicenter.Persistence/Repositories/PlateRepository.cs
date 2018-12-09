@@ -44,7 +44,7 @@ namespace Epicenter.Persistence.Repositories
             return GetAll().Where(predicate).AsEnumerable();
         }
 
-        public Plate GetByID(int id)
+        public Plate GetById(int id)
         {
             return _context.Plates.Single(x => x.Id == id);
         }

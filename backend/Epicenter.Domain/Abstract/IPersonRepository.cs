@@ -4,6 +4,6 @@ namespace Epicenter.Domain.Abstract
 {
     public interface IPersonRepository : IRepository<Person>
     {
-        Person GetByFaceAPIID(string id);
+        Person GetByFaceAPIId(string id);
     }
 }

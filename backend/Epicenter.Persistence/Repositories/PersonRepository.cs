@@ -44,12 +44,12 @@ namespace Epicenter.Persistence.Repositories
             return GetAll().Where(predicate).AsEnumerable();
         }
 
-        public Person GetByID(int id)
+        public Person GetById(int id)
         {
             return _context.People.Single(x => x.Id == id);
         }
 
-        public Person GetByFaceAPIID(string id)
+        public Person GetByFaceAPIId(string id)
         {
             return _context.People.Single(x => x.FaceAPIId == id);
         }

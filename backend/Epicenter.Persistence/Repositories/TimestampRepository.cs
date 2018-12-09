@@ -46,19 +46,19 @@ namespace Epicenter.Persistence.Repositories
             return _context.Timestamps.AsEnumerable();
         }
 
-        public Timestamp GetByID(int id)
+        public Timestamp GetById(int id)
         {
             return _context.Timestamps.Single(x => x.Id == id);
         }
 
-        public IEnumerable<Timestamp> GetByModelID(int id)
+        public IEnumerable<Timestamp> GetByModelId(int id)
         {
             return _context.Timestamps.Where(x => x.MissingModelId == id);
         }
 
         public Timestamp GetLatestModelTimestamp(int id)
         {
-            IEnumerable<Timestamp> timestamps = GetByModelID(id);
+            IEnumerable<Timestamp> timestamps = GetByModelId(id);
             return timestamps.OrderByDescending(x => x.DateAndTime).FirstOrDefault();
         }
     }

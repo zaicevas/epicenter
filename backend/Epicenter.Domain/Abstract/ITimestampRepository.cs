@@ -5,7 +5,7 @@ namespace Epicenter.Domain.Abstract
 {
     public interface ITimestampRepository : IRepository<Timestamp>
     {
-        IEnumerable<Timestamp> GetByModelID(int id);
+        IEnumerable<Timestamp> GetByModelId(int id);
         Timestamp GetLatestModelTimestamp(int id);
     }
 }
