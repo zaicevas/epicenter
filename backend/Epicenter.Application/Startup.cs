@@ -1,4 +1,5 @@
-﻿using Epicenter.Application.Controllers;
+﻿using EFGetStarted.AspNetCore.NewDb.Models;
+using Epicenter.Application.Controllers;
 using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Services;
@@ -10,6 +11,7 @@ using Epicenter.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -42,11 +44,16 @@ namespace Epicenter.Application
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();
-            services.AddScoped<Mapper<Person>>();
-            services.AddScoped<Mapper<Plate>>();
-            services.AddScoped<Mapper<Timestamp>>();
+            services.AddScoped<Mapper<Domain.Models.Person>>();
+            services.AddScoped<Mapper<Domain.Models.Plate>>();
+            services.AddScoped<Mapper<Domain.Models.Timestamp>>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
-            
+
+
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=MyDatabase;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<EpicenterContext>(options =>
+                  options.UseSqlServer(connection));
+                  //UseSqlite("Data Source=..\\Epicenter.Persistence\\Database\\sqlite2.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
