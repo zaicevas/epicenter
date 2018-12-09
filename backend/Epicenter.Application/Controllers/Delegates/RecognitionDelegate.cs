@@ -9,7 +9,7 @@ using Epicenter.Domain.Services;
 using Epicenter.Infrastructure.Debugging.Abstract;
 
 using Epicenter.Application.Infrastructure.Utils;
-using Epicenter.Application.DTO.Requests;
+using Epicenter.Application.Model.DTO.Requests;
 
 namespace Epicenter.Application.Controllers
 {

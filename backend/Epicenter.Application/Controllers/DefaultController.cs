@@ -4,8 +4,8 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 
 using Epicenter.Infrastructure.Debugging.Abstract;
-using Epicenter.Application.DTO.Requests;
 using Epicenter.Domain.Models.DTO;
+using Epicenter.Application.Model.DTO.Requests;
 
 namespace Epicenter.Application.Controllers
 {
