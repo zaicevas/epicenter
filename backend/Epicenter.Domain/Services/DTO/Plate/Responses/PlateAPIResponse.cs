@@ -9,6 +9,7 @@ namespace Epicenter.Domain.Services.DTO.Plate.Responses
 
         public void UpdateMatchesPattern(string pattern)
         {
+            List<PlateAPIResult> newResults = new List<PlateAPIResult>();
             Regex regex = new Regex(pattern);
             Results.ForEach(result => result.MatchesPattern = regex.IsMatch(result.Plate));
         }
