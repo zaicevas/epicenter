@@ -11,15 +11,7 @@ namespace Epicenter.Domain.Services.DTO.Plate.Responses
         {
             List<PlateAPIResult> newResults = new List<PlateAPIResult>();
             Regex regex = new Regex(pattern);
-            Results.ForEach(result => 
-            {
-                if (regex.IsMatch(result.Plate))
-                {
-                    result.MatchesPattern = true;
-                    newResults.Add(result);
-                }
-            });
-            Results = newResults;
+            Results.ForEach(result => result.MatchesPattern = regex.IsMatch(result.Plate));
         }
     }
 }
