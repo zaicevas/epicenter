@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Epicenter.Domain.Models.Abstract
@@ -9,8 +10,10 @@ namespace Epicenter.Domain.Models.Abstract
         public string LastName { get; set; }
         public SearchReason Reason { get; set; } = SearchReason.Missing;
 
+        [JsonIgnore]
         public ICollection<Timestamp> Timestamps { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
 

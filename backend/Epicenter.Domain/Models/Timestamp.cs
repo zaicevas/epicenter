@@ -11,7 +11,6 @@ namespace Epicenter.Domain.Models
         public string DateAndTime { get; set; }
 
         public int MissingModelId { get; set; }
-        [JsonIgnore]
         public MissingModel MissingModel { get; set; }
 
         [JsonIgnore]
