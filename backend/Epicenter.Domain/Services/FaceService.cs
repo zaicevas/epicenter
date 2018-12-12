@@ -55,6 +55,7 @@ namespace Epicenter.Domain.Services
                 }
                 recognizedPersons.Add(new RecognizedObject()
                 {
+                    Id = person.Id,
                     FirstName = person.FirstName,
                     LastName = person.LastName,
                     Reason = person.Reason,
