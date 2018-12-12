@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Epicenter.Domain.Models.Abstract;
 using Epicenter.Infrastructure.Extensions;
+using Newtonsoft.Json;
 
 namespace Epicenter.Domain.Models
 {
@@ -10,8 +11,10 @@ namespace Epicenter.Domain.Models
         public string DateAndTime { get; set; }
 
         public int MissingModelId { get; set; }
+        [JsonIgnore]
         public MissingModel MissingModel { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public DateTime DateTime => DateAndTime.ParseToDateTime();
 
