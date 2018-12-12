@@ -58,6 +58,7 @@ namespace Epicenter.Domain.Services
                     }
                     identifiedPlates.Add(new RecognizedObject()
                     {
+                        Id = plate.Id,
                         FirstName = plate.FirstName,
                         LastName = plate.LastName,
                         Reason = plate.Reason,

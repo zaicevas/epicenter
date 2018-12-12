@@ -4,6 +4,7 @@ namespace Epicenter.Domain.Models.DTO
 {
     public struct RecognizedObject
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public SearchReason Reason { get; set; }
@@ -11,6 +12,6 @@ namespace Epicenter.Domain.Models.DTO
         public string Message { get; set; }
         public string LastSeen { get; set; }
 
-        public override string ToString() => $"{FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen}";
+        public override string ToString() => $"{Id}, {FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen}";
     }
 }
