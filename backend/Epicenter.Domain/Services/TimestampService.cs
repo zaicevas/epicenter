@@ -43,6 +43,12 @@ namespace Epicenter.Domain.Services
             return timestamps.Where(x => x.MissingModel.GetType() == typeof(Plate));
         }
 
+        public IEnumerable<Timestamp> GetLaterThanByModelId<T>(int id, DateTime? dateTime) where T : MissingModel
+        {
+            IEnumerable<Timestamp> timestamps = GetLaterThan<T>(dateTime);
+            return timestamps.Where(x => x.MissingModelId == id);
+        }
+
         public List<TimestampResponse> GenerateResponse(IEnumerable<Timestamp> timestamps)
         {
             List<TimestampResponse> response = new List<TimestampResponse>();

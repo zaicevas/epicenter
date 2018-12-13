@@ -70,5 +70,41 @@ namespace Epicenter.Application.Controllers
             }
             return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
         }
+
+        [Route("persons/{id}/timestamps")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetPersonsTimestampsByModelId(int id, [FromBody] DateTime? dateTime)
+        {
+            IEnumerable<Timestamp> timestamps;
+            try
+            {
+                timestamps = _timestampService.GetLaterThanByModelId<Person>(id, dateTime);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
+        }
+
+        [Route("cars/{id}/timestamps")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetCarsTimestampsByModelId(int id, [FromBody] DateTime? dateTime)
+        {
+            IEnumerable<Timestamp> timestamps;
+            try
+            {
+                timestamps = _timestampService.GetLaterThanByModelId<Plate>(id, dateTime);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
+        }
     }
 }
