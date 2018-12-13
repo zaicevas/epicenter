@@ -38,11 +38,11 @@ namespace Epicenter.Domain.Services
             {
                 throw;
             }
-            List<Person> result = await CallFaceAPIAsync(imgBytes);
+            List<PersonWithSmile> result = await CallFaceAPIAsync(imgBytes);
             List<RecognizedObject> recognizedPersons = new List<RecognizedObject>();
-            result.ForEach(person =>
+            result.ForEach(personWithSmile =>
             {
-                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(person.Id);
+                Timestamp timestamp = _timestampRepository.GetLatestModelTimestamp(personWithSmile.Person.Id);
                 bool seenBefore = true;
                 if (timestamp == null || timestamp.DateAndTime == null)
                 {
@@ -50,20 +50,21 @@ namespace Epicenter.Domain.Services
                     timestamp = new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        MissingModelId = person.Id
+                        MissingModelId = personWithSmile.Person.Id
                     };
                 }
                 recognizedPersons.Add(new RecognizedObject()
                 {
-                    Id = person.Id,
-                    FirstName = person.FirstName,
-                    LastName = person.LastName,
-                    Reason = person.Reason,
+                    Id = personWithSmile.Person.Id,
+                    FirstName = personWithSmile.Person.FirstName,
+                    LastName = personWithSmile.Person.LastName,
+                    Reason = personWithSmile.Person.Reason,
                     Type = ModelType.Person,
                     Message = "no description",
+                    Smile = personWithSmile.Smile,
                     LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                 });
-                if(seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
+                if (seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                 {
                     timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
                     _timestampRepository.Edit(timestamp);
@@ -73,16 +74,16 @@ namespace Epicenter.Domain.Services
                     _timestampRepository.Add(new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        MissingModelId = person.Id
+                        MissingModelId = personWithSmile.Person.Id
                     });
                 }
             });
             return recognizedPersons;
         }
 
-        private async Task<List<Person>> CallFaceAPIAsync(byte[] image)
+        private async Task<List<PersonWithSmile>> CallFaceAPIAsync(byte[] image)
         {
-            List<Person> recognizedPersons = new List<Person>();
+            List<PersonWithSmile> recognizedPersons = new List<PersonWithSmile>();
             List<DetectResponse> detectResult = await _faceAPIService.DetectFacesAsync(image);
             if (detectResult != null && detectResult.Count > 0)
             {
@@ -96,7 +97,11 @@ namespace Epicenter.Domain.Services
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             Person person = _personRepository.GetByFaceAPIId(personId);
-                            recognizedPersons.Add(person);
+                            recognizedPersons.Add(new PersonWithSmile()
+                            {
+                                Person = person,
+                                Smile = face.FaceAttributes.Smile
+                            });
                         }
                     }
                 };
