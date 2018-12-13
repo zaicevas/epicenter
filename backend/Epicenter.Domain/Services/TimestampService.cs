@@ -2,6 +2,7 @@
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Abstract;
 using Epicenter.Domain.Models.DTO;
+using Epicenter.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace Epicenter.Domain.Services
 
         public IEnumerable<Timestamp> GetLaterThan(DateTime? dateTime)
         {
+            if (dateTime > DateTime.UtcNow.ToUTC2())
+                return Enumerable.Empty<Timestamp>();
             IEnumerable<Timestamp> timestamps;
             try
             {
