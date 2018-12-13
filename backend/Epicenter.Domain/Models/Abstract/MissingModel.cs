@@ -8,6 +8,7 @@ namespace Epicenter.Domain.Models.Abstract
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public SearchReason Reason { get; set; } = SearchReason.Missing;
+        public byte[] BaseImage { get; set; }
 
         public ICollection<Timestamp> Timestamps { get; set; }
 
