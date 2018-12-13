@@ -1,8 +1,9 @@
 ﻿namespace Epicenter.Domain.Models.DTO
 {
-    public class TimestampResponse
+    public struct TimestampResponse
     {
+        public int Id { get; set; }
         public string DateAndTime { get; set; }
-        public MissingModelResponse MissingModelResponse { get; set; }
+        public MissingModelResponse MissingModel { get; set; }
     }
 }

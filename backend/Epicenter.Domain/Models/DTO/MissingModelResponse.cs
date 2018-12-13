@@ -1,9 +1,14 @@
-﻿namespace Epicenter.Domain.Models.DTO
+﻿using static Epicenter.Domain.Models.Abstract.MissingModel;
+
+namespace Epicenter.Domain.Models.DTO
 {
-    public class MissingModelResponse
+    public struct MissingModelResponse
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string NumberPlate { get; set; }
+        public SearchReason Reason { get; set; }
+        public ModelType Type { get; set; }
+        public string Message { get; set; }
     }
 }

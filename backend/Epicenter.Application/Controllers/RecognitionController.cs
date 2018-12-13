@@ -12,12 +12,12 @@ namespace Epicenter.Application.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class DefaultController : ControllerBase
+    public class RecognitionController : ControllerBase
     {
         private readonly ILogger _logger;
         private readonly RecognitionDelegate _recognizer;
 
-        public DefaultController(RecognitionDelegate recognizer, ILogger logger)
+        public RecognitionController(RecognitionDelegate recognizer, ILogger logger)
         {
             _logger = logger;
             _recognizer = recognizer;

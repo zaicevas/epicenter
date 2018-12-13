@@ -55,16 +55,24 @@ namespace Epicenter.Domain.Services
             timestamps.ToList().ForEach(timestamp =>
             {
                 string numberPlate = "";
+                ModelType type = ModelType.Person;
                 if (timestamp.MissingModel.GetType() == typeof(Plate))
+                {
                     numberPlate = _plateRepository.GetById(timestamp.MissingModel.Id).NumberPlate;
+                    type = ModelType.Plate;
+                }
                 response.Add(new TimestampResponse()
                 {
+                    Id = timestamp.Id,
                     DateAndTime = timestamp.DateAndTime,
-                    MissingModelResponse = new MissingModelResponse
+                    MissingModel = new MissingModelResponse
                     {
+                        Id = timestamp.MissingModel.Id,
                         FirstName = timestamp.MissingModel.FirstName,
                         LastName = timestamp.MissingModel.LastName,
-                        NumberPlate = numberPlate
+                        Reason = timestamp.MissingModel.Reason,
+                        Type = type,
+                        Message = numberPlate
                     }
                 });
             });
