@@ -97,12 +97,11 @@ namespace Epicenter.Domain.Services
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             Person person = _personRepository.GetByFaceAPIId(personId);
-                            PersonWithSmile personWithSmile = new PersonWithSmile()
+                            recognizedPersons.Add(new PersonWithSmile()
                             {
                                 Person = person,
                                 Smile = face.FaceAttributes.Smile
-                            };
-                            recognizedPersons.Add(personWithSmile);
+                            });
                         }
                     }
                 };
