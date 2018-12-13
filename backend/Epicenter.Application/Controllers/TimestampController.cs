@@ -18,7 +18,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("timestamps")]
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetTimestamps([FromBody] DateTime? dateTime)
@@ -36,7 +36,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("persons/timestamps")]
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetPersonsTimestamps([FromBody] DateTime? dateTime)
@@ -54,7 +54,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("cars/timestamps")]
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetCarsTimestamps([FromBody] DateTime? dateTime)
@@ -72,7 +72,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("persons/{id}/timestamps")]
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetPersonsTimestampsByModelId(int id, [FromBody] DateTime? dateTime)
@@ -90,7 +90,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("cars/{id}/timestamps")]
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetCarsTimestampsByModelId(int id, [FromBody] DateTime? dateTime)
