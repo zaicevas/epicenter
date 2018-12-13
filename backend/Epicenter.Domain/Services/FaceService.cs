@@ -61,6 +61,7 @@ namespace Epicenter.Domain.Services
                     Reason = person.Reason,
                     Type = ModelType.Person,
                     Message = "no description",
+                    Smile = person.Smile,
                     LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
                 });
                 if(seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
@@ -96,7 +97,17 @@ namespace Epicenter.Domain.Services
                         {
                             string personId = identifyResult[0].Candidates[0].PersonId;
                             Person person = _personRepository.GetByFaceAPIId(personId);
-                            recognizedPersons.Add(person);
+                            Person personToAdd = new Person()
+                            {
+                                Id = person.Id,
+                                FirstName = person.FirstName,
+                                LastName = person.LastName,
+                                Reason = person.Reason,
+                                FaceAPIId = person.FaceAPIId,
+                                Timestamps = person.Timestamps,
+                                Smile = face.FaceAttributes.Smile
+                            };
+                            recognizedPersons.Add(personToAdd);
                         }
                     }
                 };

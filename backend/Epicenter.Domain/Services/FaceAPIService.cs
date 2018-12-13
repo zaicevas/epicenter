@@ -230,7 +230,7 @@ namespace Epicenter.Domain.Services
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add(_ocpApimSubscriptionKey, _subscriptionKey);
-                string uri = $"{_uriBase}/detect?returnFaceLandmarks=false";
+                string uri = $"{_uriBase}/detect?returnFaceAttributes=smile";
                 ByteArrayContent content = new ByteArrayContent(image);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 HttpResponseMessage response = await client.PostAsync(uri, content);
