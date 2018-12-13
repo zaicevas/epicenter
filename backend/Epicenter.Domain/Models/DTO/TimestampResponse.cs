@@ -1,4 +1,4 @@
-﻿namespace Epicenter.Application.Models.DTO.Responses
+﻿namespace Epicenter.Domain.Models.DTO
 {
     public class TimestampResponse
     {

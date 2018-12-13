@@ -39,7 +39,7 @@ namespace Epicenter.Application
             services.AddScoped<FaceService>();
             services.AddScoped<FaceAPIService>();
             services.AddScoped<RecognitionDelegate>();
-            services.AddScoped<TimestampDelegate>();
+            services.AddScoped<TimestampService>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();

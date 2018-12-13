@@ -1,11 +1,8 @@
-﻿using Epicenter.Application.Controllers.Delegates;
-using Epicenter.Application.Models.DTO.Responses;
-using Epicenter.Domain.Abstract;
-using Epicenter.Domain.Models;
+﻿using Epicenter.Domain.Models;
+using Epicenter.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Epicenter.Application.Controllers
 {
@@ -13,32 +10,65 @@ namespace Epicenter.Application.Controllers
     [ApiController]
     public class TimestampController : ControllerBase
     {
-        private readonly ITimestampRepository _timestampRepository;
-        private readonly TimestampDelegate _timestampDelegate;
+        private readonly TimestampService _timestampService;
 
-        public TimestampController(ITimestampRepository timestampRepository, TimestampDelegate timestampDelegate)
+        public TimestampController(TimestampService timestampService)
         {
-            _timestampRepository = timestampRepository;
-            _timestampDelegate = timestampDelegate;
+            _timestampService = timestampService;
         }
 
         [Route("timestamps")]
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult GetLaterThan([FromBody] DateTime dateTime)
+        public IActionResult GetTimestamps([FromBody] DateTime? dateTime)
         {
-            List<Timestamp> timestamps;
+            IEnumerable<Timestamp> timestamps;
             try
             {
-                timestamps = _timestampRepository.GetAll().Where(x => x.DateTime >= dateTime).OrderByDescending(x => x.DateTime).ToList();
+                timestamps = _timestampService.GetLaterThan(dateTime);
             }
             catch (Exception ex)
             {
                 return NotFound(new { Error = ex.Message });
             }
-            List<TimestampResponse> response = _timestampDelegate.CreateResponse(timestamps);
-            return Ok(response.ToArray());
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
+        }
+
+        [Route("persons/timestamps")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetPersonsTimestamps([FromBody] DateTime? dateTime)
+        {
+            IEnumerable<Timestamp> timestamps;
+            try
+            {
+                timestamps = _timestampService.GetLaterThan<Person>(dateTime);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
+        }
+
+        [Route("cars/timestamps")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetCarsTimestamps([FromBody] DateTime? dateTime)
+        {
+            IEnumerable<Timestamp> timestamps;
+            try
+            {
+                timestamps = _timestampService.GetLaterThan<Plate>(dateTime);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
         }
     }
 }
