@@ -25,13 +25,13 @@ namespace Epicenter.Application.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult GetAll()
+        public IActionResult GetLaterThan([FromBody] DateTime dateTime)
         {
             List<Timestamp> timestamps;
             List<TimestampResponse> timestampResponses = new List<TimestampResponse>();
             try
             {
-                timestamps = _timestampRepository.GetAll().ToList();
+                timestamps = _timestampRepository.GetAll().Where(x => x.DateTime >= dateTime).OrderByDescending(x => x.DateTime).ToList();
             }
             catch (Exception ex)
             {
