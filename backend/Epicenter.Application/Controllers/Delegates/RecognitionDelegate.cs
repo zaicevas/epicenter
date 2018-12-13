@@ -11,7 +11,7 @@ using Epicenter.Infrastructure.Debugging.Abstract;
 using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Application.Model.DTO.Requests;
 
-namespace Epicenter.Application.Controllers
+namespace Epicenter.Application.Controllers.Delegates
 {
     public class RecognitionDelegate
     {

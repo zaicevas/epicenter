@@ -1,4 +1,5 @@
-﻿using Epicenter.Application.Models.DTO.Responses;
+﻿using Epicenter.Application.Controllers.Delegates;
+using Epicenter.Application.Models.DTO.Responses;
 using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,12 @@ namespace Epicenter.Application.Controllers
     public class TimestampController : ControllerBase
     {
         private readonly ITimestampRepository _timestampRepository;
-        private readonly IPlateRepository _plateRepository;
+        private readonly TimestampDelegate _timestampDelegate;
 
-        public TimestampController(ITimestampRepository timestampRepository, IPlateRepository plateRepository)
+        public TimestampController(ITimestampRepository timestampRepository, TimestampDelegate timestampDelegate)
         {
             _timestampRepository = timestampRepository;
-            _plateRepository = plateRepository;
+            _timestampDelegate = timestampDelegate;
         }
 
         [Route("timestamps")]
@@ -28,7 +29,6 @@ namespace Epicenter.Application.Controllers
         public IActionResult GetLaterThan([FromBody] DateTime dateTime)
         {
             List<Timestamp> timestamps;
-            List<TimestampResponse> timestampResponses = new List<TimestampResponse>();
             try
             {
                 timestamps = _timestampRepository.GetAll().Where(x => x.DateTime >= dateTime).OrderByDescending(x => x.DateTime).ToList();
@@ -37,25 +37,8 @@ namespace Epicenter.Application.Controllers
             {
                 return NotFound(new { Error = ex.Message });
             }
-
-            timestamps.ForEach(timestamp =>
-            {
-                string numberPlate = "";
-                if (timestamp.MissingModel.GetType() == typeof(Plate))
-                    numberPlate = _plateRepository.GetById(timestamp.MissingModel.Id).NumberPlate;
-
-                timestampResponses.Add(new TimestampResponse()
-                {
-                    DateAndTime = timestamp.DateAndTime,
-                    MissingModelResponse = new MissingModelResponse
-                    {
-                        FirstName = timestamp.MissingModel.FirstName,
-                        LastName = timestamp.MissingModel.LastName,
-                        NumberPlate = numberPlate
-                    }
-                });
-            });
-            return Ok(timestampResponses.ToArray());
+            List<TimestampResponse> response = _timestampDelegate.CreateResponse(timestamps);
+            return Ok(response.ToArray());
         }
     }
 }

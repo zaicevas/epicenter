@@ -1,5 +1,4 @@
 ﻿using Epicenter.Persistence.DbContexts;
-using Epicenter.Application.Controllers;
 using Epicenter.Domain.Abstract;
 using Epicenter.Domain.Services;
 using Epicenter.Infrastructure;
@@ -13,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Epicenter.Application.Controllers.Delegates;
 
 namespace Epicenter.Application
 {
@@ -39,6 +39,7 @@ namespace Epicenter.Application
             services.AddScoped<FaceService>();
             services.AddScoped<FaceAPIService>();
             services.AddScoped<RecognitionDelegate>();
+            services.AddScoped<TimestampDelegate>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();

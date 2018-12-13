@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Epicenter.Infrastructure.Debugging.Abstract;
 using Epicenter.Domain.Models.DTO;
 using Epicenter.Application.Model.DTO.Requests;
+using Epicenter.Application.Controllers.Delegates;
 
 namespace Epicenter.Application.Controllers
 {
