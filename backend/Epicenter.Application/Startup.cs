@@ -45,6 +45,10 @@ namespace Epicenter.Application
             services.AddScoped<ITimestampRepository, TimestampRepository>();
             services.AddScoped<ILogger, FileLogger>(logger => new FileLogger($"Logs/log_{Environment.TickCount.ToString()}.log"));
             services.AddDbContext<EpicenterDbContext>(options => options.UseSqlServer(AppSettings.Configuration.ConnectionString));
+            services.AddMvc(options =>
+            {
+                options.AllowEmptyInputInBodyModelBinding = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
