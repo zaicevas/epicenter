@@ -25,7 +25,7 @@ namespace Epicenter.Application.Controllers
             List<MissingModelBaseImage> missingModelsBaseImages;
             try
             {
-                missingModelsBaseImages = _baseImageService.GetAllSeenBaseImages();
+                missingModelsBaseImages = _baseImageService.GetSeenBaseImages();
             }
             catch (Exception ex)
             {
