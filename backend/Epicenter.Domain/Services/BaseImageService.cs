@@ -11,35 +11,41 @@ namespace Epicenter.Domain.Services
     {
         private readonly IPersonRepository _personRepository;
         private readonly IPlateRepository _plateRepository;
+        private readonly ITimestampRepository _timestampRepository;
 
-        public BaseImageService(IPersonRepository personRepository, IPlateRepository plateRepository)
+        public BaseImageService(IPersonRepository personRepository, IPlateRepository plateRepository, ITimestampRepository timestampRepository)
         {
             _personRepository = personRepository;
             _plateRepository = plateRepository;
+            _timestampRepository = timestampRepository;
         }
 
-        public List<MissingModelBaseImage> GetAllBaseImages()
+        public List<MissingModelBaseImage> GetAllSeenBaseImages()
         {
-            return GetBaseImages<Person>().Concat(GetBaseImages<Plate>()).ToList();
+            return GetSeenBaseImages<Person>().Concat(GetSeenBaseImages<Plate>()).ToList();
         }
 
-        public List<MissingModelBaseImage> GetBaseImages<T>() where T : MissingModel
+        public List<MissingModelBaseImage> GetSeenBaseImages<T>() where T : MissingModel
         {
             IEnumerable<MissingModel> missingModels;
             if (typeof(T) == typeof(Person))
                 missingModels = _personRepository.GetAll();
             else
                 missingModels = _plateRepository.GetAll();
-            List<MissingModelBaseImage> baseImages = new List<MissingModelBaseImage>();
+            List<int> seenMissingModelIds = _timestampRepository.GetAll().Select(x => x.MissingModelId).Distinct().ToList();
+            List<MissingModelBaseImage> seenBaseImages = new List<MissingModelBaseImage>();
             missingModels.ToList().ForEach(missingModel =>
             {
-                baseImages.Add(new MissingModelBaseImage()
+                if (seenMissingModelIds.Contains(missingModel.Id))
                 {
-                    Id = missingModel.Id,
-                    BaseImage = missingModel.BaseImage
-                });
+                    seenBaseImages.Add(new MissingModelBaseImage()
+                    {
+                        Id = missingModel.Id,
+                        BaseImage = missingModel.BaseImage
+                    });
+                }
             });
-            return baseImages;
+            return seenBaseImages;
         }
     }
 }

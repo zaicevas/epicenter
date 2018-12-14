@@ -20,12 +20,12 @@ namespace Epicenter.Application.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult Get()
+        public IActionResult Post()
         {
             List<MissingModelBaseImage> missingModelsBaseImages;
             try
             {
-                missingModelsBaseImages = _baseImageService.GetAllBaseImages();
+                missingModelsBaseImages = _baseImageService.GetAllSeenBaseImages();
             }
             catch (Exception ex)
             {
