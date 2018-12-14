@@ -74,7 +74,6 @@ namespace Epicenter.Domain.Services
                         FirstName = timestamp.MissingModel.FirstName,
                         LastName = timestamp.MissingModel.LastName,
                         Reason = timestamp.MissingModel.Reason,
-                        BaseImage = timestamp.MissingModel.BaseImage,
                         Type = type,
                         Message = numberPlate
                     }
