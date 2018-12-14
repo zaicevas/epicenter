@@ -1,4 +1,5 @@
 ﻿using Epicenter.Domain.Abstract;
+using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Abstract;
 using Epicenter.Domain.Models.DTO;
 using System.Collections.Generic;
@@ -15,11 +16,26 @@ namespace Epicenter.Domain.Services
             _timestampRepository = timestampRepository;
         }
 
-        public List<MissingModelBaseImage> GetSeenBaseImages()
+        public List<MissingModelBaseImage> GetAllSeenBaseImages()
         {
             List<MissingModel> seenMissingModels = _timestampRepository.GetAll().Select(x => x.MissingModel).Distinct().ToList();
+            return TakeBaseImages(seenMissingModels);
+        }
+
+        public List<MissingModelBaseImage> GetSeenBaseImages<T>() where T : MissingModel
+        {
+            List<MissingModel> seenMissingModels;
+            if (typeof(T) == typeof(Person))
+                seenMissingModels = _timestampRepository.GetAll().Where(x => x.MissingModel.GetType() == typeof(Person)).Select(x => x.MissingModel).Distinct().ToList();
+            else
+                seenMissingModels = _timestampRepository.GetAll().Where(x => x.MissingModel.GetType() == typeof(Plate)).Select(x => x.MissingModel).Distinct().ToList();
+            return TakeBaseImages(seenMissingModels);
+        }
+
+        private List<MissingModelBaseImage> TakeBaseImages(List<MissingModel> missingModels)
+        {
             List<MissingModelBaseImage> seenBaseImages = new List<MissingModelBaseImage>();
-            seenMissingModels.ForEach(missingModel =>
+            missingModels.ForEach(missingModel =>
             {
                 seenBaseImages.Add(new MissingModelBaseImage()
                 {

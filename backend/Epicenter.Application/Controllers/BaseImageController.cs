@@ -1,4 +1,5 @@
-﻿using Epicenter.Domain.Models.DTO;
+﻿using Epicenter.Domain.Models;
+using Epicenter.Domain.Models.DTO;
 using Epicenter.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Epicenter.Application.Controllers
 {
-    [Route("api/missingmodels/baseimages")]
+    [Route("api")]
     [ApiController]
     public class BaseImageController : ControllerBase
     {
@@ -17,15 +18,52 @@ namespace Epicenter.Application.Controllers
             _baseImageService = baseImageService;
         }
 
+        [Route("missingmodels/baseimages")]
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult Post()
+        public IActionResult GetMissingModelsImages()
         {
             List<MissingModelBaseImage> missingModelsBaseImages;
             try
             {
-                missingModelsBaseImages = _baseImageService.GetSeenBaseImages();
+                missingModelsBaseImages = _baseImageService.GetAllSeenBaseImages();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(missingModelsBaseImages.ToArray());
+        }
+
+        [Route("persons/baseimages")]
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetPersonsImages()
+        {
+            List<MissingModelBaseImage> missingModelsBaseImages;
+            try
+            {
+                missingModelsBaseImages = _baseImageService.GetSeenBaseImages<Person>();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(missingModelsBaseImages.ToArray());
+        }
+
+        [Route("cars/baseimages")]
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetCarsImages()
+        {
+            List<MissingModelBaseImage> missingModelsBaseImages;
+            try
+            {
+                missingModelsBaseImages = _baseImageService.GetSeenBaseImages<Plate>();
             }
             catch (Exception ex)
             {
