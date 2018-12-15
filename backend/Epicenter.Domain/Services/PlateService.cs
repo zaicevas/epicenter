@@ -12,6 +12,7 @@ using Epicenter.Domain.Services.DTO.Plate.Responses;
 using Epicenter.Infrastructure;
 using Epicenter.Infrastructure.Extensions;
 using Epicenter.Infrastructure.Exceptions;
+using static Epicenter.Domain.Models.Abstract.MissingModel;
 
 namespace Epicenter.Domain.Services
 {
@@ -116,6 +117,46 @@ namespace Epicenter.Domain.Services
         public List<Plate> GetAllMissingPlates()
         {
             return new List<Plate>(_plateRepository.GetAll());
+        }
+
+        public void Create(PlateRequest request)
+        {
+            _plateRepository.Add(new Plate()
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Reason = request.Reason ?? SearchReason.Missing,
+                BaseImage = ConvertToBytesOrDefault(request.BaseImage, Array.Empty<byte>()),
+                NumberPlate = request.NumberPlate
+            });
+        }
+
+        public void Update(int id, PlateRequest request)
+        {
+            Plate plate = _plateRepository.GetById(id);
+            plate.FirstName = request.FirstName ?? plate.FirstName;
+            plate.LastName = request.LastName ?? plate.LastName;
+            plate.Reason = request.Reason ?? plate.Reason;
+            plate.BaseImage = ConvertToBytesOrDefault(request.BaseImage, Array.Empty<byte>());
+            plate.NumberPlate = request.NumberPlate ?? plate.NumberPlate;
+            _plateRepository.Edit(plate);
+        }
+
+        public void Delete(int id)
+        {
+            _plateRepository.Delete(_plateRepository.GetById(id));
+        }
+
+        private byte[] ConvertToBytesOrDefault(string base64, byte[] defaultArray)
+        {
+            try
+            {
+                return Convert.FromBase64String(base64);
+            }
+            catch
+            {
+                return defaultArray;
+            }
         }
     }
 }

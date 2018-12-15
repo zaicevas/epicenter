@@ -5,6 +5,7 @@ using Epicenter.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Epicenter.Domain.Models.Abstract.MissingModel;
 
 namespace Epicenter.Domain.Services
 {
@@ -38,7 +39,7 @@ namespace Epicenter.Domain.Services
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Reason = request.Reason.Value,
+                Reason = request.Reason ?? SearchReason.Missing,
                 BaseImage = baseImage,
                 FaceAPIId = faceAPIId
             });
