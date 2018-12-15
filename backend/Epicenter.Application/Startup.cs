@@ -41,6 +41,7 @@ namespace Epicenter.Application
             services.AddScoped<RecognitionDelegate>();
             services.AddScoped<TimestampService>();
             services.AddScoped<BaseImageService>();
+            services.AddScoped<PersonService>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPlateRepository, PlateRepository>();
             services.AddScoped<ITimestampRepository, TimestampRepository>();
