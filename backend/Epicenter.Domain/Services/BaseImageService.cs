@@ -9,10 +9,14 @@ namespace Epicenter.Domain.Services
 {
     public class BaseImageService
     {
+        private readonly IPersonRepository _personRepository;
+        private readonly IPlateRepository _plateRepository;
         private readonly ITimestampRepository _timestampRepository;
 
-        public BaseImageService(ITimestampRepository timestampRepository)
+        public BaseImageService(IPersonRepository personRepository, IPlateRepository plateRepository, ITimestampRepository timestampRepository)
         {
+            _personRepository = personRepository;
+            _plateRepository = plateRepository;
             _timestampRepository = timestampRepository;
         }
 
@@ -20,6 +24,19 @@ namespace Epicenter.Domain.Services
         {
             List<MissingModel> seenMissingModels = _timestampRepository.GetAll().Select(x => x.MissingModel).Distinct().ToList();
             return TakeBaseImages(seenMissingModels);
+        }
+
+        public List<MissingModelBaseImage> GetBaseImages<T>() where T : MissingModel
+        {
+            if (typeof(T) == typeof(Person))
+            {
+                return TakeBaseImages(_personRepository.GetAll().ToList());
+            }
+            else
+            {
+                return TakeBaseImages(_plateRepository.GetAll().ToList());
+            }
+
         }
 
         public List<MissingModelBaseImage> GetSeenBaseImages<T>() where T : MissingModel
@@ -32,7 +49,7 @@ namespace Epicenter.Domain.Services
             return TakeBaseImages(seenMissingModels);
         }
 
-        private List<MissingModelBaseImage> TakeBaseImages(List<MissingModel> missingModels)
+        private List<MissingModelBaseImage> TakeBaseImages<T>(List<T> missingModels) where T : MissingModel
         {
             List<MissingModelBaseImage> seenBaseImages = new List<MissingModelBaseImage>();
             missingModels.ForEach(missingModel =>
