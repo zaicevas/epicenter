@@ -3,7 +3,7 @@ Face/car recognition API in .NET core using layered architecture with monolithic
 * [Mobile application](https://github.com/tozaicevas/epicenter-mobile)
 * [Web application](https://github.com/UndeadRat22/EpicenterWebapp)
 
-Endpoints:
+## API Endpoints:
 1.  GET  /api/missing/persons - get all Persons
 2.  GET  /api/missing/cars - get all Cars
 3.  GET  /api/missingmodels/baseimages - get all BaseImages of all seen MissingModels
