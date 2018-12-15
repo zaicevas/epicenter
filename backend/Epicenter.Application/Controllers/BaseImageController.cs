@@ -19,7 +19,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("missingmodels/baseimages")]
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetMissingModelsImages()
@@ -37,7 +37,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("persons/baseimages")]
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetPersonsImages()
@@ -55,7 +55,7 @@ namespace Epicenter.Application.Controllers
         }
 
         [Route("cars/baseimages")]
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetCarsImages()
