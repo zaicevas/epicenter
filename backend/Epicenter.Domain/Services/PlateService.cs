@@ -58,7 +58,7 @@ namespace Epicenter.Domain.Services
                             Longitude = longitude
                         };
                     }
-                    identifiedPlates.Add(new RecognizedObject()
+                    RecognizedObject recognizedObject = new RecognizedObject()
                     {
                         Id = plate.Id,
                         FirstName = plate.FirstName,
@@ -67,7 +67,7 @@ namespace Epicenter.Domain.Services
                         Type = ModelType.Plate,
                         Message = plate.NumberPlate,
                         LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
-                    });
+                    };
                     if (seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                     {
                         timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
@@ -83,6 +83,8 @@ namespace Epicenter.Domain.Services
                             Longitude = longitude
                         });
                     }
+                    recognizedObject.TimestampId = _timestampRepository.GetLatestModelTimestamp(plate.Id).Id;
+                    identifiedPlates.Add(recognizedObject);
                 }
             });
             return identifiedPlates;

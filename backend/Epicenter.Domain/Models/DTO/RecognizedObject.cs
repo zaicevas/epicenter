@@ -11,6 +11,7 @@ namespace Epicenter.Domain.Models.DTO
         public ModelType Type { get; set; }
         public string Message { get; set; }
         public string LastSeen { get; set; }
+        public int TimestampId { get; set; }
         public double Smile { get; set; }
 
         public override string ToString() => $"{Id}, {FirstName} {LastName}, {Reason}, {Type}, {Message}, {LastSeen}, {Smile}";
