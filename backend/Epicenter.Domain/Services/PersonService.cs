@@ -15,7 +15,7 @@ namespace Epicenter.Domain.Services
 
         public List<Person> GetAllMissingPersons()
         {
-            return _personRepository.GetAll() as List<Person>;
+            return new List<Person>(_personRepository.GetAll());
         }
     }
 }

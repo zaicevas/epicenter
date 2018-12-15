@@ -113,7 +113,7 @@ namespace Epicenter.Domain.Services
 
         public List<Plate> GetAllMissingPlates()
         {
-            return _plateRepository.GetAll() as List<Plate>;
+            return new List<Plate>(_plateRepository.GetAll());
         }
     }
 }
