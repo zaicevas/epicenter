@@ -35,9 +35,9 @@ namespace Epicenter.Application.Controllers.Delegates
             try
             {
                 if (request.FindPlate)
-                    getPlateResponseTask = _plateService.RecognizeAsync(request.ImageBase64);
+                    getPlateResponseTask = _plateService.RecognizeAsync(request.ImageBase64, request.Latitude, request.Longitude);
                 if (request.FindFace)
-                    getPersonResponseTask = _faceService.RecognizeAsync(request.ImageBase64);
+                    getPersonResponseTask = _faceService.RecognizeAsync(request.ImageBase64, request.Latitude, request.Longitude);
 
                 plateResponse = await getPlateResponseTask;
                 personResponse = await getPersonResponseTask;

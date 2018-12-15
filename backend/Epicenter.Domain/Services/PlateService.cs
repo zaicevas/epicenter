@@ -27,14 +27,14 @@ namespace Epicenter.Domain.Services
             _timestampRepository = timestampRepository;
         }
 
-        public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
+        public async Task<List<RecognizedObject>> RecognizeAsync(string base64, double latitude, double longitude)
         {
             return new List<RecognizedObject>();
-            List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64);
+            List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64, latitude, longitude);
             return identifiedPlates;
         }
 
-        private async Task<List<RecognizedObject>> GetIdentifiedPlatesAsync(string base64)
+        private async Task<List<RecognizedObject>> GetIdentifiedPlatesAsync(string base64, double latitude, double longitude)
         {
             PlateAPIResponse cloudResponse = await GetPlateAPIResponseAsync(base64);
             cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
@@ -53,7 +53,9 @@ namespace Epicenter.Domain.Services
                         timestamp = new Timestamp()
                         {
                             DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                            MissingModelId = plate.Id
+                            MissingModelId = plate.Id,
+                            Latitude = latitude,
+                            Longitude = longitude
                         };
                     }
                     identifiedPlates.Add(new RecognizedObject()
@@ -76,7 +78,9 @@ namespace Epicenter.Domain.Services
                         _timestampRepository.Add(new Timestamp()
                         {
                             DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                            MissingModelId = plate.Id
+                            MissingModelId = plate.Id,
+                            Latitude = latitude,
+                            Longitude = longitude
                         });
                     }
                 }

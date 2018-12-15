@@ -8,6 +8,8 @@ namespace Epicenter.Domain.Models
     public class Timestamp : Model
     {
         public string DateAndTime { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
         public int MissingModelId { get; set; }
         public MissingModel MissingModel { get; set; }
