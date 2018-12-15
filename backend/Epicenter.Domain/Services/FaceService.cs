@@ -53,17 +53,17 @@ namespace Epicenter.Domain.Services
                         MissingModelId = personWithSmile.Person.Id
                     };
                 }
-                recognizedPersons.Add(new RecognizedObject()
+                RecognizedObject recognizedObject = new RecognizedObject()
                 {
                     Id = personWithSmile.Person.Id,
                     FirstName = personWithSmile.Person.FirstName,
                     LastName = personWithSmile.Person.LastName,
                     Reason = personWithSmile.Person.Reason,
                     Type = ModelType.Person,
-                    Message = "no description",
+                    Message = "",
                     Smile = personWithSmile.Smile,
                     LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
-                });
+                };
                 if (seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                 {
                     timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
@@ -77,6 +77,8 @@ namespace Epicenter.Domain.Services
                         MissingModelId = personWithSmile.Person.Id
                     });
                 }
+                recognizedObject.TimestampId = _timestampRepository.GetLatestModelTimestamp(personWithSmile.Person.Id).Id;
+                recognizedPersons.Add(recognizedObject);
             });
             return recognizedPersons;
         }
