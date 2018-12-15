@@ -110,5 +110,10 @@ namespace Epicenter.Domain.Services
             }
             return response.Data;
         }
+
+        public List<Plate> GetAllMissingPlates()
+        {
+            return new List<Plate>(_plateRepository.GetAll());
+        }
     }
 }
