@@ -45,6 +45,24 @@ namespace Epicenter.Application.Controllers
             List<MissingModelBaseImage> missingModelsBaseImages;
             try
             {
+                missingModelsBaseImages = _baseImageService.GetBaseImages<Person>();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(missingModelsBaseImages.ToArray());
+        }
+
+        [Route("persons/baseimages/seen")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetSeenPersonsImages()
+        {
+            List<MissingModelBaseImage> missingModelsBaseImages;
+            try
+            {
                 missingModelsBaseImages = _baseImageService.GetSeenBaseImages<Person>();
             }
             catch (Exception ex)
@@ -59,6 +77,24 @@ namespace Epicenter.Application.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public IActionResult GetCarsImages()
+        {
+            List<MissingModelBaseImage> missingModelsBaseImages;
+            try
+            {
+                missingModelsBaseImages = _baseImageService.GetBaseImages<Plate>();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(missingModelsBaseImages.ToArray());
+        }
+
+        [Route("cars/baseimages/seen")]
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetSeenCarsImages()
         {
             List<MissingModelBaseImage> missingModelsBaseImages;
             try
