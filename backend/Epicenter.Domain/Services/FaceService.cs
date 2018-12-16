@@ -52,7 +52,8 @@ namespace Epicenter.Domain.Services
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
                         MissingModelId = personWithSmile.Person.Id,
                         Latitude = latitude,
-                        Longitude = longitude
+                        Longitude = longitude,
+                        Smile = personWithSmile.Smile
                     };
                 }
                 RecognizedObject recognizedObject = new RecognizedObject()
@@ -78,7 +79,8 @@ namespace Epicenter.Domain.Services
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
                         MissingModelId = personWithSmile.Person.Id,
                         Latitude = latitude,
-                        Longitude = longitude
+                        Longitude = longitude,
+                        Smile = personWithSmile.Smile
                     });
                 }
                 recognizedObject.TimestampId = _timestampRepository.GetLatestModelTimestamp(personWithSmile.Person.Id).Id;

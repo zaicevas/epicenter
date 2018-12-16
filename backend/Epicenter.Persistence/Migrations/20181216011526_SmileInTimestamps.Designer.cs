@@ -4,14 +4,16 @@ using Epicenter.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Epicenter.Persistence.Migrations
 {
     [DbContext(typeof(EpicenterDbContext))]
-    partial class EpicenterContextModelSnapshot : ModelSnapshot
+    [Migration("20181216011526_SmileInTimestamps")]
+    partial class SmileInTimestamps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
