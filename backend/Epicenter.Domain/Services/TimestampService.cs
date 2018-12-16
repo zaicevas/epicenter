@@ -52,6 +52,11 @@ namespace Epicenter.Domain.Services
             return timestamps.Where(x => x.MissingModelId == id);
         }
 
+        public IEnumerable<Timestamp> GetX<T>(int amount) where T : MissingModel
+        {
+            return GetLaterThan(null).Take(amount);
+        }
+
         public List<TimestampResponse> GenerateResponse(IEnumerable<Timestamp> timestamps)
         {
             List<TimestampResponse> response = new List<TimestampResponse>();

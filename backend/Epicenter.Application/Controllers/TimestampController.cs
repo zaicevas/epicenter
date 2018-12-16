@@ -106,5 +106,41 @@ namespace Epicenter.Application.Controllers
             }
             return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
         }
+
+        [Route("persons/timestamps/amount")]
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetXPersonsTimestamps([FromBody] int amount)
+        {
+            IEnumerable<Timestamp> timestamps;
+            try
+            {
+                timestamps = _timestampService.GetX<Person>(amount);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
+        }
+
+        [Route("cars/timestamps/amount")]
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult GetXCarsTimestamps([FromBody] int amount)
+        {
+            IEnumerable<Timestamp> timestamps;
+            try
+            {
+                timestamps = _timestampService.GetX<Plate>(amount);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            return Ok(_timestampService.GenerateResponse(timestamps).ToArray());
+        }
     }
 }
