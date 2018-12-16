@@ -30,7 +30,6 @@ namespace Epicenter.Domain.Services
 
         public async Task<List<RecognizedObject>> RecognizeAsync(string base64, double latitude, double longitude)
         {
-            return new List<RecognizedObject>();
             List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64, latitude, longitude);
             return identifiedPlates;
         }
