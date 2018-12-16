@@ -24,7 +24,7 @@ namespace Epicenter.Application.Controllers
             return Ok(_plateService.GetAllMissingPlates());
         }
 
-        [Route("car")]
+        [Route("cars")]
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -41,7 +41,7 @@ namespace Epicenter.Application.Controllers
             return Ok();
         }
 
-        [Route("car/{id}")]
+        [Route("cars/{id}")]
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -58,7 +58,7 @@ namespace Epicenter.Application.Controllers
             return Ok();
         }
 
-        [Route("car/{id}")]
+        [Route("cars/{id}")]
         [HttpDelete]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]

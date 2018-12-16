@@ -26,7 +26,7 @@ namespace Epicenter.Application.Controllers
             return Ok(_personService.GetAllMissingPersons());
         }
 
-        [Route("person")]
+        [Route("persons")]
         [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -43,7 +43,7 @@ namespace Epicenter.Application.Controllers
             return Ok();
         }
 
-        [Route("person/{id}")]
+        [Route("persons/{id}")]
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -60,7 +60,7 @@ namespace Epicenter.Application.Controllers
             return Ok();
         }
 
-        [Route("person/{id}")]
+        [Route("persons/{id}")]
         [HttpDelete]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]

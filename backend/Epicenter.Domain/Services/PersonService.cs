@@ -63,15 +63,7 @@ namespace Epicenter.Domain.Services
 
         public async Task DeleteAsync(int id)
         {
-            Person person;
-            try
-            {
-                person = _personRepository.GetById(id);
-            }
-            catch
-            {
-                throw;
-            }
+            Person person = _personRepository.GetById(id);
             await _faceAPIService.DeletePersonAsync(_groupId, person.FaceAPIId);
             _personRepository.Delete(person);
             await _faceAPIService.TrainPersonGroupAsync(_groupId);
