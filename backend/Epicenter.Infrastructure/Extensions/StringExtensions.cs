@@ -9,5 +9,17 @@ namespace Epicenter.Infrastructure.Extensions
         {
             return DateTime.ParseExact(timestamp, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
         }
+
+        public static byte[] ConvertToBytesOrDefault(this string base64, byte[] defaultArray)
+        {
+            try
+            {
+                return Convert.FromBase64String(base64);
+            }
+            catch
+            {
+                return defaultArray;
+            }
+        }
     }
 }

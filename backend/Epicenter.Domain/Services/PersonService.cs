@@ -2,6 +2,7 @@
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.DTO;
 using Epicenter.Infrastructure;
+using Epicenter.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace Epicenter.Domain.Services
             if (await TrainFaces(faceAPIId, request.TrainingImages))
             {
                 await _faceAPIService.TrainPersonGroupAsync(_groupId);
-                baseImage = request.BaseImage.HasValue ? ConvertToBytesOrDefault(request.TrainingImages[request.BaseImage.Value], baseImage) : baseImage;
+                baseImage = request.BaseImage.HasValue ? request.TrainingImages[request.BaseImage.Value].ConvertToBytesOrDefault(baseImage) : baseImage;
             }                
             _personRepository.Add(new Person()
             {
@@ -55,7 +56,7 @@ namespace Epicenter.Domain.Services
             if (await TrainFaces(person.FaceAPIId, request.TrainingImages))
             {
                 await _faceAPIService.TrainPersonGroupAsync(_groupId);
-                baseImage = request.BaseImage.HasValue ? ConvertToBytesOrDefault(request.TrainingImages[request.BaseImage.Value], baseImage) : baseImage;
+                baseImage = request.BaseImage.HasValue ? request.TrainingImages[request.BaseImage.Value].ConvertToBytesOrDefault(baseImage) : baseImage;
             }
             person.BaseImage = baseImage;
             _personRepository.Edit(person);
@@ -89,18 +90,6 @@ namespace Epicenter.Domain.Services
                 };
             }
             return atLeastOneFaceFound;
-        }
-
-        private byte[] ConvertToBytesOrDefault(string base64, byte[] defaultArray)
-        {
-            try
-            {
-                return Convert.FromBase64String(base64);
-            }
-            catch
-            {
-                return defaultArray;
-            }
         }
     }
 }

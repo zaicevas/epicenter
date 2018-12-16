@@ -130,7 +130,7 @@ namespace Epicenter.Domain.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Reason = request.Reason ?? SearchReason.Missing,
-                BaseImage = ConvertToBytesOrDefault(request.BaseImage, Array.Empty<byte>()),
+                BaseImage = request.BaseImage.ConvertToBytesOrDefault(Array.Empty<byte>()),
                 NumberPlate = request.NumberPlate
             });
         }
@@ -141,7 +141,7 @@ namespace Epicenter.Domain.Services
             plate.FirstName = request.FirstName ?? plate.FirstName;
             plate.LastName = request.LastName ?? plate.LastName;
             plate.Reason = request.Reason ?? plate.Reason;
-            plate.BaseImage = ConvertToBytesOrDefault(request.BaseImage, Array.Empty<byte>());
+            plate.BaseImage = request.BaseImage.ConvertToBytesOrDefault(plate.BaseImage);
             plate.NumberPlate = request.NumberPlate ?? plate.NumberPlate;
             _plateRepository.Edit(plate);
         }
@@ -149,18 +149,6 @@ namespace Epicenter.Domain.Services
         public void Delete(int id)
         {
             _plateRepository.Delete(_plateRepository.GetById(id));
-        }
-
-        private byte[] ConvertToBytesOrDefault(string base64, byte[] defaultArray)
-        {
-            try
-            {
-                return Convert.FromBase64String(base64);
-            }
-            catch
-            {
-                return defaultArray;
-            }
         }
     }
 }
