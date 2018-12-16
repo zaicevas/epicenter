@@ -68,6 +68,9 @@ namespace Epicenter.Domain.Services
                 {
                     Id = timestamp.Id,
                     DateAndTime = timestamp.DateAndTime,
+                    Latitude = timestamp.Latitude,
+                    Longitude = timestamp.Longitude,
+                    Smile = timestamp.Smile,
                     MissingModel = new MissingModelResponse
                     {
                         Id = timestamp.MissingModel.Id,

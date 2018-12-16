@@ -27,7 +27,7 @@ namespace Epicenter.Domain.Services
             _logger = logger;
         }
 
-        public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
+        public async Task<List<RecognizedObject>> RecognizeAsync(string base64, double latitude, double longitude)
         {
             byte[] imgBytes;
             try
@@ -50,7 +50,10 @@ namespace Epicenter.Domain.Services
                     timestamp = new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        MissingModelId = personWithSmile.Person.Id
+                        MissingModelId = personWithSmile.Person.Id,
+                        Latitude = latitude,
+                        Longitude = longitude,
+                        Smile = personWithSmile.Smile
                     };
                 }
                 RecognizedObject recognizedObject = new RecognizedObject()
@@ -74,7 +77,10 @@ namespace Epicenter.Domain.Services
                     _timestampRepository.Add(new Timestamp()
                     {
                         DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                        MissingModelId = personWithSmile.Person.Id
+                        MissingModelId = personWithSmile.Person.Id,
+                        Latitude = latitude,
+                        Longitude = longitude,
+                        Smile = personWithSmile.Smile
                     });
                 }
                 recognizedObject.TimestampId = _timestampRepository.GetLatestModelTimestamp(personWithSmile.Person.Id).Id;
