@@ -70,7 +70,11 @@ namespace Epicenter.Domain.Services
                 if (seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                 {
                     timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
+                    timestamp.Latitude = latitude;
+                    timestamp.Longitude = longitude;
+                    timestamp.Smile = personWithSmile.Smile;
                     _timestampRepository.Edit(timestamp);
+
                 }
                 else
                 {
