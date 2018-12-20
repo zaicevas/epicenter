@@ -11,7 +11,7 @@ using Epicenter.Infrastructure.Debugging.Abstract;
 using Epicenter.Application.Infrastructure.Utils;
 using Epicenter.Application.Model.DTO.Requests;
 
-namespace Epicenter.Application.Controllers
+namespace Epicenter.Application.Controllers.Delegates
 {
     public class RecognitionDelegate
     {
@@ -35,9 +35,9 @@ namespace Epicenter.Application.Controllers
             try
             {
                 if (request.FindPlate)
-                    getPlateResponseTask = _plateService.RecognizeAsync(request.ImageBase64);
+                    getPlateResponseTask = _plateService.RecognizeAsync(request.ImageBase64, request.Latitude, request.Longitude);
                 if (request.FindFace)
-                    getPersonResponseTask = _faceService.RecognizeAsync(request.ImageBase64);
+                    getPersonResponseTask = _faceService.RecognizeAsync(request.ImageBase64, request.Latitude, request.Longitude);
 
                 plateResponse = await getPlateResponseTask;
                 personResponse = await getPersonResponseTask;

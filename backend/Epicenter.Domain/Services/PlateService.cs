@@ -12,6 +12,7 @@ using Epicenter.Domain.Services.DTO.Plate.Responses;
 using Epicenter.Infrastructure;
 using Epicenter.Infrastructure.Extensions;
 using Epicenter.Infrastructure.Exceptions;
+using static Epicenter.Domain.Models.Abstract.MissingModel;
 
 namespace Epicenter.Domain.Services
 {
@@ -27,14 +28,13 @@ namespace Epicenter.Domain.Services
             _timestampRepository = timestampRepository;
         }
 
-        public async Task<List<RecognizedObject>> RecognizeAsync(string base64)
+        public async Task<List<RecognizedObject>> RecognizeAsync(string base64, double latitude, double longitude)
         {
-            return new List<RecognizedObject>();
-            List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64);
+            List<RecognizedObject> identifiedPlates = await GetIdentifiedPlatesAsync(base64, latitude, longitude);
             return identifiedPlates;
         }
 
-        private async Task<List<RecognizedObject>> GetIdentifiedPlatesAsync(string base64)
+        private async Task<List<RecognizedObject>> GetIdentifiedPlatesAsync(string base64, double latitude, double longitude)
         {
             PlateAPIResponse cloudResponse = await GetPlateAPIResponseAsync(base64);
             cloudResponse.UpdateMatchesPattern(AppSettings.Configuration.PlatePattern);
@@ -53,18 +53,21 @@ namespace Epicenter.Domain.Services
                         timestamp = new Timestamp()
                         {
                             DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                            MissingModelId = plate.Id
+                            MissingModelId = plate.Id,
+                            Latitude = latitude,
+                            Longitude = longitude
                         };
                     }
-                    identifiedPlates.Add(new RecognizedObject()
+                    RecognizedObject recognizedObject = new RecognizedObject()
                     {
+                        Id = plate.Id,
                         FirstName = plate.FirstName,
                         LastName = plate.LastName,
                         Reason = plate.Reason,
                         Type = ModelType.Plate,
                         Message = plate.NumberPlate,
                         LastSeen = timestamp.DateTime.GetFormattedDateAndTime()
-                    });
+                    };
                     if (seenBefore && timestamp.DateTime > DateTime.UtcNow.ToUTC2().AddMinutes(-1))
                     {
                         timestamp.DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime();
@@ -75,9 +78,13 @@ namespace Epicenter.Domain.Services
                         _timestampRepository.Add(new Timestamp()
                         {
                             DateAndTime = DateTime.UtcNow.ToUTC2().GetFormattedDateAndTime(),
-                            MissingModelId = plate.Id
+                            MissingModelId = plate.Id,
+                            Latitude = latitude,
+                            Longitude = longitude
                         });
                     }
+                    recognizedObject.TimestampId = _timestampRepository.GetLatestModelTimestamp(plate.Id).Id;
+                    identifiedPlates.Add(recognizedObject);
                 }
             });
             return identifiedPlates;
@@ -108,6 +115,39 @@ namespace Epicenter.Domain.Services
                 throw new HttpException(errorResponse.ErrorCode, errorResponse.Error);
             }
             return response.Data;
+        }
+
+        public List<Plate> GetAllMissingPlates()
+        {
+            return new List<Plate>(_plateRepository.GetAll());
+        }
+
+        public void Create(PlateRequest request)
+        {
+            _plateRepository.Add(new Plate()
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Reason = request.Reason ?? SearchReason.Missing,
+                BaseImage = request.BaseImage.ConvertToBytesOrDefault(Array.Empty<byte>()),
+                NumberPlate = request.NumberPlate
+            });
+        }
+
+        public void Update(int id, PlateRequest request)
+        {
+            Plate plate = _plateRepository.GetById(id);
+            plate.FirstName = request.FirstName ?? plate.FirstName;
+            plate.LastName = request.LastName ?? plate.LastName;
+            plate.Reason = request.Reason ?? plate.Reason;
+            plate.BaseImage = request.BaseImage.ConvertToBytesOrDefault(plate.BaseImage);
+            plate.NumberPlate = request.NumberPlate ?? plate.NumberPlate;
+            _plateRepository.Edit(plate);
+        }
+
+        public void Delete(int id)
+        {
+            _plateRepository.Delete(_plateRepository.GetById(id));
         }
     }
 }

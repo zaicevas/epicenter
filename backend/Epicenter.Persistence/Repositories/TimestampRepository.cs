@@ -2,6 +2,7 @@
 using Epicenter.Domain.Models;
 using Epicenter.Domain.Models.Abstract;
 using Epicenter.Persistence.DbContexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Epicenter.Persistence.Repositories
 
         public IEnumerable<Timestamp> GetAll()
         {
-            return _dbContext.Timestamps.AsEnumerable();
+            return _dbContext.Timestamps.Include(x => x.MissingModel).AsEnumerable();
         }
 
         public Timestamp GetById(int id)

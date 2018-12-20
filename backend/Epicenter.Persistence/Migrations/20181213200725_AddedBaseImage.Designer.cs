@@ -4,14 +4,16 @@ using Epicenter.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Epicenter.Persistence.Migrations
 {
     [DbContext(typeof(EpicenterDbContext))]
-    partial class EpicenterContextModelSnapshot : ModelSnapshot
+    [Migration("20181213200725_AddedBaseImage")]
+    partial class AddedBaseImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +53,7 @@ namespace Epicenter.Persistence.Migrations
 
                     b.Property<string>("DateAndTime");
 
-                    b.Property<double>("Latitude");
-
-                    b.Property<double>("Longitude");
-
                     b.Property<int>("MissingModelId");
-
-                    b.Property<double>("Smile");
 
                     b.HasKey("Id");
 
